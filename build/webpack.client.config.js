@@ -38,37 +38,37 @@ module.exports = merge(baseConfig, {
       filename: 'index.html',
       template: resolve(__dirname, '..', './index.client.html')
     }),
-    new WorkboxPlugin.GenerateSW({
-      swDest: 'sw.js', // // 设置前缀 The parent directory for this file will be based on your output.path webpack configuration
-      clientsClaim: true, // Service Worker 被激活后使其立即获得页面控制权
-      skipWaiting: true, // 强制等待中的 Service Worker 被激活
-      importWorkboxFrom: 'local', // 设置从本地加载workbox而不是cdn（这个cdn需要梯子）
-      // navigateFallback: '/index.html', // 浏览器中输入的路径都会重定向到index.html
-      // templatedURLs: {
-        // '/appshell': [] // 依赖的文件列表 or 具体版本字符串
-      // },
-      runtimeCaching: [
-        {
-          // html文件 networkFirst
-          urlPattern: /.*\.html/,
-          handler: 'NetworkOnly'
-        },
-        // {
-        //   // .js文件 networkFirst
-        //   urlPattern: /.*\.js/,
-        //   handler: 'NetworkFirst',
-        //   options: {
-        //     cacheableResponse: {
-        //       statuses: [0, 200]
-        //     }
-        //   }
-        // },
-        {
-          // 其他静态资源
-          urlPattern: new RegExp('/static'),
-          handler: 'CacheFirst'
-        }
-      ]
-    })
+    // new WorkboxPlugin.GenerateSW({
+    //   swDest: 'sw.js', // // 设置前缀 The parent directory for this file will be based on your output.path webpack configuration
+    //   clientsClaim: true, // Service Worker 被激活后使其立即获得页面控制权
+    //   skipWaiting: true, // 强制等待中的 Service Worker 被激活
+    //   importWorkboxFrom: 'local', // 设置从本地加载workbox而不是cdn（这个cdn需要梯子）
+    //   // navigateFallback: '/index.html', // 浏览器中输入的路径都会重定向到index.html
+    //   // templatedURLs: {
+    //     // '/appshell': [] // 依赖的文件列表 or 具体版本字符串
+    //   // },
+    //   runtimeCaching: [
+    //     {
+    //       // html文件 networkFirst
+    //       urlPattern: /.*\.html/,
+    //       handler: 'NetworkOnly'
+    //     },
+    //     // {
+    //     //   // .js文件 networkFirst
+    //     //   urlPattern: /.*\.js/,
+    //     //   handler: 'NetworkFirst',
+    //     //   options: {
+    //     //     cacheableResponse: {
+    //     //       statuses: [0, 200]
+    //     //     }
+    //     //   }
+    //     // },
+    //     {
+    //       // 其他静态资源
+    //       urlPattern: new RegExp('/static'),
+    //       handler: 'CacheFirst'
+    //     }
+    //   ]
+    // })
   ]
 });

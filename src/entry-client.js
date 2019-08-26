@@ -1,5 +1,6 @@
 import { createApp } from './app';
-import './register-sw';
+import './assets/js/register-sw';
+import './assets/js/resize';
 
 // 客户端特定引导逻辑……
 

@@ -1,15 +1,21 @@
 <template>
-    <div>
-        <router-link to="/">主页</router-link>
-        <router-link to="about">关于我</router-link>
-        <router-link to="element">element</router-link>
-        <router-view></router-view>
+    <div class="djlxs-blog">
+      <AppHeader></AppHeader>
+      <router-view></router-view>
+      <AppSideBar></AppSideBar>
     </div>
 </template>
 
 <script>
+  import AppHeader from './components/core/Header';
+  import AppSideBar from './components/core/SideBar';
+
   export default {
-    name: ''
+    name: '',
+    components: {
+      AppHeader,
+      AppSideBar
+    }
   };
 </script>
 

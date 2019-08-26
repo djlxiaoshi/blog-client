@@ -3,11 +3,22 @@ import App from './App.vue';
 import { createStore } from './store';
 import { createRouter } from './router';
 import { sync } from 'vuex-router-sync';
-import { Button, Select } from 'element-ui';
+import {
+  Button, Menu, MenuItem, Submenu, Row, Col, Dropdown, DropdownMenu, DropdownItem
+
+} from 'element-ui';
 
 Vue.config.productionTip = false; // 开启vuex 调试工具
 
 Vue.use(Button);
+Vue.use(Menu);
+Vue.use(Submenu);
+Vue.use(MenuItem);
+Vue.use(Dropdown);
+Vue.use(DropdownMenu);
+Vue.use(DropdownItem);
+Vue.use(Row);
+Vue.use(Col);
 
 export function createApp (context) {
 
