@@ -8,6 +8,8 @@ import {
 
 } from 'element-ui';
 
+import './assets/css/common.less';
+
 Vue.config.productionTip = false; // 开启vuex 调试工具
 
 Vue.use(Button);

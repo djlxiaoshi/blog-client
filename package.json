@@ -55,6 +55,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./build/webpack.dev.config.js --mode development",
     "server": "nodemon --inspect ./server.js",
+    "mock": "nodemon ./mock/server.js",
     "build-client": "cross-env NODE_ENV=production webpack --config ./build/webpack.client.config.js --watch --mode production --progress",
     "build-server": "cross-env NODE_ENV=production webpack --config ./build/webpack.server.config.js --watch --mode production --progress",
     "build": "npm-run-all build-server"

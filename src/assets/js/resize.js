@@ -1,7 +1,8 @@
 import { XS_WIDTH } from './global/const';
-
-import store from '../../store';
+import { createStore } from '../../store';
 import { TOGGLE_IS_MINI_WIDTH, CHANGE_SIDEBAR_VISIBLE } from 'store/mutation-types';
+
+const store = createStore();
 
 function setIsMiniWidth () {
   const clientWidth = document.body.clientWidth;

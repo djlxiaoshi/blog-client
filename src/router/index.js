@@ -9,8 +9,8 @@ export function createRouter () {
   return new Router({
     mode: 'history',
     routes: [
-      { path: '/', component: () => import(/* webpackChunkName: "home" */'../pages/Home.vue') },
-      { path: '/about', component: () => import(/* webpackChunkName: "about" */'../pages/About.vue') },
+      { path: '/', component: () => import(/* webpackChunkName: "home" */'../pages/Home') },
+      { path: '/about', component: () => import(/* webpackChunkName: "about" */'../pages/about') },
       { path: '/element', component: () => import(/* webpackChunkName: "element" */'../pages/Element.vue') },
       { path: '**', component: NotFount }
     ]

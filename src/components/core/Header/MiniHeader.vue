@@ -1,8 +1,9 @@
 <template>
-    <el-row type="flex" align="middle" justify="center" class="mini-header">
+  <div class="mini-header">
+    <el-row type="flex" align="middle" justify="center" class="header-content">
       <el-col :span="4">
         <div class="menu-col">
-          <i class="iconfont" :class="menuClass" @click="toggleSideMenu"></i>
+          <i class="common-icon" :class="menuClass" @click="toggleSideMenu"></i>
         </div>
       </el-col>
       <el-col :span="14">
@@ -22,6 +23,7 @@
         </div>
       </el-col>
     </el-row>
+  </div>
 </template>
 
 <script>
@@ -37,7 +39,7 @@
         'sidebarVisible'
       ]),
       menuClass () {
-        return this.sidebarVisible ? 'icon-x' : 'icon-menu';
+        return this.sidebarVisible ? 'el-icon-close' : 'el-icon-menu';
       }
     },
     methods: {
@@ -58,14 +60,13 @@
 </script>
 
 <style scoped lang="less">
+  @import "../../../assets/css/theme";
+
   .mini-header {
     color: #ffffff;
-    height: 100%;
     padding: 0 20px;
-    .iconfont {
-      font-size: 18px !important;
-      cursor: pointer;
-      color: #ffffff;
+    .header-content {
+      height: @AppHeaderHeight;
     }
     .app-name {
       text-align: center;
