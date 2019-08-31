@@ -9,7 +9,9 @@ const files = fs.readdirSync(mockDataDirPath);
 const database = {};
 
 files.forEach(function (filepath) {
-  Object.assign(database, require(path.resolve(mockDataDirPath, filepath)));
+  const mock = require(path.resolve(mockDataDirPath, filepath));
+
+  Object.assign(database, mock());
 });
 
 module.exports = function () {

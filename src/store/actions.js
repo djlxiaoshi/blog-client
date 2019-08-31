@@ -16,7 +16,7 @@ export default {
       showErrorMsg: true
     });
 
-    xhrInstance.then((articles) => {
+    return xhrInstance.then((articles) => {
       commit(SET_ARTICLES, articles);
     }, () => {
     });

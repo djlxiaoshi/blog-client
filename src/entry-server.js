@@ -37,6 +37,7 @@ export default function (context) {
         // 状态将自动序列化为 `window.__INITIAL_STATE__`，并注入 HTML。
         context.state = store.state;
 
+        // 这里要封装的ajax返回一个promise，不然数据拿到后，视图却没有更新
         resolve(app);
 
       }).catch((error) => {
