@@ -30,9 +30,9 @@
     asyncData ({ store, router }) {
       return store.dispatch('getArticles');
     },
-    // mounted () {
-    //   this.getArticles();
-    // },
+    mounted () {
+      this.getArticles();
+    },
     methods: {
       ...mapActions([
         'getArticles'

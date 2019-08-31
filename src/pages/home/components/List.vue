@@ -41,6 +41,9 @@
       /deep/ .el-row {
         flex-wrap: wrap;
         width: 100%;
+        padding-bottom: 10px;
+        margin: 10px auto;
+        border-bottom: 1px solid #dddddd;
       }
       .item-title {
         line-height: 25px;

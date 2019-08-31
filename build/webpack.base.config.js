@@ -5,7 +5,20 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   resolve: {
-    extensions: ['.js', '.vue', '.json']
+    extensions: ['.js', '.vue', '.json'],
+    modules: [
+      resolve(__dirname, '..', 'src'),
+      resolve(__dirname, '..', 'node_modules')
+    ],
+    alias: {
+      'vue$': 'vue/dist/vue.esm.js',
+      '@': resolve(__dirname, '..', 'src'),
+      'assets': resolve(__dirname, '..', 'src/assets'),
+      'components': resolve(__dirname, '..', 'src/components'),
+      'pages': resolve(__dirname, '..', 'src/pages'),
+      'router': resolve(__dirname, '..', 'src/router'),
+      'store': resolve(__dirname, '..', 'src/store'),
+    }
   },
   module: {
     rules: [
@@ -51,16 +64,6 @@ module.exports = {
         }
       }
     ]
-  },
-  resolve: {
-    extensions: ['.js', '.vue', '.json'],
-    modules: [
-      resolve(__dirname, '..', 'src'),
-      resolve(__dirname, '..', 'node_modules')
-    ],
-    alias: {
-      'vue$': 'vue/dist/vue.runtime.esm.js'
-    }
   },
   plugins: [
     new CopyWebpackPlugin([{

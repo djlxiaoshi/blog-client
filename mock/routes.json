@@ -1,8 +1,7 @@
 {
   "/api/users": "/users",
-  "/api/users/:id":"/users/:id",
+  "/api/user/:id":"/users/:id",
+  "PUT /api/user/:id":"/users/:id",
   "/api/getUserInfo": "/getUserInfo",
-
   "/api/articles": "/articles"
-
 }

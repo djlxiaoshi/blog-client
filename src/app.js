@@ -4,9 +4,11 @@ import { createStore } from './store';
 import { createRouter } from './router';
 import { sync } from 'vuex-router-sync';
 import http from './assets/js/utils/http';
+import envConfig from './assets/js/global/environment';
 
 import {
-  Button, Menu, MenuItem, Submenu, Row, Col, Dropdown, DropdownMenu, DropdownItem
+  Button, Menu, MenuItem, Submenu, Row, Col, Dropdown, DropdownMenu, DropdownItem,
+  Form, FormItem, Input, Upload, Card
 
 } from 'element-ui';
 
@@ -14,9 +16,12 @@ import 'element-ui/lib/theme-chalk/display.css';
 
 import './assets/css/common.less';
 
+import 'highlight.js/styles/monokai-sublime.css';
+
 Vue.config.productionTip = false; // 开启vuex 调试工具
 
 Vue.prototype.$http = http;
+Vue.prototype.$globalConfig = envConfig;
 
 Vue.use(Button);
 Vue.use(Menu);
@@ -27,6 +32,11 @@ Vue.use(DropdownMenu);
 Vue.use(DropdownItem);
 Vue.use(Row);
 Vue.use(Col);
+Vue.use(Form);
+Vue.use(FormItem);
+Vue.use(Input);
+Vue.use(Upload);
+Vue.use(Card);
 
 export function createApp (context) {
 
