@@ -4,7 +4,8 @@
 
 import {
   SET_USER_INFO, SET_MENU_LIST, SET_ACTIVE_MENU,
-  TOGGLE_IS_MINI_WIDTH, CHANGE_SIDEBAR_VISIBLE
+  TOGGLE_IS_MINI_WIDTH, CHANGE_SIDEBAR_VISIBLE,
+  SET_ARTICLES
 } from './mutation-types';
 
 export default {
@@ -22,5 +23,8 @@ export default {
   },
   [CHANGE_SIDEBAR_VISIBLE] (state, status) {
     state.sidebarVisible = status;
+  },
+  [SET_ARTICLES] (state, articles) {
+    state.articles = articles;
   }
 };

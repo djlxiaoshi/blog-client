@@ -1,35 +1,55 @@
 <template>
-    <div class="home-page">
-      <ArticleList :data="articles"></ArticleList>
-    </div>
-
+  <div class="home-page">
+    <el-row type="flex" justify="space-around">
+      <el-col :xs="24" :sm="23" :md="17" :lg="18" :xl="19">
+        <div class="home-left">
+          <ArticleList :data="articles"></ArticleList>
+        </div>
+      </el-col>
+      <el-col class="hidden-sm-and-down" :md="6" :lg="5" :xl="4">
+        <div class="home-right"></div>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
   import ArticleList from './components/List';
+  import { mapState, mapActions } from 'vuex';
 
   export default {
     name: '',
     components: {
       ArticleList
     },
-    data () {
-      return {
-        articles: [
-          {
-            title: '像MAC一样使用win10的Terminal',
-            desc: 'Windows Terminal（Preview）实用、优化技巧（含第三方Terminal工具介绍）注意：Windows Terminal（Pr...',
-            time: '2019/08/27',
-            author: 'djlxs'
-          }
-        ]
-      };
+    computed: {
+      ...mapState([
+        'articles'
+      ])
+    },
+    asyncData ({ store, router }) {
+      return store.dispatch('getArticles');
+    },
+    // mounted () {
+    //   this.getArticles();
+    // },
+    methods: {
+      ...mapActions([
+        'getArticles'
+      ])
     }
   };
 </script>
 
 <style scoped lang="less">
- h1 {
-     background: red;
- }
+  .home-page {
+    .home-left {
+      border: 1px solid #dddddd;
+    }
+
+    .home-right {
+      height: 100px;
+      border: 1px solid #dddddd;
+    }
+  }
 </style>

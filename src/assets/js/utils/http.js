@@ -1,8 +1,10 @@
 import axios from 'axios';
 import NProgress from 'nprogress';
-import Notification from './notification';
+import { Notification } from 'element-ui';
 import envConfig from '../global/environment';
-import router from '../../../router/index';
+import { createRouter } from '../../../router/index';
+
+const router = createRouter();
 
 let xhrCacheList = [];
 const CancelToken = axios.CancelToken;

@@ -1,4 +1,5 @@
 import { createApp } from './app';
+import './assets/js/init';
 
 export default function (context) {
   console.log('context', context);
@@ -6,7 +7,7 @@ export default function (context) {
 
   return new Promise((resolve, reject) => {
 
-    const {url} = context;
+    const { url } = context;
 
     router.push(url);
 
@@ -40,6 +41,7 @@ export default function (context) {
 
       }).catch((error) => {
         console.log('error', error);
+        reject(error);
       });
 
     }, reject);

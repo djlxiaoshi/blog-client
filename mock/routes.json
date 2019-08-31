@@ -1,5 +1,8 @@
 {
   "/api/users": "/users",
   "/api/users/:id":"/users/:id",
-  "/api/getUserInfo": "/getUserInfo"
+  "/api/getUserInfo": "/getUserInfo",
+
+  "/api/articles": "/articles"
+
 }

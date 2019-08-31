@@ -3,14 +3,20 @@ import App from './App.vue';
 import { createStore } from './store';
 import { createRouter } from './router';
 import { sync } from 'vuex-router-sync';
+import http from './assets/js/utils/http';
+
 import {
   Button, Menu, MenuItem, Submenu, Row, Col, Dropdown, DropdownMenu, DropdownItem
 
 } from 'element-ui';
 
+import 'element-ui/lib/theme-chalk/display.css';
+
 import './assets/css/common.less';
 
 Vue.config.productionTip = false; // 开启vuex 调试工具
+
+Vue.prototype.$http = http;
 
 Vue.use(Button);
 Vue.use(Menu);

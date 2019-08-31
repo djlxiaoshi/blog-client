@@ -23,6 +23,6 @@ router.render = (req, res) => {
 
 server.use(router);
 
-server.listen(3700, () => {
-  console.log('JSON Server is running on port 3700');
+server.listen(3000, () => {
+  console.log('JSON Server is running on port 3000');
 });

@@ -8,6 +8,7 @@ const { app, router, store } = createApp();
 
 // 同步state
 if (window.__INITIAL_STATE__) {
+  debugger;
   store.replaceState(window.__INITIAL_STATE__);
 }
 

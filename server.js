@@ -30,7 +30,7 @@ app.use(koaStatic(path.resolve(__dirname, 'dist'), {
 router.get('*', async ctx => {
 
   ctx.body = await new Promise((resolve, reject) => {
-    renderer.renderToString({title: 'DJLXS', url: ctx.req.url}, (err, data) => {
+    renderer.renderToString({title: 'DJLXS', url: ctx.req.url}, (err, html) => {
 
       if (err) {
         console.log('error', err);
@@ -38,9 +38,9 @@ router.get('*', async ctx => {
         return;
       }
 
-      console.log('渲染成功', ctx.req.url, data);
+      console.log('渲染成功', ctx.req.url, html);
 
-      resolve(data)
+      resolve(html);
 
     });
   });
