@@ -13,11 +13,11 @@ export default {
       },
       method: 'get',
       showSuccessMsg: false,
-      showErrorMsg: true
+      showErrorMsg: false
     });
 
     return xhrInstance.then((articles) => {
-      commit(SET_ARTICLES, articles);
+      commit(SET_ARTICLES, articles.list);
     }, () => {
     });
   }

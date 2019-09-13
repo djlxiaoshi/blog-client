@@ -85,7 +85,7 @@
             email: [
               { required: true, trigger: 'blur', message: '请输入邮箱' },
               { trigger: 'blur', validator: checkEmail },
-              { trigger: 'blur', validator: checkEmailExsit }
+              // { trigger: 'blur', validator: checkEmailExsit }
             ]
           }
         };
@@ -118,7 +118,7 @@
           this.$router.push('/login');
         },
         goToHomePage () {
-          this.$router.push('/home');
+          this.$router.push('/');
         }
       }
     };

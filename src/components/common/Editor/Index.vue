@@ -1,7 +1,7 @@
 <template>
   <div class="app-editor">
     <RichTextEditor v-if="type === 'richText'"></RichTextEditor>
-    <MarkdownEditor v-else></MarkdownEditor>
+    <MarkdownEditor v-else @save="onSave"></MarkdownEditor>
   </div>
 </template>
 
@@ -10,7 +10,11 @@
   import MarkdownEditor from './Markdown';
     export default {
         name: 'AppEditor',
-        props: ['type'],
+        props: {
+          type: {
+            default: 'markdown'
+          }
+        },
         components: {
             RichTextEditor,
             MarkdownEditor
@@ -23,6 +27,11 @@
         },
         mounted () {
 
+        },
+        methods: {
+          onSave (text) {
+            this.$emit('save', text);
+          }
         }
     };
 </script>

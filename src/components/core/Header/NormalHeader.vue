@@ -70,7 +70,7 @@
         if (event === 'logout') {
           this.logout();
         } else if (event === 'userInfo') {
-          this.$router.push('/app/user-info');
+          this.$router.push('/author');
           this.setActiveMenu('');
         }
       },

@@ -5,6 +5,7 @@ import { createRouter } from './router';
 import { sync } from 'vuex-router-sync';
 import http from './assets/js/utils/http';
 import envConfig from './assets/js/global/environment';
+import interceptor from './router/interceptor';
 
 import {
   Button, Menu, MenuItem, Submenu, Row, Col, Dropdown, DropdownMenu, DropdownItem,
@@ -45,6 +46,9 @@ export function createApp (context) {
 
   // 创建store 实例
   const store = createStore();
+
+  // 路由拦截
+  interceptor(router, store);
 
   // 同步路由状态(route state)到 store
   sync(store, router);
