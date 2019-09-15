@@ -11,12 +11,13 @@
             <div class="details-wrap">
               <div class="details-top">
                 <h2 class="item-title">{{ article.title }}</h2>
-                <p class="item-desc">{{  article.desc }}</p>
+                <!--<p class="item-desc">{{  article.desc }}</p>-->
+                <p class="item-desc">{{  article.content }}</p>
               </div>
               <div class="details-bottom">
-                <span class="item-time">{{ article.time }}</span>
+                <span class="item-time">{{ formateTime(article.createTime) }}</span>
                 <span class="item-author">{{ article.author }}</span>
-                <i class="el-icon-view operate-icon"></i>
+                <i class="el-icon-view operate-icon" @click="view(article, index)"></i>
                 <i class="el-icon-s-comment operate-icon"></i>
                 <i class="el-icon-star-off operate-icon"></i>
               </div>
@@ -28,9 +29,19 @@
 </template>
 
 <script>
+  import dayjs from 'dayjs';
   export default {
     name: '',
-    props: ['data']
+    props: ['data'],
+    methods: {
+      formateTime (time) {
+        console.log(time);
+        return dayjs(time).format('YYYY-MM-DD');
+      },
+      view (article, index) {
+        this.$emit('onView', article, index);
+      }
+    }
   };
 </script>
 

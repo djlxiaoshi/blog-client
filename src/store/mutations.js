@@ -5,7 +5,7 @@
 import {
   SET_USER_INFO, SET_MENU_LIST, SET_ACTIVE_MENU,
   TOGGLE_IS_MINI_WIDTH, CHANGE_SIDEBAR_VISIBLE,
-  SET_ARTICLES
+  SET_ARTICLES, SET_CURRENT_ARTICLE
 } from './mutation-types';
 
 export default {
@@ -26,5 +26,8 @@ export default {
   },
   [SET_ARTICLES] (state, articles) {
     state.articles = articles;
+  },
+  [SET_CURRENT_ARTICLE] (state, article) {
+    state.article = article;
   }
 };

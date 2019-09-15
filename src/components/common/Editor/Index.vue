@@ -1,7 +1,7 @@
 <template>
   <div class="app-editor">
-    <RichTextEditor v-if="type === 'richText'"></RichTextEditor>
-    <MarkdownEditor v-else @save="onSave"></MarkdownEditor>
+    <RichTextEditor v-if="type === 'richText'" v-bind="$attrs"></RichTextEditor>
+    <MarkdownEditor v-else v-bind="$attrs"></MarkdownEditor>
   </div>
 </template>
 
@@ -29,9 +29,7 @@
 
         },
         methods: {
-          onSave (text) {
-            this.$emit('save', text);
-          }
+
         }
     };
 </script>

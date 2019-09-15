@@ -1,21 +1,17 @@
 /*
 *  总体描述：关于权限的问题可以分为大的三类
+*  首先判断vuex中，是否保存有用户信息，如果没有则发送获取用户信息的请求，
+*  然后进行验证，验证流程如下：
 *  1 不需要登录就可以进入的（例如登录、注册页）
 *  2 需要登录才能进入的 （例如用户信息页）
 *  3 用户登录之后根据用户角色才能进入的 （VIP页）
 *
-*   那么我们怎么知道哪些路由是需要登录，哪些路由组件是需要更高的权限呢，那就是在路由配置的meta属性
-*   中添加配置例如：meta: { RequiredLogin: true, RequiredPermission: false }
+*   在路由meta属性中配置权限和必须登录的信息。例如：meta: { requiredLogin: true, permissionList: [1,2,3] }
 *
 *   首先管理平台是肯定要做登录拦截的，即在用户处于登录状态才能进入主系统
 *   那么就要在跟路由('/')下做路由拦截，根据路由的meta信息决定是否需要登录等等
 *
-*   配置项说明
-*     path：路由路径
-*     icon：菜单icon
-*     label：菜单名称
-*     component：路由组件
-*     hidden：这个路由是否显示在菜单中
+*
 * */
 
 import { SET_MENU_LIST, SET_USER_INFO, SET_ACTIVE_MENU } from '../store/mutation-types';
@@ -32,12 +28,29 @@ function getUserInfo (next) {
   return xhrInstance;
 }
 
-/**
- * 设置当前激活菜单
- * @param matchedRouter
- */
-function setCurrentMenu (matchedRouter, store) {
-  store.commit(SET_ACTIVE_MENU, matchedRouter.path);
+// 保存用户信息在Vuex中
+async function saveUserInStore (store) {
+  try {
+    const result = await getUserInfo();
+    store.commit(SET_USER_INFO, result);
+
+    // todo 还未有相关接口，先前端写死
+    // store.commit(SET_MENU_LIST, result ? (result.menu || []) : []);
+  } catch (e) {
+    //  服务器异常
+    console.error(e);
+  }
+}
+
+function goToTargetPage (path, store, next) {
+  // 设置当前激活菜单状态
+  store.commit(SET_ACTIVE_MENU, path);
+  next();
+}
+
+function checkPermission (route, user) {
+  // 属性配置中包含permissionList，且用户角色不属于permissionList中的一个，则返回false，否则true
+  return !(route.meta.permissionList && !~route.meta.permissionList.indexOf(user.roleId));
 }
 
 export default function (router, store) {
@@ -45,42 +58,27 @@ export default function (router, store) {
   router.beforeEach(async (to, from, next) => {
     const matched = to.matched;
     const finallyMatched = to.matched[matched.length - 1];
-    // 判断是否需要登录
-    if (finallyMatched.meta.NoRequiredLogin) {
-      next();
-    } else {
 
-      // 用户未登录
-      if (!store.state.user) {
+    // 如果vuex中无用户信息，则发送请求以获得用户登录状态
+    if (!store.state.user) {
+      await saveUserInStore(store);
+    }
 
-        try {
-          const result = await getUserInfo();
-
-          store.commit(SET_USER_INFO, result);
-          store.commit(SET_MENU_LIST, result ? (result.menu || []) : []);
-        } catch (e) {
-          console.error('服务器异常', e);
-          next('/server-exception'); // 由于有pwa
-          // next();
-        }
-      }
-
-      // 用户已登录，然后再判断权限
+    // 需要登录
+    if (finallyMatched.meta.requiredLogin) {
       if (store.state.user) {
-        // 如果需要权限，且权限不通过
-        if (finallyMatched.meta.permissionList &&
-          !~finallyMatched.meta.permissionList.indexOf(store.state.user.roleId)
-        ) {
-          next('/no-permission');
+        // 权限验证
+        if (checkPermission(finallyMatched, store.state.user)) {
+          goToTargetPage(finallyMatched.path, store, next);
         } else {
-          // 权限通过 或者 不需要权限
-
-          // 同步activeMenu （包括浏览器直接输入地址和点击菜单）
-          store.commit(SET_ACTIVE_MENU, finallyMatched.path);
-
-          next();
+          next('/no-permission');
         }
+      } else {
+        //  跳转登录页
+        next('/login');
       }
+    } else {
+      goToTargetPage(finallyMatched.path, store, next);
     }
   });
 };

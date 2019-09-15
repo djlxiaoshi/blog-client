@@ -1,15 +1,6 @@
 <template>
   <div class="markdown-editor">
-
-    <div class="operate-bar">
-      <i class="operate-icon el-icon-view" @click="changeViewMode(2)"></i>
-      <i class="operate-icon el-icon-edit-outline" @click="changeViewMode(3)"></i>
-      <i class="operate-icon el-icon-menu" @click="changeViewMode(1)"></i>
-      <i class="operate-icon el-icon-check" @click="save"></i>
-    </div>
-
     <el-row>
-
       <el-col
         v-if="mode !== 2"
         :xs="24" :sm="24"
@@ -53,24 +44,21 @@
     });
 
     export default {
-        name: 'Index',
         data () {
             return {
               textValue: '',
-              htmlValue: '',
-              mode: 1 // 1 编辑预览模式 2 预览模式 3 编辑模式
+              htmlValue: ''
             };
         },
         mounted () {
             this.highlightCode();
         },
+        computed: {
+            getText () {
+              this.textValue = this.text;
+            }
+        },
         methods: {
-          changeViewMode (mode) {
-            this.mode = mode;
-          },
-          save () {
-            this.$emit('save', this.textValue);
-          },
           transform (text) {
               return marked(text);
           },
@@ -95,19 +83,6 @@
     height: 100%;
     /deep/ .el-col, /deep/ .el-row {
       height: 100%;
-    }
-    .operate-bar {
-      display: flex;
-      align-items: center;
-      height: 40px;
-      background: #dddddd;
-      .operate-icon {
-        padding: 0 8px;
-        cursor: pointer;
-        &:hover {
-          color: #5cb6ff;
-        }
-      }
     }
     .markdown-wrap {
       border: 2px solid #dddddd;

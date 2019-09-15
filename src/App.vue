@@ -1,7 +1,7 @@
 <template>
     <div class="djlxs-blog">
       <AppHeader></AppHeader>
-      <div class="app-body">
+      <div class="app-body" :style="{ paddingTop: isMiniWidth ? 0 : '20px' }">
         <el-row type="flex" align="middle" justify="center">
           <el-col :xs="24" :sm="20" :md="20" :lg="20" :xl="20">
             <router-view></router-view>

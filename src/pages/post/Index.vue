@@ -3,7 +3,7 @@
       <div class="article-title">
         <el-input v-model="title" placeholder="请输入文章标题"></el-input>
       </div>
-      <Editor @save="postArticle"></Editor>
+      <Editor @save="checkParams"></Editor>
     </div>
 </template>
 
@@ -22,8 +22,31 @@
           };
       },
       methods: {
-        postArticle (text) {
+        checkParams (content) {
+          if (!this.title.trim()) {
+            this.$notify.warning('文章标题不能为空');
+            return;
+          }
 
+          this.postArticle(content);
+        },
+        postArticle (content) {
+          const { xhrInstance } = this.$http({
+            url: '/article',
+            data: {
+              title: this.title,
+              content: content
+            },
+            method: 'post',
+            showSuccessMsg: true,
+            showErrorMsg: true
+          });
+
+          xhrInstance.then(() => {
+
+          }, () => {
+
+          });
         }
       }
     };

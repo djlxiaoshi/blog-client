@@ -9,7 +9,7 @@ import interceptor from './router/interceptor';
 
 import {
   Button, Menu, MenuItem, Submenu, Row, Col, Dropdown, DropdownMenu, DropdownItem,
-  Form, FormItem, Input, Upload, Card
+  Form, FormItem, Input, Upload, Card, Notification
 
 } from 'element-ui';
 
@@ -22,6 +22,7 @@ import 'highlight.js/styles/monokai-sublime.css';
 Vue.config.productionTip = false; // 开启vuex 调试工具
 
 Vue.prototype.$http = http;
+Vue.prototype.$notify = Notification;
 Vue.prototype.$globalConfig = envConfig;
 
 Vue.use(Button);

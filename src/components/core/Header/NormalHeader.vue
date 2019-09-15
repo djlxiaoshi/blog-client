@@ -14,6 +14,7 @@
             </div>
 
             <div class="header-right">
+
               <div class="avatar-wrap" v-if="user">
                 <el-dropdown @command="eventHandler" trigger="click">
                   <a class="user-avatar">
@@ -21,6 +22,7 @@
                   </a>
 
                   <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item command="post">发表文章</el-dropdown-item>
                     <el-dropdown-item command="userInfo">用户信息</el-dropdown-item>
                     <el-dropdown-item command="logout">退出登录</el-dropdown-item>
                   </el-dropdown-menu>
@@ -72,6 +74,8 @@
         } else if (event === 'userInfo') {
           this.$router.push('/author');
           this.setActiveMenu('');
+        } else if (event === 'post') {
+          this.$router.push('/post');
         }
       },
       logout () {
@@ -121,6 +125,7 @@
     }
 
     .header-right {
+      display: flex;
       .avatar-wrap {
         .user-avatar {
           display: inline-block;

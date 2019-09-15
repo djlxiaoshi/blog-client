@@ -3,8 +3,11 @@
     <el-row type="flex" justify="space-around">
       <el-col :xs="24" :sm="23" :md="17" :lg="18" :xl="19">
         <div class="home-left">
-          <AppEmpty isEmpty="articles.length === 0">
-            <ArticleList :data="articles"></ArticleList>
+          <AppEmpty :isEmpty="articles.length === 0">
+            <ArticleList
+              :data="articles"
+              @onView="viewArticle"
+            ></ArticleList>
           </AppEmpty>
         </div>
       </el-col>
@@ -40,7 +43,10 @@
     methods: {
       ...mapActions([
         'getArticles'
-      ])
+      ]),
+      viewArticle (article) {
+        this.$router.push(`/article/${article._id}`);
+      }
     }
   };
 </script>
