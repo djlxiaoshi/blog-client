@@ -8,13 +8,31 @@
               <span>{{ formatTime(article.createTime) }}</span>
               <span>字数 {{ article.wordCount }}</span>
               <span>阅读 {{ article.views }}</span>
+
               <span
-                v-if="user._id === article.createUser"
-                class="edit"
-                @click="editArticle"
-              >编辑文章</span>
+                v-if="user && user._id === article.createUser"
+                class="operate-wrap">
+                <span
+                  class="edit"
+                  @click="editArticle"
+                >编辑文章</span>
+
+                <span
+                  class="delete"
+                  @click="userConfirm"
+                >删除文章</span>
+              </span>
+
             </div>
-            <div class="article-content" v-html="content"></div>
+            <div class="article-content">
+              <VueShowdown
+                class="vue-showdown"
+                :vueTemplate="true"
+                :markdown="article.content || ''"
+                flavor="github"
+                :extensions="[showdownHighlight]"
+                :options="options"> </VueShowdown>
+            </div>
           </div>
         </el-col>
 
@@ -27,17 +45,25 @@
 </template>
 
 <script>
-  import marked from 'marked';
+  import { VueShowdown } from 'vue-showdown';
+  import showdownHighlight from 'showdown-highlight';
+
   import { mapState, mapActions } from 'vuex';
   import dayjs from 'dayjs';
 
   export default {
-    components: {},
-
+    components: {
+      VueShowdown
+    },
     data () {
       return {
         content: '',
-        title: ''
+        title: '',
+        showdownHighlight,
+        options: {
+          omitExtraWLInCodeBlocks: true,
+          ghCodeBlocks: true
+        }
       };
     },
     asyncData ({ store, router }) {
@@ -60,13 +86,37 @@
         return time ? dayjs(time).format('YYYY-MM-DD') : '';
       },
       editArticle () {
-        this.$router.push('/edit/:id');
-      }
-    },
-    watch: {
-      article (article) {
-        this.title = article.title;
-        this.content = marked(article.content);
+        this.$router.push(`/post/${this.$route.params.id}`);
+      },
+      userConfirm () {
+        this.$alert({
+          title: '警告',
+          text: '您确定要删除这篇文章吗？',
+          icon: 'warning',
+          buttons: true,
+          dangerMode: true
+        }).then((willDelete) => {
+          if (willDelete) {
+            this.deleteArticle();
+          } else {
+
+          }
+        });
+      },
+      deleteArticle () {
+        const { xhrInstance } = this.$http({
+          url: `/article/${this.$route.params.id}`,
+          method: 'delete',
+          showSuccessMsg: true,
+          showErrorMsg: true
+        });
+
+        xhrInstance.then(() => {
+        //  返回用户文章列表页
+          this.$router.push('/');
+        }, () => {
+
+        });
       }
     }
   };
@@ -90,13 +140,23 @@
         span {
           margin-right: 8px;
         }
-        .edit {
+        .operate-wrap {
           margin-left: auto;
-          cursor: pointer;
+          .edit {
+            cursor: pointer;
+          }
+          .delete {
+            padding: 2px 5px;
+            border-radius: 20px;
+            border: 1px solid red;
+            cursor: pointer;
+            color: red;
+          }
         }
+
       }
       .article-content {
-
+        height: 100%;
       }
     }
 

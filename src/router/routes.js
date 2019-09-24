@@ -15,7 +15,7 @@ export default [
   {
     path: '/',
     label: '发现',
-    component: () => import(/* webpackChunkName: "home" */'../pages/home')
+    component: () => import(/* webpackChunkName: "home" */'../pages/explore')
   },
   {
     path: '/about',
@@ -38,9 +38,12 @@ export default [
     hidden: true
   },
   {
-    path: '/edit/:id',
-    component: () => import(/* webpackChunkName: "edit" */'../pages/edit'),
+    path: '/post/:id',
+    component: () => import(/* webpackChunkName: "edit" */'../pages/post'),
     label: '编辑文章',
+    meta: {
+      requiredLogin: true
+    },
     hidden: true
   },
   {
@@ -54,10 +57,29 @@ export default [
     hidden: true
   },
   {
-    path: '/author',
-    component: () => import(/* webpackChunkName: "user-info" */'../pages/author'),
+    path: '/user',
+    component: () => import(/* webpackChunkName: "user" */'../pages/user'),
+    children: [
+      {
+        path: '',
+        component: () => import(/* webpackChunkName: "user-home" */'../pages/user/home'),
+        hidden: true,
+        desc: '用户首页',
+        meta: {
+          requiredLogin: true
+        }
+      },
+      {
+        path: 'info',
+        component: () => import(/* webpackChunkName: "user-info" */'../pages/user/info'),
+        hidden: true,
+        desc: '用户信息',
+        meta: {
+          requiredLogin: true
+        }
+      }
+    ],
     hidden: true,
-    desc: '用户信息',
     meta: {
       requiredLogin: true
     }

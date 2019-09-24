@@ -1,7 +1,5 @@
 <template>
-    <div>
-      <el-button type="primary">主要按钮</el-button>
-    </div>
+  <router-view></router-view>
 </template>
 
 <script>

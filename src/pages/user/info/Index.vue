@@ -4,11 +4,11 @@
         <el-form
           ref="form"
           :rules="rules"
-          :model="user"
+          :model="userInfo"
           label-width="80px"
           label-position="left">
           <el-form-item label="头像" prop="url">
-            <img class="user-avatar avatar-left" :src="user.avatar" alt="">
+            <img class="user-avatar avatar-left" :src="userInfo.avatar" alt="">
             <div class="avatar-right">
               <el-upload
                 ref="upload"
@@ -26,13 +26,13 @@
           </el-form-item>
 
           <el-form-item label="用户名" prop="username" class="username-input-item">
-            <el-input v-model="user.username" v-if="isEditStatus"></el-input>
-            <p v-else>{{ user.username }}</p>
+            <el-input v-model="userInfo.username" v-if="isEditStatus"></el-input>
+            <p v-else>{{ userInfo.username }}</p>
           </el-form-item>
 
           <el-form-item label="用户邮箱" prop="email" class="username-input-item">
-            <el-input v-model="user.email" v-if="isEditStatus"></el-input>
-            <p v-else>{{ user.email }}</p>
+            <el-input v-model="userInfo.email" v-if="isEditStatus"></el-input>
+            <p v-else>{{ userInfo.email }}</p>
           </el-form-item>
 
           <el-form-item label="个人介绍" class="user-info-input-item">
@@ -40,10 +40,10 @@
               v-if="isEditStatus"
               type="textarea"
               :rows="6"
-              v-model="user.info"
+              v-model="userInfo.info"
             >
             </el-input>
-            <p v-else>{{ user.info }}</p>
+            <p v-else>{{ userInfo.info }}</p>
           </el-form-item>
 
           <el-form-item label="">
@@ -74,6 +74,7 @@
 
         return {
           isEditStatus: false,
+          userInfo: {},
           rules: {
             username: [
               { required: true, trigger: 'blur', message: '请输入用户名' }
@@ -96,6 +97,7 @@
         ])
       },
       mounted () {
+        this.userInfo = this.user.baseInfo || {};
         const { xhrInstance } = this.$http({
           url: `/user`,
           method: 'get',
@@ -103,7 +105,7 @@
         });
 
         xhrInstance.then((user) => {
-          const _user = Object.assign({}, this.user, user);
+          const _user = Object.assign({}, this.userInfo, user);
           this.setUserInfo(_user);
         }, () => {});
       },
@@ -140,7 +142,7 @@
               this.updateUserInfo().then(user => {
 
                 // 更新vuex store中用户信息
-                this.setUserInfo(Object.assign(this.user, user));
+                this.setUserInfo(Object.assign(this.userInfo, user));
                 // 重置状态
                 this.resetStatus();
               });
@@ -154,9 +156,9 @@
             url: '/user',
             method: 'put',
             data: {
-              info: this.user.info,
-              username: this.user.username,
-              email: this.user.email
+              info: this.userInfo.info,
+              username: this.userInfo.username,
+              email: this.userInfo.email
             },
             showErrorMsg: true,
             showSuccessMsg: true
@@ -166,6 +168,11 @@
         },
         resetStatus () {
           this.isEditStatus = false;
+        }
+      },
+      watch: {
+        user (user) {
+          this.userInfo = user.baseInfo || {};
         }
       }
     };

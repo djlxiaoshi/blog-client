@@ -13,6 +13,8 @@ import {
 
 } from 'element-ui';
 
+import swal from 'sweetalert';
+
 import 'element-ui/lib/theme-chalk/display.css';
 
 import './assets/css/common.less';
@@ -23,6 +25,7 @@ Vue.config.productionTip = false; // 开启vuex 调试工具
 
 Vue.prototype.$http = http;
 Vue.prototype.$notify = Notification;
+Vue.prototype.$alert = swal;
 Vue.prototype.$globalConfig = envConfig;
 
 Vue.use(Button);

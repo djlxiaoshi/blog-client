@@ -60,7 +60,7 @@ export default function (router, store) {
     const finallyMatched = to.matched[matched.length - 1];
 
     // 如果vuex中无用户信息，则发送请求以获得用户登录状态
-    if (!store.state.user) {
+    if (!store.state.user.baseInfo) {
       await saveUserInStore(store);
     }
 

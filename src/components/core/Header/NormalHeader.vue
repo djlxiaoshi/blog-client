@@ -72,7 +72,7 @@
         if (event === 'logout') {
           this.logout();
         } else if (event === 'userInfo') {
-          this.$router.push('/author');
+          this.$router.push('/user/info');
           this.setActiveMenu('');
         } else if (event === 'post') {
           this.$router.push('/post');

@@ -8,7 +8,7 @@
         :lg="mode === 3 ? 24: 12"
         :xl="mode === 3 ? 24: 12">
         <div class="markdown-wrap">
-          <textarea v-model="textValue"></textarea>
+          <textarea v-model="textValue" id="markdown-textarea"></textarea>
         </div>
       </el-col>
 
@@ -18,61 +18,57 @@
         :lg="mode === 2 ? 24: 12"
         :xl="mode === 2 ? 24: 12"
         class="hidden-sm-and-down">
-        <div class="html-wrap" v-html="htmlValue"></div>
+        <div class="html-wrap">
+          <VueShowdown
+              class="vue-showdown"
+              id="vue-showdown"
+              :vueTemplate="true"
+              :markdown="textValue"
+              flavor="github"
+              :extensions="[showdownHighlight]"
+              :options="options"
+          ></VueShowdown>
+        </div>
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-    import marked from 'marked';
-    import hljs from 'highlight.js';
-
-    marked.setOptions({
-        renderer: new marked.Renderer(),
-        highlight: (code, lang, callback) => {
-            if (lang && hljs.getLanguage(lang)) {
-                try {
-                    return '<pre class="hljs"><code>' +
-                        hljs.highlight(lang, code, true).value +
-                        '</code></pre>';
-                } catch (__) {}
-            }
-        },
-        gfm: true,
-        breaks: true
-    });
+  import { VueShowdown } from 'vue-showdown';
+  import showdownHighlight from 'showdown-highlight';
 
     export default {
         data () {
             return {
               textValue: '',
-              htmlValue: ''
+              showdownHighlight,
+              options: {
+                omitExtraWLInCodeBlocks: true,
+                ghCodeBlocks: true
+              }
             };
         },
-        mounted () {
-            this.highlightCode();
-        },
-        computed: {
-            getText () {
-              this.textValue = this.text;
-            }
-        },
-        methods: {
-          transform (text) {
-              return marked(text);
+        props: {
+          mode: {
+            default: 1
           },
-          highlightCode () {
-              this.$nextTick(() => {
-                  hljs.initHighlighting();
-              });
+          content: {
+            type: String,
+            default: ''
           }
         },
+      components: {
+        VueShowdown
+      },
+        mounted () {
+        },
+        methods: {
+
+        },
         watch: {
-            textValue (textValue) {
-                const html = this.transform(textValue);
-                this.htmlValue = html;
-                this.highlightCode();
+            content (content) {
+              this.textValue = content;
             }
         }
     };
@@ -105,6 +101,19 @@
       border: 2px solid #dddddd;
       height: 100%;
       padding: 10px;
+      #vue-showdown {
+        /deep/ p {
+          line-height: 1.8;
+        }
+        /deep/ code {
+          color: #476582;
+          padding: .25rem .5rem;
+          margin: 0;
+          font-size: .85em;
+          background-color: rgba(27,31,35,.05);
+          border-radius: 3px;
+        }
+      }
     }
   }
 </style>

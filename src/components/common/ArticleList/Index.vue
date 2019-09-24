@@ -1,31 +1,34 @@
 <template>
-    <ul class="article-list">
-      <li class="list-item" v-for="(article, index) in data" :key="index">
-        <el-row
-          type="flex"
-          justify="space-around">
-          <el-col :xs="24" :sm="5" :md="5" :lg="4" :xl="3">
-            <div class="picture-wrap"></div>
-          </el-col>
-          <el-col :xs="24" :sm="18" :md="18" :lg="19" :xl="20">
-            <div class="details-wrap">
-              <div class="details-top">
-                <h2 class="item-title">{{ article.title }}</h2>
-                <!--<p class="item-desc">{{  article.desc }}</p>-->
-                <p class="item-desc">{{  article.content }}</p>
-              </div>
-              <div class="details-bottom">
-                <span class="item-time">{{ formateTime(article.createTime) }}</span>
-                <span class="item-author">{{ article.author }}</span>
-                <i class="el-icon-view operate-icon" @click="view(article, index)"></i>
-                <i class="el-icon-s-comment operate-icon"></i>
-                <i class="el-icon-star-off operate-icon"></i>
-              </div>
+  <ul class="article-list">
+    <li class="list-item" v-for="(article, index) in data" :key="index">
+      <el-row
+        type="flex"
+        justify="space-around">
+        <el-col :xs="24" :sm="5" :md="5" :lg="4" :xl="3">
+          <div class="item-thumbnail">
+            <img :src="article.thumbnail" alt="">
+          </div>
+        </el-col>
+        <el-col :xs="24" :sm="18" :md="18" :lg="19" :xl="20">
+          <div class="details-wrap">
+            <div class="details-top">
+              <h2 class="item-title">
+                <a @click="view(article, index)">{{ article.title }}</a>
+              </h2>
+              <p class="item-abstract">{{  article.abstract }}</p>
             </div>
-          </el-col>
-        </el-row>
-      </li>
-    </ul>
+            <div class="details-bottom">
+              <span class="item-time">{{ formateTime(article.createTime) }}</span>
+              <span class="item-author">{{ article.author }}</span>
+              <i class="el-icon-view operate-icon" @click="view(article, index)"></i>
+              <i class="el-icon-s-comment operate-icon"></i>
+              <i class="el-icon-star-off operate-icon"></i>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </li>
+  </ul>
 </template>
 
 <script>
@@ -66,10 +69,18 @@
           text-decoration: underline;
         }
       }
-      .item-desc {
+      .item-abstract {
         font-size: 13px;
         line-height: 24px;
         color: #999;
+      }
+      .item-thumbnail {
+        overflow: hidden;
+        max-height: 200px;
+        img {
+          width: 100%;
+          height: auto;
+        }
       }
       .details-wrap {
         .details-top {

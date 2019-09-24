@@ -1,8 +1,8 @@
 <template>
-  <div class="home-page">
+  <div class="explore-page">
     <el-row type="flex" justify="space-around">
       <el-col :xs="24" :sm="23" :md="17" :lg="18" :xl="19">
-        <div class="home-left">
+        <div class="page-left">
           <AppEmpty :isEmpty="articles.length === 0">
             <ArticleList
               :data="articles"
@@ -12,14 +12,14 @@
         </div>
       </el-col>
       <el-col class="hidden-sm-and-down" :md="6" :lg="5" :xl="4">
-        <div class="home-right"></div>
+        <div class="page-right"></div>
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-  import ArticleList from './components/List';
+  import ArticleList from '@/components/common/ArticleList/Index';
   import AppEmpty from '@/components/common/Empty/Index';
   import { mapState, mapActions } from 'vuex';
 
@@ -52,12 +52,12 @@
 </script>
 
 <style scoped lang="less">
-  .home-page {
-    .home-left {
+  .explore-page {
+    .page-left {
       border: 1px solid #dddddd;
     }
 
-    .home-right {
+    .page-right {
       height: 100px;
       border: 1px solid #dddddd;
     }
