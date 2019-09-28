@@ -9,7 +9,8 @@ import interceptor from './router/interceptor';
 
 import {
   Button, Menu, MenuItem, Submenu, Row, Col, Dropdown, DropdownMenu, DropdownItem,
-  Form, FormItem, Input, Upload, Card, Notification
+  Form, FormItem, Input, Upload, Card, Notification, Tag, CheckboxGroup, CheckboxButton,
+  Checkbox
 
 } from 'element-ui';
 
@@ -42,6 +43,10 @@ Vue.use(FormItem);
 Vue.use(Input);
 Vue.use(Upload);
 Vue.use(Card);
+Vue.use(Tag);
+Vue.use(CheckboxGroup);
+Vue.use(CheckboxButton);
+Vue.use(Checkbox);
 
 export function createApp (context) {
 

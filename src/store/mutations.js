@@ -5,7 +5,8 @@
 import {
   SET_USER_INFO, SET_MENU_LIST, SET_ACTIVE_MENU,
   TOGGLE_IS_MINI_WIDTH, CHANGE_SIDEBAR_VISIBLE,
-  SET_ARTICLES, SET_CURRENT_ARTICLE, SET_USER_ARTICLES
+  SET_ARTICLES, SET_CURRENT_ARTICLE, SET_USER_ARTICLES,
+  SET_TAGS
 } from './mutation-types';
 
 export default {
@@ -32,5 +33,8 @@ export default {
   },
   [SET_USER_ARTICLES] (state, articles) {
     state.user.articles = articles;
+  },
+  [SET_TAGS] (state, tags) {
+    state.tags = tags;
   }
 };

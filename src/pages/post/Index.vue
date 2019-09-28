@@ -189,6 +189,7 @@
     bottom: 0;
     top: 0;
     z-index: 1001;
+    margin-bottom: 20px;
     background: #ffffff;
     .article-title {
 

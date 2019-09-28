@@ -58,6 +58,11 @@
         padding-bottom: 10px;
         margin: 10px auto;
         border-bottom: 1px solid #dddddd;
+        .el-col-xl-3 {
+          img {
+            max-height: 120px;
+          }
+        }
       }
       .item-title {
         line-height: 25px;

@@ -2,3 +2,44 @@
 @pageHeaderBg: #545c64;
 @AppHeaderHeight: 60px;
 
+.markdown-preview {
+
+  /deep/ a {
+    text-decoration: underline;
+    color: lightcoral;
+    &:hover {
+      color: red;
+    }
+  }
+
+  /deep/ img {
+    width: 100%;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+  }
+
+  /deep/ p {
+    margin-bottom: 20px;
+    word-break: break-word;
+    line-height: 1.8;
+    color: #404040;
+  }
+
+  /deep/ pre {
+    line-height: 1.5;
+    border-radius: 15px;
+    border: 4px solid #23241f;
+    font-size: 14px;
+    word-wrap: normal;
+    word-break: break-all;
+    white-space: pre;
+    overflow: auto;
+    margin-bottom: 20px;
+    padding: 1em;
+    background: #23241f;
+  }
+
+  /deep/ h2 {
+    margin: 20px auto;
+  }
+}

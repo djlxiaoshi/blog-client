@@ -10,7 +10,7 @@
               <span>阅读 {{ article.views }}</span>
 
               <span
-                v-if="user && user._id === article.createUser"
+                v-if="user.baseInfo && user.baseInfo._id === article.createUser"
                 class="operate-wrap">
                 <span
                   class="edit"
@@ -24,9 +24,35 @@
               </span>
 
             </div>
+            <div class="article-tags">
+              <div class="selected-tags">
+                <el-tag size="mini">标签一</el-tag>
+                <i
+                  v-if="user.baseInfo && user.baseInfo._id === article.createUser"
+                  class="el-icon-setting"
+                  @click="toggleTags"
+                ></i>
+              </div>
+              <div class="all-tags" v-if="openTags">
+                <div class="selector-body">
+                  <el-checkbox-group v-model="allTags">
+                    <el-checkbox-button  :key="1" :label="1">标签一</el-checkbox-button>
+                    <el-checkbox-button  :key="2" :label="2">标签s一</el-checkbox-button>
+                    <el-checkbox-button  :key="3" :label="3">标签一</el-checkbox-button>
+                    <el-checkbox-button  :key="4" :label="4">标签一</el-checkbox-button>
+                  </el-checkbox-group>
+                </div>
+
+                <div class="selector-footer">
+                  <el-button size="mini" round>取消</el-button>
+                  <el-button size="mini" round>保存</el-button>
+                </div>
+
+              </div>
+            </div>
             <div class="article-content">
               <VueShowdown
-                class="vue-showdown"
+                class="markdown-preview"
                 :vueTemplate="true"
                 :markdown="article.content || ''"
                 flavor="github"
@@ -63,7 +89,9 @@
         options: {
           omitExtraWLInCodeBlocks: true,
           ghCodeBlocks: true
-        }
+        },
+        openTags: false,
+        allTags: []
       };
     },
     asyncData ({ store, router }) {
@@ -84,6 +112,9 @@
       ]),
       formatTime (time) {
         return time ? dayjs(time).format('YYYY-MM-DD') : '';
+      },
+      toggleTags () {
+        this.openTags = !this.openTags;
       },
       editArticle () {
         this.$router.push(`/post/${this.$route.params.id}`);
@@ -134,7 +165,7 @@
       .article-details {
         display: flex;
         align-items: center;
-        margin-bottom: 30px;
+        margin-bottom: 15px;
         color: #969696;
         font-size: 13px;
         span {
@@ -155,7 +186,52 @@
         }
 
       }
+      .article-tags {
+
+      }
+      .selected-tags {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        i {
+          margin-left: 5px;
+          font-size: 16px;
+          cursor: pointer;
+        }
+        /deep/ .el-tag {
+          margin: 2px;
+        }
+      }
+      .all-tags {
+        padding: 10px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        .selector-body {
+          margin-bottom: 5px;
+          /deep/ .el-checkbox-button{
+            margin: 2px 4px;
+            .el-checkbox-button__inner {
+              border: 1px solid #dcdfe6;
+              border-radius: 4px;
+              padding: 5px 8px;
+              font-size: 12px;
+            }
+            &.is-checked {
+              .el-checkbox-button__inner {
+                box-shadow: none !important;
+              }
+            }
+          }
+        }
+        .selector-footer {
+          text-align: right;
+          /deep/ .el-button {
+            padding: 3px 8px;
+          }
+        }
+      }
       .article-content {
+        margin-top: 30px;
         height: 100%;
       }
     }

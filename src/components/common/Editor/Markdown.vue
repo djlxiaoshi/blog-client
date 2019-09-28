@@ -20,7 +20,7 @@
         class="hidden-sm-and-down">
         <div class="html-wrap">
           <VueShowdown
-              class="vue-showdown"
+              class="markdown-preview"
               id="vue-showdown"
               :vueTemplate="true"
               :markdown="textValue"
@@ -89,8 +89,9 @@
         border: none;
         width: 100%;
         height: 100%;
+        line-height: 1.8;
+        font-size: 16px;
         font-family: '微软雅黑', serif;
-        font-size: 14px;
         &:focus {
           border: none;
           outline: none;
@@ -101,18 +102,9 @@
       border: 2px solid #dddddd;
       height: 100%;
       padding: 10px;
+      overflow: auto;
       #vue-showdown {
-        /deep/ p {
-          line-height: 1.8;
-        }
-        /deep/ code {
-          color: #476582;
-          padding: .25rem .5rem;
-          margin: 0;
-          font-size: .85em;
-          background-color: rgba(27,31,35,.05);
-          border-radius: 3px;
-        }
+       overflow: auto;
       }
     }
   }

@@ -26,7 +26,8 @@ module.exports = merge(baseConfig, {
       warnings: false, // 警告信息一般不开启
       errors: true // 错误信息
     },
-    historyApiFallback: true // 当使用 HTML5 History API 时，任意的 404 响应都可能需要被替代为 index.html
+    historyApiFallback: true, // 当使用 HTML5 History API 时，任意的 404 响应都可能需要被替代为 index.html
+    disableHostCheck: true // 不检查hostname
   },
   plugins: [
     // 此插件在输出目录中

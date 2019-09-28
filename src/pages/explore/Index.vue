@@ -12,7 +12,9 @@
         </div>
       </el-col>
       <el-col class="hidden-sm-and-down" :md="6" :lg="5" :xl="4">
-        <div class="page-right"></div>
+        <div class="page-right">
+          <SideBar></SideBar>
+        </div>
       </el-col>
     </el-row>
   </div>
@@ -20,6 +22,7 @@
 
 <script>
   import ArticleList from '@/components/common/ArticleList/Index';
+  import SideBar from './SideBar';
   import AppEmpty from '@/components/common/Empty/Index';
   import { mapState, mapActions } from 'vuex';
 
@@ -27,7 +30,8 @@
     name: '',
     components: {
       ArticleList,
-      AppEmpty
+      AppEmpty,
+      SideBar
     },
     computed: {
       ...mapState([
@@ -58,8 +62,7 @@
     }
 
     .page-right {
-      height: 100px;
-      border: 1px solid #dddddd;
+
     }
   }
 </style>

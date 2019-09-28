@@ -50,7 +50,7 @@ function goToTargetPage (path, store, next) {
 
 function checkPermission (route, user) {
   // 属性配置中包含permissionList，且用户角色不属于permissionList中的一个，则返回false，否则true
-  return !(route.meta.permissionList && !~route.meta.permissionList.indexOf(user.roleId));
+  return !(route.meta.permissionList && route.meta.permissionList.indexOf(user.roleId) < 0);
 }
 
 export default function (router, store) {
@@ -63,12 +63,11 @@ export default function (router, store) {
     if (!store.state.user.baseInfo) {
       await saveUserInStore(store);
     }
-
     // 需要登录
     if (finallyMatched.meta.requiredLogin) {
-      if (store.state.user) {
+      if (store.state.user.baseInfo) {
         // 权限验证
-        if (checkPermission(finallyMatched, store.state.user)) {
+        if (checkPermission(finallyMatched, store.state.user.baseInfo)) {
           goToTargetPage(finallyMatched.path, store, next);
         } else {
           next('/no-permission');

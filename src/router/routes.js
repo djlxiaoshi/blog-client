@@ -38,6 +38,11 @@ export default [
     hidden: true
   },
   {
+    path: '/tag',
+    component: () => import(/* webpackChunkName: "tag" */'../pages/tag'),
+    hidden: true
+  },
+  {
     path: '/post/:id',
     component: () => import(/* webpackChunkName: "edit" */'../pages/post'),
     label: '编辑文章',

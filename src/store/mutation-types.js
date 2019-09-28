@@ -18,3 +18,5 @@ export const SET_ARTICLES = 'SET_ARTICLES';
 export const SET_USER_ARTICLES = 'SET_USER_ARTICLES';
 // 设置当前文章
 export const SET_CURRENT_ARTICLE = 'SET_CURRENT_ARTICLE';
+// 设置标签列表
+export const SET_TAGS = 'SET_TAGS';
