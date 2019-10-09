@@ -15,7 +15,7 @@
 
             <div class="header-right">
 
-              <div class="avatar-wrap" v-if="user">
+              <div class="avatar-wrap" v-if="user.baseInfo">
                 <el-dropdown @command="eventHandler" trigger="click">
                   <a class="user-avatar">
                     <img :src="user.avatar" width="100%" v-if="user.avatar">

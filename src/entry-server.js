@@ -1,22 +1,23 @@
-import { createApp } from './app';
 import './assets/js/init';
 
+import { createApp } from './app';
+
 export default function (context) {
-  console.log('context', context);
-  const { app, router, store } = createApp();
+  // console.log('context', Object.keys(context));
+  const { app, router, store } = createApp(context);
 
   return new Promise((resolve, reject) => {
 
-    const { url } = context;
+    const { url, cookies } = context;
 
     router.push(url);
 
     router.onReady(() => {
       const matchedComponents = router.getMatchedComponents();
 
-      console.log('matchedComponents', matchedComponents.length);
-
       if (!matchedComponents.length) {
+        console.log('这里有问题');
+
         // eslint-disable-next-line prefer-promise-reject-errors
         return reject({ code: 404 });
       }
@@ -26,7 +27,8 @@ export default function (context) {
         if (Component.asyncData) {
           return Component.asyncData({
             store,
-            route: router.currentRoute
+            route: router.currentRoute,
+            cookies
           });
         }
       })).then(() => {
@@ -41,7 +43,6 @@ export default function (context) {
         resolve(app);
 
       }).catch((error) => {
-        console.log('error', error);
         reject(error);
       });
 

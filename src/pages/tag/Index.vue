@@ -9,11 +9,12 @@
       <ul class="tag-list">
         <li class="list-item" v-for="tag in tags" :key="tag.label">
           <i class="el-icon-price-tag"></i>
-          <span class="tag-name">{{ tag.label }}</span>
-          <span class="article-account">10</span>
+          <span class="tag-name" @click="goToTagDetails(tag)">{{ tag.label }}</span>
+          <!-- 暂时不实现这个功能 -->
+          <!--<span class="article-account">10</span>-->
           <span class="operate-wrap">
             <i class="el-icon-edit" @click="openOperateTagDialog(tag)"></i>
-            <i class="el-icon-delete"></i>
+            <i class="el-icon-delete" @click="openDeleteTagDialog(tag)"></i>
           </span>
         </li>
       </ul>
@@ -27,13 +28,16 @@
     name: '',
     data () {
       return {
-
+        currentTag: {}
       };
     },
     computed: {
       ...mapState([
         'tags'
       ])
+    },
+    asyncData ({ store, route }) {
+      return store.dispatch('getAllTags');
     },
     mounted () {
       this.getAllTags();
@@ -42,7 +46,11 @@
       ...mapActions([
         'getAllTags'
       ]),
+      goToTagDetails (tag) {
+        this.$router.push(`/tag/${tag._id}`);
+      },
       openOperateTagDialog (tag) {
+        this.currentTag = tag;
         this.$alert('输入标签名', {
           buttons: {
             cancel: {
@@ -62,17 +70,31 @@
             element: 'input',
             attributes: {
               placeholder: '输入标签名',
-              value: tag ? tag.label : ''
+              defaultValue: tag ? tag.label : ''
             }
           }
         }).then((value) => {
-          debugger;
+          // 点击取消
           if (value !== null) {
-            if (tag) {
-              this.updateTag(tag._id, value);
+            if (value !== '') {
+              tag ? this.updateTag(tag._id, value) : this.addTag(value);
             } else {
-              this.addTag(value);
+              // 标签名输入为空
+              this.$notify.warning('标签名不能为空');
             }
+          }
+        });
+      },
+      openDeleteTagDialog (tag) {
+        this.$alert({
+          title: '确定要删除此标签吗？',
+          text: '一旦删除，您将不能撤销此操作',
+          icon: 'warning',
+          buttons: true,
+          dangerMode: true
+        }).then((value) => {
+          if (value) {
+            this.deleteTag(tag._id);
           }
         });
       },
@@ -89,18 +111,31 @@
 
         xhrInstance.then(() => {
           this.getAllTags();
-          alertModal.close();
         }, () => {
 
         });
       },
       updateTag (tagId, tagLabel) {
         const { xhrInstance } = this.$http({
-          url: `/tag/${ tagId }`,
+          url: `/tag/${tagId}`,
           method: 'put',
           data: {
             label: tagLabel
           },
+          showSuccessMsg: true,
+          showErrorMsg: true
+        });
+
+        xhrInstance.then(() => {
+          this.getAllTags();
+        }, () => {
+
+        });
+      },
+      deleteTag (tagId) {
+        const { xhrInstance } = this.$http({
+          url: `/tag/${ tagId }`,
+          method: 'delete',
           showSuccessMsg: true,
           showErrorMsg: true
         });
@@ -129,6 +164,9 @@
         align-items: center;
         padding: 15px 5px;
         border-bottom: 1px solid #e5e5e5;
+        .tag-name {
+          cursor: pointer;
+        }
         .operate-wrap {
           margin-left: auto;
           i {

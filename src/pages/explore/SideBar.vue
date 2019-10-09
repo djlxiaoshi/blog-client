@@ -3,10 +3,13 @@
       <div class="tags-wrap module">
         <h5 class="module-title">标签</h5>
         <div class="module-content">
-          <el-tag size="small">我的名字叫做李晓龙</el-tag>
-          <el-tag size="small">标签一</el-tag>
-          <el-tag size="small">标签一</el-tag>
-          <el-tag size="small">标签一</el-tag>
+          <span
+            v-for="tag in tags"
+            @click="viewTag(tag)"
+            :key="tag._id">
+            <el-tag size="small">{{ tag.label }}</el-tag>
+          </span>
+
         </div>
       </div>
       <div class="donate-me module">
@@ -28,8 +31,26 @@
 </template>
 
 <script>
+  import { mapState, mapActions } from 'vuex';
+
   export default {
-    name: ''
+    name: '',
+    computed: {
+      ...mapState([
+        'tags'
+      ])
+    },
+    mounted () {
+      this.getAllTags();
+    },
+    methods: {
+      ...mapActions([
+        'getAllTags'
+      ]),
+      viewTag (tag) {
+        this.$router.push(`/tag/${tag._id}`);
+      }
+    }
   };
 </script>
 
@@ -55,6 +76,7 @@
         flex-flow: wrap;
         /deep/ .el-tag {
           margin: 5px 6px;
+          cursor: pointer;
         }
       }
     }

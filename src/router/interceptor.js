@@ -14,7 +14,7 @@
 *
 * */
 
-import { SET_MENU_LIST, SET_USER_INFO, SET_ACTIVE_MENU } from '../store/mutation-types';
+import { SET_USER_INFO, SET_ACTIVE_MENU } from '../store/mutation-types';
 import http from '../assets/js/utils/http';
 
 /**
@@ -38,7 +38,7 @@ async function saveUserInStore (store) {
     // store.commit(SET_MENU_LIST, result ? (result.menu || []) : []);
   } catch (e) {
     //  服务器异常
-    console.error(e);
+    console.log(e, '这里');
   }
 }
 
@@ -61,8 +61,9 @@ export default function (router, store) {
 
     // 如果vuex中无用户信息，则发送请求以获得用户登录状态
     if (!store.state.user.baseInfo) {
-      await saveUserInStore(store);
+        await saveUserInStore(store);
     }
+
     // 需要登录
     if (finallyMatched.meta.requiredLogin) {
       if (store.state.user.baseInfo) {
@@ -74,7 +75,7 @@ export default function (router, store) {
         }
       } else {
         //  跳转登录页
-        next('/login');
+          next('/login');
       }
     } else {
       goToTargetPage(finallyMatched.path, store, next);

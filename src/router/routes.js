@@ -38,8 +38,13 @@ export default [
     hidden: true
   },
   {
-    path: '/tag',
-    component: () => import(/* webpackChunkName: "tag" */'../pages/tag'),
+    path: '/tags',
+    component: () => import(/* webpackChunkName: "tags" */'../pages/tag'),
+    hidden: true
+  },
+  {
+    path: '/tag/:id',
+    component: () => import(/* webpackChunkName: "tag" */'../pages/tag/Details'),
     hidden: true
   },
   {
@@ -84,6 +89,15 @@ export default [
         }
       }
     ],
+    hidden: true,
+    meta: {
+      requiredLogin: true
+    }
+  },
+  {
+    path: '/test',
+    label: '测试',
+    component: () => import(/* webpackChunkName: "test" */'../pages/test'),
     hidden: true,
     meta: {
       requiredLogin: true

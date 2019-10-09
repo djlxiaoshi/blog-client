@@ -1,5 +1,5 @@
 import { createApp } from './app';
-import './assets/js/register-sw';
+// import './assets/js/register-sw'; // 注册Service Worker
 import './assets/js/resize';
 
 // 客户端特定引导逻辑……
@@ -8,7 +8,6 @@ const { app, router, store } = createApp();
 
 // 同步state
 if (window.__INITIAL_STATE__) {
-  debugger;
   store.replaceState(window.__INITIAL_STATE__);
 }
 

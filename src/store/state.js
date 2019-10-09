@@ -10,5 +10,6 @@ export default {
   sidebarVisible: false, // 小屏幕时 菜单可见状态
   articles: [], // 文章列表
   tags: [], // 标签列表
+  tag: {}, // 当前标签详情
   article: {} // 当前文章
 };

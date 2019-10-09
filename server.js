@@ -16,7 +16,7 @@ const router = new koaRouter();
 
 const serverBundle = require('./dist/vue-ssr-server-bundle');
 const renderer = createBundleRenderer(serverBundle, {
-  runInNewContext: false,
+  runInNewContext: true,
   template: fs.readFileSync(resolve('./dist/index.server.html'), 'utf-8'),
   clientManifest: require('./dist/vue-ssr-client-manifest.json'),
 });
@@ -28,24 +28,19 @@ app.use(koaStatic(path.resolve(__dirname, 'dist'), {
 
 // 静态资源没有匹配到的时候，再走这个服务端路由
 router.get('*', async ctx => {
-
-  ctx.body = await new Promise((resolve, reject) => {
-    renderer.renderToString({title: 'DJLXS', url: ctx.req.url}, (err, html) => {
-
-      if (err) {
-        console.log('error', err);
-        resolve(err.code); // 我们可以在前端路由中始终配置404页面
-        return;
-      }
-
-      console.log('渲染成功', ctx.req.url, html);
-
-      resolve(html);
-
-    });
+  const cookies = ctx.req.headers.cookie;
+  console.log('重要信息-路径', ctx.req.url);
+  console.log('重要信息-cookies', cookies);
+  ctx.body = await renderer.renderToString({
+    title: 'DJLXS',
+    url: ctx.req.url,
+    cookies: cookies
+  }).then(html => {
+      return html;
+  }).catch(error => {
+    console.log('error', error);
+    return error.code; // 我们可以在前端路由中始终配置404页面，就不会走到这里
   });
-
-
 });
 
 app.use(router.routes());

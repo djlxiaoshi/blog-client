@@ -9,6 +9,7 @@ const router = createRouter();
 let xhrCacheList = [];
 const CancelToken = axios.CancelToken;
 const prefix = '/api';
+const isServer = typeof global !== 'undefined';
 
 // 请求发送拦截
 axios.interceptors.request.use(function (config) {
@@ -26,11 +27,17 @@ axios.interceptors.response.use((response) => {
 
 export default function Http (config) {
   const obj = {};
+  const commonHeaders = {
+    'Content-Type': 'application/json'
+  };
+  if (isServer && global.__VUE_SSR_CONTEXT__) {
+    commonHeaders.Cookie = global.__VUE_SSR_CONTEXT__.cookies;
+  }
   const axiosConfig = {
     method: config.method || 'get',
     url: envConfig.SERVER_ADDRESS + prefix + config.url,
     withCredentials: config.withCredentials || true,
-    headers: Object.assign({}, { 'Content-Type': 'application/json' }, config.headers),
+    headers: Object.assign({}, commonHeaders, config.headers),
     cancelToken: new CancelToken(function executor (cancel) {
       obj.cancel = function () {
         // 如果是取消的请求，则在失败时也不现实错误提示
@@ -50,8 +57,10 @@ export default function Http (config) {
 
   obj.xhrInstance = new Promise((resolve, reject) => {
 
-    // 开启滚动条
-    NProgress.start();
+    if (!isServer) {
+      // 客户端渲染 开启滚动条
+      NProgress.start();
+    }
 
     axios(axiosConfig).then(response => {
       const data = response.data;
@@ -66,14 +75,15 @@ export default function Http (config) {
         reject(data.message);
       } else {
         if (config.showSuccessMsg) {
-          Notification.success(data.message);
+          // 如果前端设置了提示信息则采用前端设置的提示信息，否则使用服务端返回的提示信息
+          Notification.success(typeof config.showSuccessMsg === 'string' ? config.showSuccessMsg : data.message);
         }
         resolve(data.data);
       }
     }).catch(function (error) {
 
       if (config.showErrorMsg) {
-        Notification.error(error.message);
+        Notification.error(typeof config.showErrorMsg === 'string' ? config.showErrorMsg : error.message);
       }
       reject(error);
     }).finally(() => {
@@ -88,9 +98,10 @@ export default function Http (config) {
       xhrCacheList.splice(xhrIndex, 1);
 
       if (xhrCacheList.length === 0) {
-        NProgress.done();
+        if (!isServer) {
+          NProgress.done();
+        }
       }
-
     });
   });
 

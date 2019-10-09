@@ -27,12 +27,12 @@
 
           <el-form-item label="用户名" prop="username" class="username-input-item">
             <el-input v-model="userInfo.username" v-if="isEditStatus"></el-input>
-            <p v-else>{{ userInfo.username }}</p>
+            <p v-else>{{ user.baseInfo.username }}</p>
           </el-form-item>
 
           <el-form-item label="用户邮箱" prop="email" class="username-input-item">
             <el-input v-model="userInfo.email" v-if="isEditStatus"></el-input>
-            <p v-else>{{ userInfo.email }}</p>
+            <p v-else>{{ user.baseInfo.email }}</p>
           </el-form-item>
 
           <el-form-item label="个人介绍" class="user-info-input-item">
@@ -43,11 +43,11 @@
               v-model="userInfo.info"
             >
             </el-input>
-            <p v-else>{{ userInfo.info }}</p>
+            <p v-else>{{ user.baseInfo.info }}</p>
           </el-form-item>
 
           <el-form-item label="">
-            <el-button @click="toggleEditStatus" type="primary" size="small" plain>编辑</el-button>
+            <el-button @click="toggleEditStatus" type="default" size="small" plain>{{ isEditStatus ? '取消' : '编辑' }}</el-button>
             <el-button @click="save" type="success" size="small" plain>保存</el-button>
           </el-form-item>
         </el-form>
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-  import { mapMutations, mapState } from 'vuex';
+  import { mapActions, mapMutations, mapState } from 'vuex';
   import { SET_USER_INFO } from 'store/mutation-types';
 
     export default {
@@ -96,23 +96,19 @@
           'user'
         ])
       },
+      asyncData ({ store, route }) {
+        return store.dispatch('getUserInfo');
+      },
       mounted () {
-        this.userInfo = this.user.baseInfo || {};
-        const { xhrInstance } = this.$http({
-          url: `/user`,
-          method: 'get',
-          showErrorMsg: true
-        });
-
-        xhrInstance.then((user) => {
-          const _user = Object.assign({}, this.userInfo, user);
-          this.setUserInfo(_user);
-        }, () => {});
+        this.getUserInfo();
       },
       methods: {
         ...mapMutations({
           'setUserInfo': SET_USER_INFO
         }),
+        ...mapActions([
+          'getUserInfo'
+        ]),
         handleSuccess (res) {
           // 由于七牛云采用的同名覆盖，覆盖上传后，路径不会变化，所以在这里用时间戳进行强制刷新
           this.$set(this.user, 'avatar', res.data.path + '?v=' + new Date().getTime());
@@ -134,7 +130,7 @@
           return (isJPG || isPNG) && isLt2M;
         },
         toggleEditStatus () {
-          this.isEditStatus = true;
+          this.isEditStatus = !this.isEditStatus;
         },
         save () {
           this.$refs['form'].validate((valid) => {
@@ -171,8 +167,11 @@
         }
       },
       watch: {
-        user (user) {
-          this.userInfo = user.baseInfo || {};
+        user: {
+          deep: true,
+          handler (value, oldValue) {
+            this.userInfo = value.baseInfo || {};
+          }
         }
       }
     };

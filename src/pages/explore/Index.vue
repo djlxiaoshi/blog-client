@@ -38,7 +38,7 @@
         'articles'
       ])
     },
-    asyncData ({ store, router }) {
+    asyncData ({ store, route }) {
       return store.dispatch('getArticles');
     },
     mounted () {

@@ -38,10 +38,10 @@
             articleId: ''
           };
       },
-      asyncData ({ store, router }) {
-          if (router.params.id) {
-            this.articleId = router.params.id;
-            return store.dispatch('getArticle', router.params.id);
+      asyncData ({ store, route }) {
+          if (route.params.id) {
+            this.articleId = route.params.id;
+            return store.dispatch('getArticle', route.params.id);
           }
       },
       mounted () {

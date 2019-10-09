@@ -84,7 +84,8 @@
             info: user.info,
             avatar: user.avatar,
             role: user.role,
-            email: user.email
+            email: user.email,
+            _id: user._id
           });
           this.setMenuList(user.menus);
           this.goToHomePage(user.menus);

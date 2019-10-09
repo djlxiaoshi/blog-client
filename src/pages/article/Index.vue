@@ -5,12 +5,12 @@
           <div class="page-left">
             <h1 class="article-title">{{ title }}</h1>
             <div class="article-details">
-              <span>{{ formatTime(article.createTime) }}</span>
-              <span>字数 {{ article.wordCount }}</span>
-              <span>阅读 {{ article.views }}</span>
+              <span class="details-item">{{ formatTime(article.createTime) }}</span>
+              <span class="details-item">字数 {{ article.wordCount }}</span>
+              <span class="details-item">阅读 {{ article.views }}</span>
 
               <span
-                v-if="user.baseInfo && user.baseInfo._id === article.createUser"
+                v-if="user.baseInfo && user.baseInfo._id === author._id"
                 class="operate-wrap">
                 <span
                   class="edit"
@@ -26,26 +26,30 @@
             </div>
             <div class="article-tags">
               <div class="selected-tags">
-                <el-tag size="mini">标签一</el-tag>
-                <i
-                  v-if="user.baseInfo && user.baseInfo._id === article.createUser"
-                  class="el-icon-setting"
+                <el-tag
+                  size="mini"
+                  :key="tag._id"
+                  v-for="tag in article.tags">{{ tag.label }}</el-tag>
+                <span
+                  v-if="user.baseInfo && user.baseInfo._id === author._id"
+                  class="tags-setting"
                   @click="toggleTags"
-                ></i>
+                >标签设置</span>
               </div>
               <div class="all-tags" v-if="openTags">
                 <div class="selector-body">
-                  <el-checkbox-group v-model="allTags">
-                    <el-checkbox-button  :key="1" :label="1">标签一</el-checkbox-button>
-                    <el-checkbox-button  :key="2" :label="2">标签s一</el-checkbox-button>
-                    <el-checkbox-button  :key="3" :label="3">标签一</el-checkbox-button>
-                    <el-checkbox-button  :key="4" :label="4">标签一</el-checkbox-button>
+                  <el-checkbox-group v-model="articleTags">
+                    <el-checkbox-button
+                      :key="tag._id"
+                      :label="tag._id"
+                      v-for="tag in tags">
+                      {{ tag.label }}</el-checkbox-button>
                   </el-checkbox-group>
                 </div>
 
                 <div class="selector-footer">
-                  <el-button size="mini" round>取消</el-button>
-                  <el-button size="mini" round>保存</el-button>
+                  <el-button size="mini" round @click="toggleTags">取消</el-button>
+                  <el-button size="mini" round @click="handleTagsParams">保存</el-button>
                 </div>
 
               </div>
@@ -71,6 +75,8 @@
 </template>
 
 <script>
+  /* eslint-disable no-extra-boolean-cast */
+
   import { VueShowdown } from 'vue-showdown';
   import showdownHighlight from 'showdown-highlight';
 
@@ -85,17 +91,19 @@
       return {
         content: '',
         title: '',
+        author: {},
         showdownHighlight,
         options: {
           omitExtraWLInCodeBlocks: true,
           ghCodeBlocks: true
         },
         openTags: false,
-        allTags: []
+        articleTags: [], // 文章标签列表
+        selectTags: []
       };
     },
-    asyncData ({ store, router }) {
-      return store.dispatch('getArticle', router.params.id);
+    asyncData ({ store, route }) {
+      return store.dispatch('getArticle', route.params.id);
     },
     mounted () {
       this.getArticle(this.$route.params.id);
@@ -103,18 +111,28 @@
     computed: {
       ...mapState([
         'article',
-        'user'
+        'user',
+        'tags'
       ])
     },
     methods: {
       ...mapActions([
-        'getArticle'
+        'getArticle',
+        'getAllTags'
       ]),
       formatTime (time) {
         return time ? dayjs(time).format('YYYY-MM-DD') : '';
       },
+      isChecked (tag) {
+        const flag = !!this.article.tags.find(articleTag => articleTag._id === tag._id);
+        console.log(tag.label, flag, typeof flag);
+        return flag;
+      },
       toggleTags () {
         this.openTags = !this.openTags;
+        if (!this.tags || this.tags.length === 0) {
+          this.getAllTags();
+        }
       },
       editArticle () {
         this.$router.push(`/post/${this.$route.params.id}`);
@@ -134,6 +152,27 @@
           }
         });
       },
+      handleTagsParams () {
+        this.saveArticleTags(this.articleTags);
+      },
+      saveArticleTags (tags) {
+        const { xhrInstance } = this.$http({
+          url: `/article/${this.$route.params.id}`,
+          method: 'put',
+          data: {
+            tags
+          },
+          showSuccessMsg: '标签设置成功',
+          showErrorMsg: true
+        });
+
+        xhrInstance.then(() => {
+          this.getArticle(this.$route.params.id);
+          this.openTags = false;
+        }, () => {
+
+        });
+      },
       deleteArticle () {
         const { xhrInstance } = this.$http({
           url: `/article/${this.$route.params.id}`,
@@ -148,6 +187,12 @@
         }, () => {
 
         });
+      }
+    },
+    watch: {
+      article (article) {
+        this.author = article.createUser;
+        this.articleTags = article.tags.map(tag => tag._id);
       }
     }
   };
@@ -168,18 +213,16 @@
         margin-bottom: 15px;
         color: #969696;
         font-size: 13px;
-        span {
+        .details-item {
           margin-right: 8px;
         }
         .operate-wrap {
           margin-left: auto;
           .edit {
             cursor: pointer;
+            margin-right: 8px;
           }
           .delete {
-            padding: 2px 5px;
-            border-radius: 20px;
-            border: 1px solid red;
             cursor: pointer;
             color: red;
           }
@@ -193,10 +236,11 @@
         display: flex;
         align-items: center;
         margin-bottom: 10px;
-        i {
-          margin-left: 5px;
-          font-size: 16px;
+        .tags-setting {
+          margin-left: auto;
+          font-size: 12px;
           cursor: pointer;
+          text-decoration: underline;
         }
         /deep/ .el-tag {
           margin: 2px;
