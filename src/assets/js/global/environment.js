@@ -14,7 +14,7 @@ const test = {
 };
 
 const production = {
-  SERVER_ADDRESS: 'http://localhost:3000' // 正式环境后端接口地址
+  SERVER_ADDRESS: 'http://47.111.92.163:3000' // 正式环境后端接口地址
 };
 
 switch (process.env.NODE_ENV) {

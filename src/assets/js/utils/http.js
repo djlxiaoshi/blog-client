@@ -30,7 +30,7 @@ export default function Http (config) {
   const commonHeaders = {
     'Content-Type': 'application/json'
   };
-  if (isServer && global.__VUE_SSR_CONTEXT__) {
+  if (isServer && global.__VUE_SSR_CONTEXT__ && global.__VUE_SSR_CONTEXT__.cookies) {
     commonHeaders.Cookie = global.__VUE_SSR_CONTEXT__.cookies;
   }
   const axiosConfig = {
