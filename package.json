@@ -72,7 +72,7 @@
     "dev-server": "cross-env NODE_ENV=development webpack --config ./build/webpack.server.config.js --watch --mode development --progress",
     "build-client": "cross-env NODE_ENV=production webpack --config ./build/webpack.client.config.js --mode production --progress",
     "build-server": "cross-env NODE_ENV=production webpack --config ./build/webpack.server.config.js --mode production --progress",
-    "build": "npm-run-all build-server"
+    "build": "npm-run-all build-server build-client"
   },
   "author": "",
   "license": "ISC"
