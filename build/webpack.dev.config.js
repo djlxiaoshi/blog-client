@@ -9,7 +9,6 @@ module.exports = merge(baseConfig, {
     client: resolve(__dirname, '..', 'src/entry-client.js'),
   },
   devtool: 'source-map',
-  // 此处告知 server bundle 使用 Node 风格导出模块(Node-style exports)
   output: {
     path: resolve(__dirname, '..', 'dist'),
     filename: resolve(basePath, 'js/[name].[hash:8].js'),

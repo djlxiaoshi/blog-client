@@ -13,11 +13,10 @@ module.exports = merge(baseConfig, {
   entry: {
     client: resolve(__dirname, '..', 'src/entry-client.js'),
   },
-  // 此处告知 server bundle 使用 Node 风格导出模块(Node-style exports)
   output: {
     path: resolve(__dirname, '..', 'dist'),
     filename: resolve(basePath, 'js/[name].[hash:8].js'),
-    chunkFilename: resolve(basePath, 'js/[name].[hash:8].js')
+    chunkFilename: 'js/[name].[hash:8].js'
   },
   optimization: {
     splitChunks: {
@@ -26,10 +25,12 @@ module.exports = merge(baseConfig, {
     }
   },
   plugins: [
-    // new CleanWebpackPlugin({
-    //   verbose: true,
-    //   dry: false
-    // }),
+    NODE_ENV === 'production' ?
+    new CleanWebpackPlugin({
+      verbose: true,
+      dry: false,
+      cleanOnceBeforeBuildPatterns: ['!index.server.html', '!vue-ssr-server-bundle.json'] // 不删除build-server产生的文件
+    }) : '',
     // 此插件在输出目录中
     // 生成 `vue-ssr-client-manifest.json`。
     new VueSSRClientPlugin(),

@@ -3,6 +3,7 @@ const nodeExternals = require('webpack-node-externals');
 const baseConfig = require('./webpack.base.config.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
+const NODE_ENV = process.env.NODE_ENV;
 
 const path = require('path');
 const { basePath, resolve } = require('./config');
@@ -19,14 +20,14 @@ module.exports = merge(baseConfig, {
   target: 'node',
 
   // 对 bundle renderer 提供 source map 支持
-  devtool: 'source-map',
+  devtool: NODE_ENV === 'production' ? 'none' : 'source-map',
 
   // 此处告知 server bundle 使用 Node 风格导出模块(Node-style exports)
   output: {
     libraryTarget: 'commonjs2',
     path: resolve(__dirname, '..', 'dist'),
     filename: resolve(basePath, 'js/[name].[hash:8].js'),
-    chunkFilename: resolve(basePath, 'js/[name].[hash:8].js')
+    chunkFilename: 'js/[name].[hash:8].js'
   },
 
   // https://webpack.js.org/configuration/externals/#function
