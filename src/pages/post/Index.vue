@@ -189,7 +189,6 @@
     bottom: 0;
     top: 0;
     z-index: 1001;
-    margin-bottom: 20px;
     background: #ffffff;
     .article-title {
 
@@ -208,7 +207,7 @@
       }
     }
     .article-content {
-      height: 100%;
+      height: calc(100vh - 120px);
     }
     /deep/ .el-input{
       .el-input__inner {

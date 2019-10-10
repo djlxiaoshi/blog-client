@@ -92,6 +92,7 @@
         line-height: 1.8;
         font-size: 16px;
         font-family: '微软雅黑', serif;
+        resize:none;
         &:focus {
           border: none;
           outline: none;
