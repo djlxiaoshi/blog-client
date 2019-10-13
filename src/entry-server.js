@@ -3,7 +3,6 @@ import './assets/js/init';
 import { createApp } from './app';
 
 export default function (context) {
-  // console.log('context', Object.keys(context));
   const { app, router, store } = createApp(context);
 
   return new Promise((resolve, reject) => {
@@ -16,7 +15,7 @@ export default function (context) {
       const matchedComponents = router.getMatchedComponents();
 
       if (!matchedComponents.length) {
-        console.log('这里有问题');
+        console.log('服务端渲染-路由不存在');
 
         // eslint-disable-next-line prefer-promise-reject-errors
         return reject({ code: 404 });
@@ -32,6 +31,7 @@ export default function (context) {
           });
         }
       })).then(() => {
+
         // 在所有预取钩子(preFetch hook) resolve 后，
         // 我们的 store 现在已经填充入渲染应用程序所需的状态。
         // 当我们将状态附加到上下文，

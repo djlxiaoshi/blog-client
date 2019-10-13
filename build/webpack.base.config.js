@@ -2,8 +2,10 @@ const { VueLoaderPlugin } = require('vue-loader');
 const { basePath, resolve } = require('./config');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const NODE_ENV = process.env.NODE_ENV;
 
 module.exports = {
+  mode: NODE_ENV === 'production' ? 'production' : 'development',
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     modules: [

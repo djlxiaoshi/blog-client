@@ -1,7 +1,5 @@
 import { createApp } from './app';
 // import './assets/js/register-sw'; // 注册Service Worker
-import './assets/js/resize';
-
 // 客户端特定引导逻辑……
 
 const { app, router, store } = createApp();

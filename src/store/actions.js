@@ -14,7 +14,9 @@ export default {
 
     return xhrInstance.then((user) => {
       commit(SET_USER_INFO, user);
-    }, () => {});
+    }, (e) => {
+
+    });
   },
   getArticles ({ commit }) {
     const { xhrInstance } = http({
@@ -28,6 +30,7 @@ export default {
     return xhrInstance.then((articles) => {
       commit(SET_ARTICLES, articles.list);
     }, () => {
+
     });
   },
   getArticlesByUser ({ commit }) {

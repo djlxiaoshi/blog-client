@@ -25,19 +25,17 @@ module.exports = merge(baseConfig, {
     }
   },
   plugins: [
-    NODE_ENV === 'production' ?
     new CleanWebpackPlugin({
       verbose: true,
       dry: false,
-      cleanOnceBeforeBuildPatterns: ['!index.server.html', '!vue-ssr-server-bundle.json'] // 不删除build-server产生的文件
-    }) : '',
+    }),
     // 此插件在输出目录中
     // 生成 `vue-ssr-client-manifest.json`。
     new VueSSRClientPlugin(),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: resolve(__dirname, '..', './index.client.html')
-    }),
+    })
     // new WorkboxPlugin.GenerateSW({
     //   swDest: 'sw.js', // // 设置前缀 The parent directory for this file will be based on your output.path webpack configuration
     //   clientsClaim: true, // Service Worker 被激活后使其立即获得页面控制权

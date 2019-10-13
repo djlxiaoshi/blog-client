@@ -16,8 +16,7 @@ module.exports = merge(baseConfig, {
   },
   devServer: {
     contentBase: resolve(__dirname, '..', 'dist'),
-    // host: '0.0.0.0', // 指定使用一个 host。默认是 localhost。如果你希望服务器外部可访问，指定如下： 所有的都能访问 通过ip或者通过localhost
-    host: 'localhost',
+    host: '0.0.0.0', // 指定使用一个 host。默认是 localhost。如果你希望服务器外部可访问，指定如下： 所有的都能访问 通过ip或者通过localhost
     compress: true, // 启用gzip压缩一切服务
     port: 8080,
     hot: true, // 启动热更新模块 或者在命令行中带参数开启

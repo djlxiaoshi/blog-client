@@ -4,7 +4,7 @@ import { createStore } from './store';
 import { createRouter } from './router';
 import { sync } from 'vuex-router-sync';
 import http from './assets/js/utils/http';
-import envConfig from './assets/js/global/environment';
+import envConfig from './assets/js/global/env';
 import interceptor from './router/interceptor';
 
 import {

@@ -13,10 +13,8 @@ Router.prototype.push = function push (location, onResolve, onReject) {
 Vue.use(Router);
 
 export function createRouter () {
-  const router = new Router({
+  return new Router({
     mode: 'history',
     routes: routes
   });
-
-  return router;
 }

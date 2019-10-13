@@ -1,7 +1,7 @@
 import axios from 'axios';
 import NProgress from 'nprogress';
 import { Notification } from 'element-ui';
-import envConfig from '../global/environment';
+import envConfig from '../global/env';
 import { createRouter } from '../../../router/index';
 
 const router = createRouter();
@@ -30,6 +30,7 @@ export default function Http (config) {
   const commonHeaders = {
     'Content-Type': 'application/json'
   };
+  // 服务端发送请求的时候，手动添加cookie
   if (isServer && global.__VUE_SSR_CONTEXT__ && global.__VUE_SSR_CONTEXT__.cookies) {
     commonHeaders.Cookie = global.__VUE_SSR_CONTEXT__.cookies;
   }
@@ -65,8 +66,10 @@ export default function Http (config) {
     axios(axiosConfig).then(response => {
       const data = response.data;
 
-      // 登录验证
-      loginCheck(data);
+      if (!config.disableLoginCheck) {
+        // 登录验证
+        loginCheck(data);
+      }
 
       if (data.code !== 0) {
         if (config.showErrorMsg) {

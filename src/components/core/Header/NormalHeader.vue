@@ -93,13 +93,16 @@
           xhrInstance.then(() => {
 
             this.clearUserMsg();
-            this.goToLoginPage();
+            this.goToHomePage();
 
           });
         }
       },
       clearUserMsg () {
         this.setUserInfo(null);
+      },
+      goToHomePage () {
+        this.$router.push('/');
       },
       goToLoginPage () {
         this.$router.push('/login');

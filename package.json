@@ -65,14 +65,15 @@
     "workbox-webpack-plugin": "^4.3.1"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./build/webpack.dev.config.js --mode development",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./build/webpack.dev.config.js --mode development --host 0.0.0.0",
     "server": "nodemon ./server.js",
     "mock": "nodemon ./mock/server.js",
     "dev-client": "cross-env NODE_ENV=development webpack --config ./build/webpack.client.config.js --watch --mode development --progress",
     "dev-server": "cross-env NODE_ENV=development webpack --config ./build/webpack.server.config.js --watch --mode development --progress",
-    "build-client": "cross-env NODE_ENV=production webpack --config ./build/webpack.client.config.js --mode production --progress",
-    "build-server": "cross-env NODE_ENV=production webpack --config ./build/webpack.server.config.js --mode production --progress",
-    "build": "npm-run-all build-server build-client"
+    "build-client": " webpack --config ./build/webpack.client.config.js --progress",
+    "build-server": " webpack --config ./build/webpack.server.config.js --progress",
+    "build": "cross-env NODE_ENV=production npm-run-all build-client build-server",
+    "build-dev": "cross-env NODE_ENV=development npm-run-all build-client build-server"
   },
   "author": "",
   "license": "ISC"

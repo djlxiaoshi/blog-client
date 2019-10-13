@@ -23,7 +23,8 @@ import http from '../assets/js/utils/http';
  */
 function getUserInfo (next) {
   const { xhrInstance } = http({
-    url: '/user'
+    url: '/user',
+    disableLoginCheck: true
   });
   return xhrInstance;
 }
@@ -38,7 +39,7 @@ async function saveUserInStore (store) {
     // store.commit(SET_MENU_LIST, result ? (result.menu || []) : []);
   } catch (e) {
     //  服务器异常
-    console.log(e, '这里');
+    console.error('获取用户信息接口异常', e);
   }
 }
 
