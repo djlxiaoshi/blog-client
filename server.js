@@ -45,6 +45,6 @@ router.get('*', async ctx => {
 
 app.use(router.routes());
 
-app.listen(3700, function () {
-  console.log('server is listening on port 3700')
+app.listen(80, function () {
+  console.log('server is listening on port 80')
 });
