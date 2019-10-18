@@ -66,7 +66,8 @@
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./build/webpack.dev.config.js --host 0.0.0.0",
-    "server": "nodemon ./server.js",
+    "server": "node ./server.js",
+    "server:dev": "nodemon ./server.js",
     "mock": "nodemon ./mock/server.js",
     "dev-client": "cross-env NODE_ENV=development webpack --config ./build/webpack.client.config.js --watch --progress",
     "dev-server": "cross-env NODE_ENV=development webpack --config ./build/webpack.server.config.js --watch --progress",
