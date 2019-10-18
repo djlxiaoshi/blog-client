@@ -12,15 +12,15 @@
  * }
  */
 
-import Explore from '../pages/explore';
-import About from '../pages/about';
-import Post from '../pages/post';
-import Article from '../pages/article';
-import Tags from '../pages/tag';
-import TagDetails from '../pages/tag/Details';
-import Login from '../pages/login';
-import Register from '../pages/register';
-import Exception from '../pages/exception';
+import Explore from '@/pages/explore';
+import About from '@/pages/about';
+import Post from '@/pages/post';
+import Article from '@/pages/article';
+import Tags from '@/pages/tag';
+import TagDetails from '@/pages/tag/Details';
+import Login from '@/pages/login';
+import Register from '@/pages/register';
+import Exception from '@/pages/exception';
 
 export default [
   {
