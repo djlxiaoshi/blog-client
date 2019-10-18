@@ -10,12 +10,12 @@ const WorkboxPlugin = require('workbox-webpack-plugin');
 const NODE_ENV = process.env.NODE_ENV;
 
 module.exports = merge(baseConfig, {
-  context: resolve(__dirname, '../'),
+  context: resolve(__dirname, '../'), // 绝对路径
   entry: {
     client: './src/entry-client.js',
   },
   output: {
-    path: resolve(__dirname, '..', 'dist'),
+    path: resolve(__dirname, '..', 'dist'), // 绝对路径
     filename: join(basePath, 'js/[name].[hash:8].js'),
     chunkFilename: join(basePath, 'js/[name].[hash:8].js')
   },

@@ -15,8 +15,8 @@
 
 <script>
   import { XS_WIDTH } from '@/assets/js/global/const';
-  import AppHeader from './components/core/Header';
-  import AppSideBar from './components/core/SideBar';
+  import AppHeader from './components/core/Header/Index';
+  import AppSideBar from './components/core/SideBar/Index';
   import { mapState, mapMutations } from 'vuex';
   import { SET_ACTIVE_MENU, CHANGE_SIDEBAR_VISIBLE, TOGGLE_IS_MINI_WIDTH } from 'store/mutation-types';
 
