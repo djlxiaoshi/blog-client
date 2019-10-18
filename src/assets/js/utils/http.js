@@ -1,6 +1,6 @@
 import axios from 'axios';
 import NProgress from 'nprogress';
-import { Notification } from 'element-ui';
+import { Notification, Loading } from 'element-ui';
 import envConfig from '../global/env';
 import { createRouter } from '../../../router/index';
 
@@ -9,7 +9,7 @@ const router = createRouter();
 let xhrCacheList = [];
 const CancelToken = axios.CancelToken;
 const prefix = '/api';
-const isServer = typeof global !== 'undefined';
+const isBrowserEnv = process.browser;
 
 // 请求发送拦截
 axios.interceptors.request.use(function (config) {
@@ -31,7 +31,7 @@ export default function Http (config) {
     'Content-Type': 'application/json'
   };
   // 服务端发送请求的时候，手动添加cookie
-  if (isServer && global.__VUE_SSR_CONTEXT__ && global.__VUE_SSR_CONTEXT__.cookies) {
+  if (!isBrowserEnv) {
     commonHeaders.Cookie = global.__VUE_SSR_CONTEXT__.cookies;
   }
   const axiosConfig = {
@@ -57,10 +57,16 @@ export default function Http (config) {
     : axiosConfig.data = config.data;
 
   obj.xhrInstance = new Promise((resolve, reject) => {
-
-    if (!isServer) {
+    if (isBrowserEnv) {
       // 客户端渲染 开启滚动条
       NProgress.start();
+    }
+
+    if (config.loading) {
+      obj.loadingInstance = Loading.service({
+        target: config.loading,
+        spinner: 'app-loading'
+      });
     }
 
     axios(axiosConfig).then(response => {
@@ -101,19 +107,12 @@ export default function Http (config) {
       xhrCacheList.splice(xhrIndex, 1);
 
       if (xhrCacheList.length === 0) {
-        if (!isServer) {
+        if (isBrowserEnv) {
           NProgress.done();
         }
       }
     });
   });
-
-  if (config.loading) {
-    obj.loadingInstance = this.$loading({
-      target: config.loading,
-      spinner: 'app-loading'
-    });
-  }
 
   xhrCacheList.push(obj);
 
@@ -127,6 +126,17 @@ Http.cancelAll = function () {
 
   // 清空请求缓存列表
   xhrCacheList = [];
+};
+
+// 根据模块名称取消对应请求
+Http.cancelByModuleName = function (moduleName) {
+  xhrCacheList.forEach((item, index) => {
+    if (item.moduleName === moduleName) {
+      item.cancel();
+      // 从请求缓存列表中移除
+      xhrCacheList.splice(index, 1);
+    }
+  });
 };
 
 Http.getXhrCacheList = function () {

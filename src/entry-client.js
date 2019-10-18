@@ -1,4 +1,5 @@
 import { createApp } from './app';
+import 'nprogress/nprogress.css';
 // import './assets/js/register-sw'; // 注册Service Worker
 // 客户端特定引导逻辑……
 

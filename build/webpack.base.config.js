@@ -1,11 +1,11 @@
+const webpack = require('webpack');
 const { VueLoaderPlugin } = require('vue-loader');
 const { basePath, resolve } = require('./config');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const NODE_ENV = process.env.NODE_ENV;
 
 module.exports = {
-  mode: NODE_ENV === 'production' ? 'production' : 'development',
+  mode: 'none', // 填写none 去除webpack打包时的警告，process.env.NODE_ENV 的值都从package.json中配置cross-env传来
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     modules: [
@@ -68,6 +68,9 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    }),
     new CopyWebpackPlugin([{
       from: resolve(__dirname, '..', '/static'),
       to: resolve(__dirname, '..', 'dist/static'),

@@ -64,7 +64,8 @@ export default {
       url: `/tags`,
       method: 'get',
       showSuccessMsg: false,
-      showErrorMsg: true
+      showErrorMsg: true,
+      loading: '.module-content'
     });
 
     return xhrInstance.then((tags) => {

@@ -26,8 +26,8 @@ module.exports = merge(baseConfig, {
   output: {
     libraryTarget: 'commonjs2',
     path: resolve(__dirname, '..', 'dist'),
-    filename: 'js/[name].[hash:8].js',
-    chunkFilename: 'js/[name].[hash:8].js'
+    filename: resolve(basePath, 'js/[name].[hash:8].js'),
+    chunkFilename: resolve(basePath, 'js/[name].[hash:8].js')
   },
 
   // https://webpack.js.org/configuration/externals/#function
