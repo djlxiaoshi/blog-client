@@ -6,13 +6,13 @@
     "images\\no-page-77e1571b.svg",
     "images\\no-permission-41acc6f2.svg",
     "images\\server-error-5e6bf3ad.svg",
-    "js\\client.863e1748.js",
+    "js\\client.49d3fede.js",
     "manifest.json",
     "static/favicon.ico",
     "static/favorite.png"
   ],
   "initial": [
-    "js\\client.863e1748.js"
+    "js\\client.49d3fede.js"
   ],
   "async": [],
   "modules": {

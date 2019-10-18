@@ -1,17 +1,18 @@
 const merge = require('webpack-merge');
 const baseConfig = require('./webpack.base.config.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { basePath, resolve } = require('./config');
+const { basePath, resolve, join } = require('./config');
 
 module.exports = merge(baseConfig, {
+  context: resolve(__dirname, '../'),
   entry: {
-    client: resolve(__dirname, '..', 'src/entry-client.js'),
+    client:  './src/entry-client.js',
   },
   devtool: 'source-map',
   output: {
     path: resolve(__dirname, '..', 'dist'),
-    filename: resolve(basePath, 'js/[name].[hash:8].js'),
-    chunkFilename: resolve(basePath, 'js/[name].[hash:8].js')
+    filename: join(basePath, 'js/[name].[hash:8].js'),
+    chunkFilename: join(basePath, 'js/[name].[hash:8].js')
   },
   devServer: {
     contentBase: resolve(__dirname, '..', 'dist'),

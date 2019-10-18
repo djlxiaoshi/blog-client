@@ -3,15 +3,15 @@ const nodeExternals = require('webpack-node-externals');
 const baseConfig = require('./webpack.base.config.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
+const { basePath, resolve, join } = require('./config');
+
 const NODE_ENV = process.env.NODE_ENV;
 
-const path = require('path');
-const { basePath, resolve } = require('./config');
-
 module.exports = merge(baseConfig, {
+  context: resolve(__dirname, '../'),
   // 将 entry 指向应用程序的 server entry 文件
   entry: {
-    server: resolve(__dirname, '..', 'src/entry-server.js')
+    server: './src/entry-server.js'
   },
 
   // 这允许 webpack 以 Node 适用方式(Node-appropriate fashion)处理动态导入(dynamic import)，
@@ -26,8 +26,8 @@ module.exports = merge(baseConfig, {
   output: {
     libraryTarget: 'commonjs2',
     path: resolve(__dirname, '..', 'dist'),
-    filename: resolve(basePath, 'js/[name].[hash:8].js'),
-    chunkFilename: resolve(basePath, 'js/[name].[hash:8].js')
+    filename: join(basePath, 'js/[name].[hash:8].js'),
+    chunkFilename: join(basePath, 'js/[name].[hash:8].js')
   },
 
   // https://webpack.js.org/configuration/externals/#function

@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const { VueLoaderPlugin } = require('vue-loader');
-const { basePath, resolve } = require('./config');
+const { basePath, resolve, join } = require('./config');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -46,7 +46,7 @@ module.exports = {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
-          name: resolve(basePath, 'images/[name]-[hash:8].[ext]'),
+          name: join(basePath, 'images/[name]-[hash:8].[ext]'),
           limit: 10000
         }
       },
@@ -62,7 +62,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: resolve(basePath, 'fonts/[name].[hash:7].[ext]')
+          name: join(basePath, 'fonts/[name].[hash:7].[ext]')
         }
       }
     ]
@@ -72,7 +72,7 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
     }),
     new CopyWebpackPlugin([{
-      from: resolve(__dirname, '..', '/static'),
+      from: resolve(__dirname, '..', 'static'),
       to: resolve(__dirname, '..', 'dist/static'),
       ignore: ['.*']
     }]),

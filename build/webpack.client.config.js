@@ -4,19 +4,20 @@ const baseConfig = require('./webpack.base.config.js');
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { basePath, resolve } = require('./config');
+const { basePath, resolve, join } = require('./config');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
 const NODE_ENV = process.env.NODE_ENV;
 
 module.exports = merge(baseConfig, {
+  context: resolve(__dirname, '../'),
   entry: {
-    client: resolve(__dirname, '..', 'src/entry-client.js'),
+    client: './src/entry-client.js',
   },
   output: {
     path: resolve(__dirname, '..', 'dist'),
-    filename: resolve(basePath, 'js/[name].[hash:8].js'),
-    chunkFilename: resolve(basePath, 'js/[name].[hash:8].js')
+    filename: join(basePath, 'js/[name].[hash:8].js'),
+    chunkFilename: join(basePath, 'js/[name].[hash:8].js')
   },
   optimization: {
     splitChunks: {

@@ -2,5 +2,6 @@ const path = require('path');
 
 module.exports = {
   basePath: '',
-  resolve: (...rest) => path.join(...rest)
+  resolve: (...rest) => path.resolve(...rest),
+  join: (...rest) => path.join(...rest),
 };
