@@ -798,7 +798,7 @@ module.exports = "data:font/woff;base64,d09GRgABAAAAABgUAAsAAAAAKyAAAQAAAAAAAAAA
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "\\fonts\\element-icons.6f0a763.ttf";
+module.exports = __webpack_require__.p + "fonts\\element-icons.6f0a763.ttf";
 
 /***/ }),
 /* 12 */
@@ -32276,7 +32276,7 @@ var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _
 /* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "\\images\\empty-836e20d8.png";
+module.exports = __webpack_require__.p + "images\\empty-836e20d8.png";
 
 /***/ }),
 /* 275 */
@@ -64060,7 +64060,7 @@ var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _
 /* 578 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "\\images\\server-error-5e6bf3ad.svg";
+module.exports = __webpack_require__.p + "images\\server-error-5e6bf3ad.svg";
 
 /***/ }),
 /* 579 */
@@ -64184,7 +64184,7 @@ var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _
 /* 587 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "\\images\\no-page-77e1571b.svg";
+module.exports = __webpack_require__.p + "images\\no-page-77e1571b.svg";
 
 /***/ }),
 /* 588 */
@@ -64308,7 +64308,7 @@ var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _
 /* 596 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "\\images\\no-permission-41acc6f2.svg";
+module.exports = __webpack_require__.p + "images\\no-permission-41acc6f2.svg";
 
 /***/ }),
 /* 597 */

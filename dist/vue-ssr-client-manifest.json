@@ -1,18 +1,18 @@
 {
   "publicPath": "",
   "all": [
-    "\\fonts\\element-icons.6f0a763.ttf",
-    "\\images\\empty-836e20d8.png",
-    "\\images\\no-page-77e1571b.svg",
-    "\\images\\no-permission-41acc6f2.svg",
-    "\\images\\server-error-5e6bf3ad.svg",
-    "\\js\\client.78e382c7.js",
+    "fonts\\element-icons.6f0a763.ttf",
+    "images\\empty-836e20d8.png",
+    "images\\no-page-77e1571b.svg",
+    "images\\no-permission-41acc6f2.svg",
+    "images\\server-error-5e6bf3ad.svg",
+    "js\\client.863e1748.js",
     "manifest.json",
     "static/favicon.ico",
     "static/favorite.png"
   ],
   "initial": [
-    "\\js\\client.78e382c7.js"
+    "js\\client.863e1748.js"
   ],
   "async": [],
   "modules": {
