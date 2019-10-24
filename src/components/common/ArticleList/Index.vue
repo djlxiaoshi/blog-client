@@ -89,7 +89,6 @@
       }
       .details-wrap {
         .details-top {
-          height: 65px;
           margin-bottom: 15px;
         }
         .details-bottom {

@@ -2,7 +2,7 @@
     <div class="explore-sidebar">
       <div class="tags-wrap module">
         <h5 class="module-title">标签</h5>
-        <div class="module-content">
+        <div class="module-content" ref="loadingTarget">
           <span
             v-for="tag in tags"
             @click="viewTag(tag)"
@@ -41,7 +41,7 @@
       ])
     },
     mounted () {
-      this.getAllTags();
+      this.getAllTags({ loadingTarget: this.$refs.loadingTarget });
     },
     methods: {
       ...mapActions([

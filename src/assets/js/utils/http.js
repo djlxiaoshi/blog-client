@@ -2,9 +2,6 @@ import axios from 'axios';
 import NProgress from 'nprogress';
 import { Notification, Loading } from 'element-ui';
 import envConfig from '../global/env';
-import { createRouter } from '../../../router/index';
-
-const router = createRouter();
 
 let xhrCacheList = [];
 const CancelToken = axios.CancelToken;
@@ -147,6 +144,6 @@ Http.getXhrCacheList = function () {
 function loginCheck (response) {
   // 未登录
   if (response.code === -1000) {
-    router.push('/login');
+    window.location.href = '/login';
   }
 }

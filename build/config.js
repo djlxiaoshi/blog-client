@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  basePath: '',
+  basePath: '/',
   resolve: (...rest) => path.resolve(...rest),
   join: (...rest) => path.join(...rest),
 };

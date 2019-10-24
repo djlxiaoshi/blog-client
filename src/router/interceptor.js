@@ -39,7 +39,7 @@ async function saveUserInStore (store) {
     // store.commit(SET_MENU_LIST, result ? (result.menu || []) : []);
   } catch (e) {
     //  服务器异常
-    console.error('获取用户信息接口异常', e);
+    console.log('获取用户信息接口异常', e);
   }
 }
 
@@ -75,8 +75,8 @@ export default function (router, store) {
           next('/no-permission');
         }
       } else {
-        //  跳转登录页
-          next('/login');
+        // 跳转登录页
+        next('/login');
       }
     } else {
       goToTargetPage(finallyMatched.path, store, next);

@@ -2,7 +2,7 @@
   <div class="explore-page">
     <el-row type="flex" justify="space-around">
       <el-col :xs="24" :sm="23" :md="17" :lg="18" :xl="19">
-        <div class="page-left">
+        <div class="page-left" ref="loadingTarget">
           <AppEmpty :isEmpty="articles.length === 0">
             <ArticleList
               :data="articles"
@@ -42,7 +42,7 @@
       return store.dispatch('getArticles');
     },
     mounted () {
-      this.getArticles();
+      this.getArticles({ loadingTarget: this.$refs.loadingTarget });
     },
     methods: {
       ...mapActions([

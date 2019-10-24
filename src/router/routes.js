@@ -14,7 +14,7 @@
 
 export default [
   {
-    path: '/',
+    path: '',
     label: '发现',
     component: () => import(/* webpackChunkName: "home" */'../pages/explore/Index')
   },
@@ -44,7 +44,7 @@ export default [
     hidden: true
   },
   {
-    path: '/tag/:id',
+    path: '/tag/:id/',
     component: () => import(/* webpackChunkName: "tag" */'../pages/tag/Details'),
     hidden: true
   },

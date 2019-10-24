@@ -18,13 +18,14 @@ export default {
 
     });
   },
-  getArticles ({ commit }) {
+  getArticles ({ commit }, { loadingTarget }) {
     const { xhrInstance } = http({
       url: '/articles',
       data: {},
       method: 'get',
       showSuccessMsg: false,
-      showErrorMsg: false
+      showErrorMsg: false,
+      loading: loadingTarget
     });
 
     return xhrInstance.then((articles) => {
@@ -59,13 +60,13 @@ export default {
     }, () => {
     });
   },
-  getAllTags ({ commit }) {
+  getAllTags ({ commit }, { loadingTarget }) {
     const { xhrInstance } = http({
       url: `/tags`,
       method: 'get',
       showSuccessMsg: false,
       showErrorMsg: true,
-      loading: '.module-content'
+      loading: loadingTarget
     });
 
     return xhrInstance.then((tags) => {
