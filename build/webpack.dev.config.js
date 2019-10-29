@@ -11,8 +11,8 @@ module.exports = merge(baseConfig, {
   devtool: 'source-map',
   output: {
     path: resolve(__dirname, '..', 'dist'),
-    filename: resolve(__dirname, '..', basePath, 'js/[name].[hash:8].js'),
-    chunkFilename: resolve(__dirname, '..', basePath, 'js/[name].[hash:8].js')
+    filename: join(basePath, 'js/[name].[hash:8].js'),
+    chunkFilename: join(basePath, 'js/[name].[hash:8].js')
   },
   devServer: {
     contentBase: resolve(__dirname, '..', 'dist'),
