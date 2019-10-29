@@ -15,7 +15,7 @@
       <div class="donate-me module">
         <h5 class="module-title">支持博主</h5>
         <div class="module-content">
-          <img src="//blog.djl.pub/avatar_677ea207-ad72-4a72-af4f-d482df1d49da.jpg" alt="">
+          <!--<img src="//blog.djl.pub/avatar_677ea207-ad72-4a72-af4f-d482df1d49da.jpg" alt="">-->
         </div>
       </div>
       <div class="contact-me module">

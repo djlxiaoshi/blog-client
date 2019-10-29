@@ -19,6 +19,16 @@ export default [
     component: () => import(/* webpackChunkName: "home" */'../pages/explore/Index')
   },
   {
+    path: '/timeline',
+    label: '时光轴',
+    component: () => import(/* webpackChunkName: "timeline" */'../pages/timeline/Index')
+  },
+  {
+    path: '/tags',
+    label: '归档',
+    component: () => import(/* webpackChunkName: "tags" */'../pages/tag/Index')
+  },
+  {
     path: '/about',
     component: () => import(/* webpackChunkName: "about" */'../pages/about/Index'),
     label: '关于本站'
@@ -36,11 +46,6 @@ export default [
     path: '/article/:id',
     component: () => import(/* webpackChunkName: "article" */'../pages/article/Index'),
     label: '文章详情',
-    hidden: true
-  },
-  {
-    path: '/tags',
-    component: () => import(/* webpackChunkName: "tags" */'../pages/tag/Index'),
     hidden: true
   },
   {

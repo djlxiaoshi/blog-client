@@ -6,18 +6,27 @@
           <el-button type="success" plain size="small" @click="openOperateTagDialog()">添加</el-button>
         </div>
       </div>
-      <ul class="tag-list">
-        <li class="list-item" v-for="tag in tags" :key="tag.label">
-          <i class="el-icon-price-tag"></i>
-          <span class="tag-name" @click="goToTagDetails(tag)">{{ tag.label }}</span>
-          <!-- 暂时不实现这个功能 -->
-          <!--<span class="article-account">10</span>-->
-          <span class="operate-wrap">
-            <i class="el-icon-edit" @click="openOperateTagDialog(tag)"></i>
-            <i class="el-icon-delete" @click="openDeleteTagDialog(tag)"></i>
-          </span>
-        </li>
-      </ul>
+
+      <el-row :gutter="20" class="tag-list" ref="loadingTarget">
+        <el-col
+          class="list-item"
+          v-for="(tag, index) in tags"
+          :key="index"
+          :xs="24" :sm="12" :md="8" :lg="6" :xl="6">
+          <el-card :body-style="{ padding: '0px' }">
+            <div class="img-wrap" @click="goToTagDetails(tag)">
+              <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
+            </div>
+            <div class="card-bottom">
+              <span class="tag-name">{{ tag.label }}</span>
+              <span class="operate-wrap">
+                <i class="el-icon-edit" @click="openOperateTagDialog(tag)"></i>
+                <i class="el-icon-delete" @click="openDeleteTagDialog(tag)"></i>
+              </span>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
     </div>
 </template>
 
@@ -40,7 +49,10 @@
       return store.dispatch('getAllTags');
     },
     mounted () {
-      this.getAllTags();
+      console.log('this.$refs.loadingTarget', this.$refs.loadingTarget.$el)
+      this.getAllTags({
+        loadingTarget: this.$refs.loadingTarget.$el
+      });
     },
     methods: {
       ...mapActions([
@@ -159,19 +171,32 @@
       margin-bottom: 20px;
     }
     .tag-list {
+      min-height: calc(100vh - 120px);
       .list-item {
-        display: flex;
-        align-items: center;
-        padding: 15px 5px;
-        border-bottom: 1px solid #e5e5e5;
-        .tag-name {
+        margin-bottom: 20px;
+        .img-wrap {
+          overflow: hidden;
           cursor: pointer;
+          .image {
+            width: 100%;
+            transition: 0.4s;
+            &:hover {
+              transform: scale(1.1);
+              transition: 0.4s;
+            }
+          }
         }
-        .operate-wrap {
-          margin-left: auto;
-          i {
-            margin-left: 5px;
-            cursor: pointer;
+        .card-bottom {
+          padding: 15px;
+          .tag-name {
+          }
+          display: flex;
+          .operate-wrap {
+            margin-left: auto;
+            i {
+              margin-left: 5px;
+              cursor: pointer;
+            }
           }
         }
       }
