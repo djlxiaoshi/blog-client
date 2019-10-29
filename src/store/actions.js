@@ -18,7 +18,7 @@ export default {
 
     });
   },
-  getArticles ({ commit }, { loadingTarget }) {
+  getArticles ({ commit }, { loadingTarget } = {}) {
     const { xhrInstance } = http({
       url: '/articles',
       data: {},
@@ -60,7 +60,7 @@ export default {
     }, () => {
     });
   },
-  getAllTags ({ commit }, { loadingTarget }) {
+  getAllTags ({ commit }, { loadingTarget } = {}) {
     const { xhrInstance } = http({
       url: `/tags`,
       method: 'get',

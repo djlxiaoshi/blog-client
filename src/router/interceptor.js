@@ -45,7 +45,7 @@ async function saveUserInStore (store) {
 
 function goToTargetPage (path, store, next) {
   // 设置当前激活菜单状态
-  store.commit(SET_ACTIVE_MENU, path);
+  store.commit(SET_ACTIVE_MENU, path || '/');
   next();
 }
 

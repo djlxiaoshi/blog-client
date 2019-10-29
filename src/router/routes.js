@@ -14,7 +14,7 @@
 
 export default [
   {
-    path: '',
+    path: '/',
     label: '发现',
     component: () => import(/* webpackChunkName: "home" */'../pages/explore/Index')
   },

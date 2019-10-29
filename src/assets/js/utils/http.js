@@ -6,7 +6,6 @@ import envConfig from '../global/env';
 let xhrCacheList = [];
 const CancelToken = axios.CancelToken;
 const prefix = '/api';
-const isBrowserEnv = process.browser;
 
 // 请求发送拦截
 axios.interceptors.request.use(function (config) {
@@ -24,6 +23,8 @@ axios.interceptors.response.use((response) => {
 
 export default function Http (config) {
   const obj = {};
+  const isBrowserEnv = process.browser; // 确定运行环境
+  
   const commonHeaders = {
     'Content-Type': 'application/json'
   };
