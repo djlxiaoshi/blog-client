@@ -16,8 +16,8 @@ module.exports = merge(baseConfig, {
   },
   output: {
     path: resolve(__dirname, '..', 'dist'), // 绝对路径
-    filename: join(basePath, 'js/[name].[hash:8].js'),
-    chunkFilename: join(basePath, 'js/[name].[hash:8].js')
+    filename: resolve(__dirname, '..', basePath, 'js/[name].[hash:8].js'),
+    chunkFilename: resolve(__dirname, '..', basePath, 'js/[name].[hash:8].js')
   },
   optimization: {
     splitChunks: {
