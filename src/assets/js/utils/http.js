@@ -24,12 +24,12 @@ axios.interceptors.response.use((response) => {
 export default function Http (config) {
   const obj = {};
   const isBrowserEnv = process.browser; // 确定运行环境
-  
+
   const commonHeaders = {
     'Content-Type': 'application/json'
   };
   // 服务端发送请求的时候，手动添加cookie
-  if (!isBrowserEnv) {
+  if ((!isBrowserEnv) && global.__VUE_SSR_CONTEXT__.cookies) {
     commonHeaders.Cookie = global.__VUE_SSR_CONTEXT__.cookies;
   }
   const axiosConfig = {
