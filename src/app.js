@@ -57,7 +57,7 @@ export function createApp (context) {
   const store = createStore();
 
   // 路由拦截
-  interceptor(router, store);
+  // interceptor(router, store);
 
   // 同步路由状态(route state)到 store
   sync(store, router);
