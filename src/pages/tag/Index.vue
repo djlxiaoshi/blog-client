@@ -45,11 +45,11 @@
         'tags'
       ])
     },
-    asyncData ({ store, route }) {
+    asyncData ({ store }) {
       return store.dispatch('getAllTags');
     },
     mounted () {
-      console.log('this.$refs.loadingTarget', this.$refs.loadingTarget.$el)
+      console.log('this.$refs.loadingTarget', this.$refs.loadingTarget.$el);
       this.getAllTags({
         loadingTarget: this.$refs.loadingTarget.$el
       });
@@ -146,7 +146,7 @@
       },
       deleteTag (tagId) {
         const { xhrInstance } = this.$http({
-          url: `/tag/${ tagId }`,
+          url: `/tag/${tagId}`,
           method: 'delete',
           showSuccessMsg: true,
           showErrorMsg: true
