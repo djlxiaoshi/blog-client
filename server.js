@@ -4,6 +4,7 @@ const Koa = require('koa');
 const app = new Koa();
 const koaRouter = require('koa-router');
 const koaStatic = require('koa-static');
+const compress = require('koa-compress')
 const { createBundleRenderer } = require('vue-server-renderer');
 
 const resolve = file => path.resolve(__dirname, file);
@@ -21,9 +22,18 @@ const renderer = createBundleRenderer(serverBundle, {
   clientManifest: require('./dist/vue-ssr-client-manifest.json'),
 });
 
+app.use(compress({
+  filter: function (content_type) {
+    return /image\/*|application\/javascript/.test(content_type)
+  },
+  threshold: 2048,
+  flush: require('zlib').constants.Z_SYNC_FLUSH
+}));
+
 // 先匹配静态资源
 app.use(koaStatic(path.resolve(__dirname, 'dist'), {
-  index: 'test.html' // 这里不是index.html就行  否则会先返回index.html的静态资源
+  index: 'test.html', // 这里不是index.html就行  否则会先返回index.html的静态资源
+  gzip: true
 }));
 
 // 静态资源没有匹配到的时候，再走这个服务端路由
@@ -36,6 +46,7 @@ router.get('*', async ctx => {
     url: ctx.req.url,
     cookies: cookies
   }).then(html => {
+    console.log(html);
       return html;
   }).catch(error => {
     console.log('error', error);

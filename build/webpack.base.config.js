@@ -2,11 +2,14 @@ const webpack = require('webpack');
 const { VueLoaderPlugin } = require('vue-loader');
 const { basePath, resolve, join } = require('./config');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const NODE_ENV = process.env.NODE_ENV;
 
 module.exports = {
-  mode: 'none', // 填写none 去除webpack打包时的警告，process.env.NODE_ENV 的值都从package.json中配置cross-env传来
+  mode: NODE_ENV, // 填写none 去除webpack打包时的警告，process.env.NODE_ENV 的值都从package.json中配置cross-env传来
   resolve: {
+    mainFields: ['jsnext:main', 'browser', 'main'], // 针对 Npm 中的第 方模块优先采用 snext main 中指向的 ES6 模块化语法的文件
     extensions: ['.js', '.vue', '.json'],
     modules: [
       resolve(__dirname, '..', 'src'),
@@ -36,11 +39,14 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ["vue-style-loader", "css-loader"]
+        use: ["vue-style-loader",
+          "css-loader"]
       },
       {
         test: /\.less$/,
-        use: ["vue-style-loader", "css-loader", "less-loader"] // 由于要使用ssr，这里使用vue-style-loader来替换style-loader
+        use: ["vue-style-loader",
+          "css-loader",
+          "less-loader"] // 由于要使用ssr，这里使用vue-style-loader来替换style-loader
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

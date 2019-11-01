@@ -4,6 +4,9 @@ const baseConfig = require('./webpack.base.config.js');
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const { basePath, resolve, join } = require('./config');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
@@ -12,7 +15,7 @@ const NODE_ENV = process.env.NODE_ENV;
 module.exports = merge(baseConfig, {
   context: resolve(__dirname, '../'), // 绝对路径
   entry: {
-    client: './src/entry-client.js',
+    client: './src/entry-client.js'
   },
   output: {
     path: resolve(__dirname, '..', 'dist'), // 绝对路径
@@ -20,9 +23,23 @@ module.exports = merge(baseConfig, {
     chunkFilename: join(basePath, 'js/[name].[hash:8].js')
   },
   optimization: {
+    minimizer: [
+      new OptimizeCSSAssetsPlugin({}),
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: false // set to true if you want JS source maps
+      })
+    ],
     splitChunks: {
-      name: "manifest",
-      minChunks: Infinity
+      cacheGroups: {
+        styles: {
+          name: 'common',
+          test: /\.css$|\.less$/,
+          chunks: 'all',
+          enforce: true
+        }
+      }
     }
   },
   plugins: [
@@ -36,6 +53,12 @@ module.exports = merge(baseConfig, {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: resolve(__dirname, '..', './index.client.html')
+    }),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: `${basePath}css/[name]-[hash].css`,
+      chunkFilename: `${basePath}css/[name]-[hash].css`
     })
     // new WorkboxPlugin.GenerateSW({
     //   swDest: 'sw.js', // // 设置前缀 The parent directory for this file will be based on your output.path webpack configuration
