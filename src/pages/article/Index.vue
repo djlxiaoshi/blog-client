@@ -105,9 +105,6 @@
     asyncData ({ store, route }) {
       return store.dispatch('getArticle', route.params.id);
     },
-    mounted () {
-      this.getArticle(this.$route.params.id);
-    },
     computed: {
       ...mapState([
         'article',
@@ -125,7 +122,6 @@
       },
       isChecked (tag) {
         const flag = !!this.article.tags.find(articleTag => articleTag._id === tag._id);
-        console.log(tag.label, flag, typeof flag);
         return flag;
       },
       toggleTags () {

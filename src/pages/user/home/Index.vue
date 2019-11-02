@@ -37,9 +37,6 @@
     asyncData ({ store, router }) {
       return store.dispatch('getArticlesByUser');
     },
-    mounted () {
-      this.getArticlesByUser();
-    },
     methods: {
       ...mapActions([
         'getArticlesByUser'

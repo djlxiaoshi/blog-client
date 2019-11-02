@@ -1,12 +1,10 @@
 const merge = require('webpack-merge');
 const nodeExternals = require('webpack-node-externals');
 const baseConfig = require('./webpack.base.config.js');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
-const { basePath, resolve, join } = require('./config');
+const { basePath, resolve, join, posixJoin } = require('./config');
 
 const NODE_ENV = process.env.NODE_ENV;
 
@@ -29,14 +27,11 @@ module.exports = merge(baseConfig, {
   output: {
     libraryTarget: 'commonjs2',
     path: resolve(__dirname, '..', 'dist'),
-    filename: join(basePath, 'js/[name].[hash:8].js'),
-    chunkFilename: join(basePath, 'js/[name].[hash:8].js')
+    publicPath: '/',
+    filename: posixJoin(basePath, 'js/[name].[hash:8].js'),
+    chunkFilename: posixJoin(basePath, 'js/[name].[hash:8].js')
   },
-  // optimization: {
-  //   minimizer: [
-  //     new OptimizeCSSAssetsPlugin({})
-  //   ]
-  // },
+
   // https://webpack.js.org/configuration/externals/#function
   // https://github.com/liady/webpack-node-externals
   // 外置化应用程序依赖模块。可以使服务器构建速度更快，
@@ -51,18 +46,15 @@ module.exports = merge(baseConfig, {
   // 构建为单个 JSON 文件的插件。
   // 默认文件名为 `vue-ssr-server-bundle.json`
   plugins: [
-
+    new webpack.DefinePlugin({
+      'process.browser': false,
+      'process.server': true
+    }),
     new VueSSRServerPlugin(),
     new HtmlWebpackPlugin({
       filename: 'index.server.html',
       template: resolve(__dirname, '..', './index.server.html'),
       excludeChunks: ['server']
-    }),
-    // new MiniCssExtractPlugin({
-    //   // Options similar to the same options in webpackOptions.output
-    //   // both options are optional
-    //   filename: `${basePath}css/[name]-[hash].css`,
-    //   chunkFilename: `${basePath}css/[name]-[hash].css`
-    // })
+    })
   ]
 });

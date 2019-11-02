@@ -39,10 +39,10 @@
       ])
     },
     asyncData ({ store, route }) {
-      return store.dispatch('getArticles');
-    },
-    mounted () {
-      this.getArticles({ loadingTarget: this.$refs.loadingTarget });
+      return Promise.all([
+        store.dispatch('getArticles'),
+        store.dispatch('getAllTags')
+      ]);
     },
     methods: {
       ...mapActions([

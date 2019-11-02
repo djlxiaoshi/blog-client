@@ -40,9 +40,6 @@
         'tags'
       ])
     },
-    mounted () {
-      this.getAllTags({ loadingTarget: this.$refs.loadingTarget });
-    },
     methods: {
       ...mapActions([
         'getAllTags'

@@ -99,9 +99,6 @@
       asyncData ({ store, route }) {
         return store.dispatch('getUserInfo');
       },
-      mounted () {
-        this.getUserInfo();
-      },
       methods: {
         ...mapMutations({
           'setUserInfo': SET_USER_INFO

@@ -17,9 +17,6 @@
     asyncData ({ store, route }) {
       return store.dispatch('getTag', route.params.id);
     },
-    mounted () {
-      this.getTag(this.$route.params.id);
-    },
     methods: {
       ...mapActions([
         'getTag'

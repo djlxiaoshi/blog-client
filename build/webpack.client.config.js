@@ -7,7 +7,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const { basePath, resolve, join } = require('./config');
+const { basePath, resolve, join, posixJoin } = require('./config');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
 const NODE_ENV = process.env.NODE_ENV;
@@ -19,8 +19,9 @@ module.exports = merge(baseConfig, {
   },
   output: {
     path: resolve(__dirname, '..', 'dist'), // 绝对路径
-    filename: join(basePath, 'js/[name].[hash:8].js'),
-    chunkFilename: join(basePath, 'js/[name].[hash:8].js')
+    publicPath: '/',
+    filename: posixJoin(basePath, 'js/[name].[hash:8].js'),
+    chunkFilename: posixJoin(basePath, 'js/[name].[hash:8].js')
   },
   optimization: {
     minimizer: [
@@ -43,6 +44,10 @@ module.exports = merge(baseConfig, {
     }
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.browser': true,
+      'process.server': false
+    }),
     new CleanWebpackPlugin({
       verbose: true,
       dry: false,

@@ -1,7 +1,7 @@
 <template>
   <header class="app-header">
-    <mini-header v-if="isMiniWidth"></mini-header>
-    <normal-header v-else></normal-header>
+    <mini-header class="hidden-md-and-up"></mini-header>
+    <normal-header class="hidden-sm-and-down"></normal-header>
   </header>
 
 </template>

@@ -24,7 +24,7 @@ const renderer = createBundleRenderer(serverBundle, {
 
 app.use(compress({
   filter: function (content_type) {
-    return /image\/*|application\/javascript/.test(content_type)
+    return /text\/*|application\/javascript/.test(content_type)
   },
   threshold: 2048,
   flush: require('zlib').constants.Z_SYNC_FLUSH
@@ -46,7 +46,6 @@ router.get('*', async ctx => {
     url: ctx.req.url,
     cookies: cookies
   }).then(html => {
-    console.log(html);
       return html;
   }).catch(error => {
     console.log('error', error);

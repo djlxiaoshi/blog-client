@@ -4,7 +4,11 @@ const { basePath, resolve, join } = require('./config');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const NODE_ENV = process.env.NODE_ENV;
+
+const NODE_ENV = process.env.NODE_ENV; // Node环境：开发环境/生产环境
+const HOST_ENV = process.env.HOST_ENV; // 打包代码运行环境 浏览器环境/Node环境
+
+console.log('HOST_ENV', HOST_ENV);
 
 module.exports = {
   mode: NODE_ENV, // 填写none 去除webpack打包时的警告，process.env.NODE_ENV 的值都从package.json中配置cross-env传来
@@ -39,14 +43,25 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ["vue-style-loader",
-          "css-loader"]
+        use: HOST_ENV === 'node'
+          ? ["vue-style-loader", "css-loader", "less-loader"] // 由于要使用ssr，这里使用vue-style-loader来替换style-loader
+          : [{
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                hmr: process.env.NODE_ENV === 'development',
+              },
+            }, "css-loader", "less-loader"]
       },
       {
         test: /\.less$/,
-        use: ["vue-style-loader",
-          "css-loader",
-          "less-loader"] // 由于要使用ssr，这里使用vue-style-loader来替换style-loader
+        use: HOST_ENV === 'node'
+          ? ["vue-style-loader", "css-loader", "less-loader"] // 由于要使用ssr，这里使用vue-style-loader来替换style-loader
+          : [{
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                hmr: process.env.NODE_ENV === 'development',
+              },
+          },"css-loader", "less-loader"]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

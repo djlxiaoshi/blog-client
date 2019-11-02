@@ -7,7 +7,7 @@
         </div>
       </div>
 
-      <el-row :gutter="20" class="tag-list" ref="loadingTarget">
+      <el-row :gutter="20" class="tag-list">
         <el-col
           class="list-item"
           v-for="(tag, index) in tags"
@@ -47,12 +47,6 @@
     },
     asyncData ({ store }) {
       return store.dispatch('getAllTags');
-    },
-    mounted () {
-      console.log('this.$refs.loadingTarget', this.$refs.loadingTarget.$el);
-      this.getAllTags({
-        loadingTarget: this.$refs.loadingTarget.$el
-      });
     },
     methods: {
       ...mapActions([

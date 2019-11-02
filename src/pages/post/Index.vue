@@ -33,31 +33,24 @@
           return {
             title: '',
             content: '',
-            mode: CREATE_MODE,
-            viewMode: 1,
-            articleId: ''
+            viewMode: 1
           };
       },
       asyncData ({ store, route }) {
           if (route.params.id) {
-            this.articleId = route.params.id;
             return store.dispatch('getArticle', route.params.id);
-          }
-      },
-      mounted () {
-
-          if (this.$route.params.id) {
-            this.articleId = this.$route.params.id;
-            this.getArticle(this.$route.params.id);
-            this.mode = EDIT_MODE;
-          } else {
-            this.mode = CREATE_MODE;
           }
       },
       computed: {
         ...mapState([
           'article'
-        ])
+        ]),
+        articleId () {
+          return this.$route.params.id;
+        },
+        mode () {
+          return this.$route.params.id ? EDIT_MODE : CREATE_MODE;
+        }
       },
       methods: {
         ...mapActions([

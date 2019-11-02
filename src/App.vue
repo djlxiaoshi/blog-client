@@ -1,7 +1,8 @@
 <template>
     <div class="djlxs-blog">
       <AppHeader></AppHeader>
-      <div class="app-body" :style="{ paddingTop: isMiniWidth ? 0 : '20px' }">
+      <div class="placeholder hidden-sm-and-down"></div>
+      <div class="app-body">
         <el-row type="flex" align="middle" justify="center">
           <el-col :xs="24" :sm="20" :md="20" :lg="20" :xl="20">
             <router-view></router-view>
@@ -69,8 +70,12 @@
 <style scoped lang="less">
   @import "./assets/css/theme";
 
-  .app-body {
-    margin-top: @AppHeaderHeight;
+  .djlxs-blog {
+    .app-body {
+      margin-top: @AppHeaderHeight;
+    }
+    .placeholder {
+      height: 20px;
+    }
   }
-
 </style>
