@@ -28,18 +28,64 @@
   /deep/ pre {
     line-height: 1.5;
     border-radius: 15px;
-    border: 4px solid #23241f;
     font-size: 14px;
     word-wrap: normal;
     word-break: break-all;
     white-space: pre;
     overflow: auto;
-    margin-bottom: 20px;
+    margin: 20px 0;
     padding: 1em;
-    background: #23241f;
+    background: #282c34;
+
+    code {
+      font-family: source-code-pro,Menlo,Monaco,Consolas,Courier New,monospace;
+      font-size: 1em;
+      background: #282c34;
+    }
+  }
+
+  /deep/ blockquote {
+    padding: 3px 8px;
+    margin: 20px 0;
+    background: #fafafa;
+    border-radius: 5px;
+    border-left: 6px solid #e6e6e6;
+    p {
+      margin-bottom: 0;
+    }
+  }
+
+  /deep/ ul {
+    margin: 15px 0;
+    padding-left: 2em;
+    li {
+      margin: 3px 0;
+      line-height: 1.5;
+      list-style-type: disc;
+    }
+  }
+
+  /deep/ h2, /deep/ h3, /deep/ h4, /deep/ h5 {
+    margin: 20px auto;
+  }
+
+  /deep/ h1 {
+    font-size: 30px;
   }
 
   /deep/ h2 {
-    margin: 20px auto;
+    font-size: 24px;
+  }
+
+  /deep/ h3 {
+    font-size: 22px;
+  }
+
+  /deep/ h4 {
+    font-size: 20px;
+  }
+
+  /deep/ h5 {
+    font-size: 18px;
   }
 }

@@ -87,7 +87,7 @@
             email: user.email,
             _id: user._id
           });
-          this.setMenuList(user.menus);
+          // this.setMenuList(user.menus);
           this.goToHomePage(user.menus);
 
         }, () => {

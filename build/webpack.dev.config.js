@@ -1,7 +1,7 @@
 const merge = require('webpack-merge');
 const baseConfig = require('./webpack.base.config.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { basePath, resolve, join } = require('./config');
+const { basePath, resolve, posixJoin } = require('./config');
 
 module.exports = merge(baseConfig, {
   context: resolve(__dirname, '../'),
@@ -11,8 +11,9 @@ module.exports = merge(baseConfig, {
   devtool: 'source-map',
   output: {
     path: resolve(__dirname, '..', 'dist'),
-    filename: join(basePath, 'js/[name].[hash:8].js'),
-    chunkFilename: join(basePath, 'js/[name].[hash:8].js')
+    publicPath: '/',
+    filename: posixJoin(basePath, 'js/[name].[hash:8].js'),
+    chunkFilename: posixJoin(basePath, 'js/[name].[hash:8].js')
   },
   devServer: {
     contentBase: resolve(__dirname, '..', 'dist'),

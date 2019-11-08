@@ -13,7 +13,7 @@
               <el-upload
                 ref="upload"
                 class="upload-avatar-input"
-                :action="$globalConfig.SERVER_ADDRESS + '/user/avatar/'"
+                :action="$globalConfig.SERVER_ADDRESS + '/api/user/avatar/test'"
                 list-type="text"
                 :with-credentials="true"
                 :show-file-list="false"
@@ -74,7 +74,7 @@
 
         return {
           isEditStatus: false,
-          userInfo: {},
+          // userInfo: {},
           rules: {
             username: [
               { required: true, trigger: 'blur', message: '请输入用户名' }
@@ -94,10 +94,20 @@
         ...mapState([
           'isMiniWidth',
           'user'
-        ])
+        ]),
+        userInfo () {
+          const user = this.$store.getters['getUserInfo'].baseInfo;
+          return {
+            ...user,
+            avatar: `${this.$globalConfig.IMAGE_ADDRESS}/${user.avatarKey}?v=${new Date().getTime()}`
+          };
+        }
       },
       asyncData ({ store, route }) {
         return store.dispatch('getUserInfo');
+      },
+      mounted () {
+        // this.userInfo = Object.assign({}, this.$store.getters['getUserInfo'].baseInfo || {});
       },
       methods: {
         ...mapMutations({
@@ -106,11 +116,14 @@
         ...mapActions([
           'getUserInfo'
         ]),
+        getAvatarUrl () {
+          return this.$globalConfig.IMAGE_ADDRESS + '/' + this.userInfo.avatarKey + '?v=' + new Date().getTime();
+        },
         handleSuccess (res) {
           // 由于七牛云采用的同名覆盖，覆盖上传后，路径不会变化，所以在这里用时间戳进行强制刷新
-          this.$set(this.user, 'avatar', res.data.path + '?v=' + new Date().getTime());
+          this.$set(this.userInfo, 'avatarKey', res.data.avatarKey);
           // 更新vuex 中用户信息
-          this.setUserInfo(this.user);
+          this.setUserInfo(this.userInfo);
           this.$notify.success('上传成功');
         },
         beforeAvatarUpload (file) {
@@ -161,14 +174,6 @@
         },
         resetStatus () {
           this.isEditStatus = false;
-        }
-      },
-      watch: {
-        user: {
-          deep: true,
-          handler (value, oldValue) {
-            this.userInfo = value.baseInfo || {};
-          }
         }
       }
     };

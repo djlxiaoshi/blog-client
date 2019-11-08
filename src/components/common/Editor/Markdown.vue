@@ -105,7 +105,6 @@
       padding: 10px;
       overflow: auto;
       #vue-showdown {
-       overflow: auto;
       }
     }
   }

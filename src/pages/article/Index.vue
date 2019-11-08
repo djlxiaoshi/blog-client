@@ -1,16 +1,15 @@
 <template>
     <div class="view-article-page">
       <el-row type="flex" justify="space-around">
-        <el-col :xs="24" :sm="23" :md="17" :lg="18" :xl="19">
+        <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
           <div class="page-left">
-            <h1 class="article-title">{{ title }}</h1>
+            <h1 class="article-title">{{ article.title }}</h1>
             <div class="article-details">
               <span class="details-item">{{ formatTime(article.createTime) }}</span>
               <span class="details-item">字数 {{ article.wordCount }}</span>
               <span class="details-item">阅读 {{ article.views }}</span>
 
               <span
-                v-if="user.baseInfo && user.baseInfo._id === author._id"
                 class="operate-wrap">
                 <span
                   class="edit"
@@ -31,7 +30,7 @@
                   :key="tag._id"
                   v-for="tag in article.tags">{{ tag.label }}</el-tag>
                 <span
-                  v-if="user.baseInfo && user.baseInfo._id === author._id"
+                  v-if="user.baseInfo && user.baseInfo._id === article.createUser._id"
                   class="tags-setting"
                   @click="toggleTags"
                 >标签设置</span>
@@ -66,9 +65,9 @@
           </div>
         </el-col>
 
-        <el-col class="hidden-sm-and-down" :md="6" :lg="5" :xl="4">
-          <div class="page-right"></div>
-        </el-col>
+        <!--<el-col class="hidden-sm-and-down" :md="6" :lg="5" :xl="4">-->
+          <!--<div class="page-right"></div>-->
+        <!--</el-col>-->
       </el-row>
 
     </div>
@@ -187,6 +186,7 @@
     },
     watch: {
       article (article) {
+        debugger;
         this.author = article.createUser;
         this.articleTags = article.tags.map(tag => tag._id);
       }
@@ -201,7 +201,7 @@
       .article-title {
         margin-bottom: 30px;
         text-align: center;
-        font-size: 20px;
+        font-size: 30px;
       }
       .article-details {
         display: flex;

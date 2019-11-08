@@ -78,7 +78,7 @@
         } else if (event === 'post') {
           this.$router.push('/post');
         } else if (event === 'center') {
-          this.$router.push('/user');
+          this.$router.push('/user/info');
         }
       },
       logout () {

@@ -43,7 +43,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: HOST_ENV === 'node'
+        use: NODE_ENV === 'development' || HOST_ENV === 'node'
           ? ["vue-style-loader", "css-loader", "less-loader"] // 由于要使用ssr，这里使用vue-style-loader来替换style-loader
           : [{
               loader: MiniCssExtractPlugin.loader,
@@ -54,7 +54,7 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        use: HOST_ENV === 'node'
+        use: NODE_ENV === 'development' || HOST_ENV === 'node'
           ? ["vue-style-loader", "css-loader", "less-loader"] // 由于要使用ssr，这里使用vue-style-loader来替换style-loader
           : [{
               loader: MiniCssExtractPlugin.loader,

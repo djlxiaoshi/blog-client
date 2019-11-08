@@ -40,7 +40,6 @@ app.use(koaStatic(path.resolve(__dirname, 'dist'), {
 router.get('*', async ctx => {
   const cookies = ctx.req.headers.cookie;
   console.log('重要信息-路径', ctx.req.url);
-  console.log('重要信息-cookies', cookies);
   ctx.body = await renderer.renderToString({
     title: 'DJLXS',
     url: ctx.req.url,
@@ -48,7 +47,7 @@ router.get('*', async ctx => {
   }).then(html => {
       return html;
   }).catch(error => {
-    console.log('error', error);
+    console.error('error', error);
     return error.code; // 我们可以在前端路由中始终配置404页面，就不会走到这里
   });
 });

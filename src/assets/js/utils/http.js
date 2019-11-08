@@ -57,7 +57,7 @@ export default function Http (config) {
   obj.xhrInstance = new Promise((resolve, reject) => {
     if (isBrowserEnv) {
       // 客户端渲染 开启滚动条
-      NProgress.start();
+      // NProgress.start();
     }
 
     if (config.loading) {
@@ -106,7 +106,7 @@ export default function Http (config) {
 
       if (xhrCacheList.length === 0) {
         if (isBrowserEnv) {
-          NProgress.done();
+          // NProgress.done();
         }
       }
     });

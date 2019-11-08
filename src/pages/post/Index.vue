@@ -41,6 +41,9 @@
             return store.dispatch('getArticle', route.params.id);
           }
       },
+      // mounted () {
+      //   this.getArticle(this.$route.params.id);
+      // },
       computed: {
         ...mapState([
           'article'
