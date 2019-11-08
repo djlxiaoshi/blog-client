@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import { createApp } from './app';
-import ProgressBar from 'components/common/Progress';
+import ProgressBar from 'components/common/Progress/Index';
+import PageLoading from 'components/common/PageLoading/Index';
 import 'nprogress/nprogress.css';
 
 // import './assets/js/register-sw'; // 注册Service Worker
@@ -8,6 +9,10 @@ import 'nprogress/nprogress.css';
 // global progress bar
 const bar = Vue.prototype.$bar = new Vue(ProgressBar).$mount();
 document.body.appendChild(bar.$el);
+
+// global loading
+const loading = new Vue(PageLoading).$mount();
+document.body.appendChild(loading.$el);
 
 // 客户端特定引导逻辑……
 
@@ -49,10 +54,12 @@ router.onReady(() => {
 
     // 这里如果有加载指示器 (loading indicator)，就触发
     bar.start();
+    loading.show();
     Promise.all(asyncDataHooks.map(hook => hook({ store, route: to })))
       .then(() => {
       // 停止加载指示器(loading indicator)
         bar.finish();
+        loading.close();
         next();
       })
       .catch(next);

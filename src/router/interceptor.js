@@ -30,7 +30,7 @@ function getUserInfo (next) {
 }
 
 // 保存用户信息在Vuex中
-async function saveUserInStore (store) {
+async function saveUserInStore (store, router) {
   try {
     const result = await getUserInfo();
     store.commit(SET_USER_INFO, result);
@@ -60,9 +60,9 @@ export default function (router, store) {
     const matched = to.matched;
     const finallyMatched = to.matched[matched.length - 1];
 
-    // 如果vuex中无用户信息，则发送请求以获得用户登录状态
-    if (!store.state.user.baseInfo) {
-        await saveUserInStore(store);
+    // 如果该页面不需要获取用户信息且vuex中无用户信息，则发送请求以获得用户信息
+    if (!finallyMatched.meta.NoNeedUserMsg && !store.state.user.baseInfo) {
+        await saveUserInStore(store, router);
     }
 
     // 需要登录

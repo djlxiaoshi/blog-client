@@ -8,7 +8,7 @@
         :lg="mode === 3 ? 24: 12"
         :xl="mode === 3 ? 24: 12">
         <div class="markdown-wrap">
-          <textarea v-model="textValue" id="markdown-textarea"></textarea>
+          <textarea v-model="content" id="markdown-textarea"></textarea>
         </div>
       </el-col>
 
@@ -23,7 +23,7 @@
               class="markdown-preview"
               id="vue-showdown"
               :vueTemplate="true"
-              :markdown="textValue"
+              :markdown="content"
               flavor="github"
               :extensions="[showdownHighlight]"
               :options="options"
@@ -61,16 +61,9 @@
       components: {
         VueShowdown
       },
-        mounted () {
-        },
-        methods: {
+      methods: {
 
-        },
-        watch: {
-            content (content) {
-              this.textValue = content;
-            }
-        }
+      }
     };
 </script>
 

@@ -31,8 +31,6 @@
         },
       data () {
           return {
-            title: '',
-            content: '',
             viewMode: 1
           };
       },
@@ -41,9 +39,6 @@
             return store.dispatch('getArticle', route.params.id);
           }
       },
-      // mounted () {
-      //   this.getArticle(this.$route.params.id);
-      // },
       computed: {
         ...mapState([
           'article'
@@ -53,6 +48,12 @@
         },
         mode () {
           return this.$route.params.id ? EDIT_MODE : CREATE_MODE;
+        },
+        title () {
+          return this.article.title;
+        },
+        content () {
+          return this.article.content;
         }
       },
       methods: {
@@ -166,12 +167,6 @@
           }, () => {
 
           });
-        }
-      },
-      watch: {
-        article (article) {
-          this.title = article.title;
-          this.content = article.content;
         }
       }
     };

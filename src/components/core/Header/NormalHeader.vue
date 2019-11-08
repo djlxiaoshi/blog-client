@@ -18,7 +18,7 @@
               <div class="avatar-wrap" v-if="user.baseInfo">
                 <el-dropdown @command="eventHandler" trigger="click">
                   <a class="user-avatar">
-                    <img :src="user.avatar" width="100%" v-if="user.avatar">
+                    <img :src="userInfo.avatar" width="100%">
                   </a>
 
                   <el-dropdown-menu slot="dropdown">
@@ -60,7 +60,14 @@
         'activeMenu',
         'user',
         'menuList'
-      ])
+      ]),
+      userInfo () {
+        const user = this.$store.getters['getUserInfo'].baseInfo;
+        return {
+          ...user,
+          avatar: `${this.$globalConfig.IMAGE_ADDRESS}/${user.avatarKey}?v=${new Date().getTime()}`
+        };
+      }
     },
     mounted () {
     },

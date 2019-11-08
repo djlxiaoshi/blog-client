@@ -10,6 +10,7 @@
               <span class="details-item">阅读 {{ article.views }}</span>
 
               <span
+                v-if="user.baseInfo && user.baseInfo._id === article.createUser._id"
                 class="operate-wrap">
                 <span
                   class="edit"
@@ -90,14 +91,12 @@
       return {
         content: '',
         title: '',
-        author: {},
         showdownHighlight,
         options: {
           omitExtraWLInCodeBlocks: true,
           ghCodeBlocks: true
         },
         openTags: false,
-        articleTags: [], // 文章标签列表
         selectTags: []
       };
     },
@@ -109,7 +108,13 @@
         'article',
         'user',
         'tags'
-      ])
+      ]),
+      author () {
+        return this.article.createUser;
+      },
+      articleTags () {
+        return this.article.tags.map(tag => tag._id);
+      }
     },
     methods: {
       ...mapActions([
@@ -182,13 +187,6 @@
         }, () => {
 
         });
-      }
-    },
-    watch: {
-      article (article) {
-        debugger;
-        this.author = article.createUser;
-        this.articleTags = article.tags.map(tag => tag._id);
       }
     }
   };

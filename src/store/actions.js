@@ -15,7 +15,7 @@ export default {
     return xhrInstance.then((user) => {
       commit(SET_USER_INFO, user);
     }, (e) => {
-
+        return e;
     });
   },
   getArticles ({ commit }, { loadingTarget } = {}) {
@@ -30,8 +30,8 @@ export default {
 
     return xhrInstance.then((articles) => {
       commit(SET_ARTICLES, articles.list);
-    }, () => {
-
+    }, (e) => {
+      return e;
     });
   },
   getArticlesByUser ({ commit }) {
@@ -44,7 +44,8 @@ export default {
 
     return xhrInstance.then((articles) => {
       commit(SET_USER_ARTICLES, articles.list);
-    }, () => {
+    }, (e) => {
+      return e;
     });
   },
   getArticle ({ commit }, articleId) {
@@ -57,7 +58,8 @@ export default {
 
     return xhrInstance.then((article) => {
       commit(SET_CURRENT_ARTICLE, article);
-    }, () => {
+    }, (e) => {
+      return e;
     });
   },
   getAllTags ({ commit }, { loadingTarget } = {}) {
@@ -71,8 +73,8 @@ export default {
 
     return xhrInstance.then((tags) => {
       commit(SET_TAGS, tags);
-    }, () => {
-
+    }, (e) => {
+      return e;
     });
   },
   getTag ({ commit }, tagId) {
@@ -85,8 +87,8 @@ export default {
 
     return xhrInstance.then((tag) => {
       commit(SET_TAG, tag);
-    }, () => {
-
+    }, (e) => {
+      return e;
     });
   }
 };

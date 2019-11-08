@@ -31,6 +31,7 @@ export default function (context) {
           });
         }
       })).then(() => {
+        console.log('全部成功');
 
         // 在所有预取钩子(preFetch hook) resolve 后，
         // 我们的 store 现在已经填充入渲染应用程序所需的状态。
@@ -43,6 +44,7 @@ export default function (context) {
         resolve(app);
 
       }).catch((error) => {
+        console.log('error', error);
         reject(error);
       });
 

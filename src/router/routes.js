@@ -65,12 +65,18 @@ export default [
   {
     path: '/login',
     hidden: true,
-    component: () => import(/* webpackChunkName: "login" */'../pages/login/Index')
+    component: () => import(/* webpackChunkName: "login" */'../pages/login/Index'),
+    meta: {
+      NoNeedUserMsg: true
+    }
   },
   {
     path: '/register',
     component: () => import(/* webpackChunkName: "register" */'../pages/register/Index'),
-    hidden: true
+    hidden: true,
+    meta: {
+      NoNeedUserMsg: true
+    }
   },
   {
     path: '/user',
@@ -113,18 +119,27 @@ export default [
     path: '/server-exception',
     component: () => import(/* webpackChunkName: "exception" */'../pages/exception/Index'),
     hidden: true,
-    props: { type: 500 }
+    props: { type: 500 },
+    meta: {
+      NoNeedUserMsg: true
+    }
   },
   {
     path: '/no-permission',
     component: () => import(/* webpackChunkName: "exception" */'../pages/exception/Index'),
     hidden: true,
-    props: { type: 403 }
+    props: { type: 403 },
+    meta: {
+      NoNeedUserMsg: true
+    }
   },
   {
     path: '**',
     component: () => import(/* webpackChunkName: "exception" */'../pages/exception/Index'),
     hidden: true,
-    props: { type: 404 }
+    props: { type: 404 },
+    meta: {
+      NoNeedUserMsg: true
+    }
   }
 ];

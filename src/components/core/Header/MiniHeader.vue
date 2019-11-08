@@ -13,8 +13,8 @@
       </el-col>
       <el-col :span="6">
         <div class="header-login">
-          <a class="user-avatar" v-if="user">
-            <img :src="$globalConfig.SERVER_ADDRESS + user.avatar" width="100%">
+          <a class="user-avatar" v-if="user.baseInfo">
+            <img :src="userInfo.avatar" width="100%">
           </a>
           <div v-else>
             <a class="login-btn" href="javascript:void(0)" @click="goToLoginPage">登录</a>
@@ -38,6 +38,13 @@
         'user',
         'sidebarVisible'
       ]),
+      userInfo () {
+        const user = this.$store.getters['getUserInfo'].baseInfo;
+        return {
+          ...user,
+          avatar: `${this.$globalConfig.IMAGE_ADDRESS}/${user.avatarKey}?v=${new Date().getTime()}`
+        };
+      },
       menuClass () {
         return this.sidebarVisible ? 'el-icon-close' : 'el-icon-menu';
       }
