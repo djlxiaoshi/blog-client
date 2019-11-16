@@ -3,15 +3,16 @@
       <el-row type="flex" justify="space-around">
         <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
           <div class="page-left">
-            <h1 class="article-title">{{ article.title }}</h1>
-            <div class="article-details">
-              <span class="details-item">{{ formatTime(article.createTime) }}</span>
-              <span class="details-item">字数 {{ article.wordCount }}</span>
-              <span class="details-item">阅读 {{ article.views }}</span>
+            <div class="article-wrap">
+              <h1 class="article-title">{{ article.title }}</h1>
+              <div class="article-details">
+                <span class="details-item">{{ formatTime(article.createTime) }}</span>
+                <span class="details-item">字数 {{ article.wordCount }}</span>
+                <span class="details-item">阅读 {{ article.views }}</span>
 
-              <span
-                v-if="user.baseInfo && user.baseInfo._id === article.createUser._id"
-                class="operate-wrap">
+                <span
+                  v-if="user.baseInfo && user.baseInfo._id === article.createUser._id"
+                  class="operate-wrap">
                 <span
                   class="edit"
                   @click="editArticle"
@@ -23,46 +24,52 @@
                 >删除文章</span>
               </span>
 
-            </div>
-            <div class="article-tags">
-              <div class="selected-tags">
-                <el-tag
-                  size="mini"
-                  :key="tag._id"
-                  v-for="tag in article.tags">{{ tag.label }}</el-tag>
-                <span
-                  v-if="user.baseInfo && user.baseInfo._id === article.createUser._id"
-                  class="tags-setting"
-                  @click="toggleTags"
-                >标签设置</span>
               </div>
-              <div class="all-tags" v-if="openTags">
-                <div class="selector-body">
-                  <el-checkbox-group v-model="articleTags">
-                    <el-checkbox-button
-                      :key="tag._id"
-                      :label="tag._id"
-                      v-for="tag in tags">
-                      {{ tag.label }}</el-checkbox-button>
-                  </el-checkbox-group>
+              <div class="article-tags">
+                <div class="selected-tags">
+                  <el-tag
+                    size="mini"
+                    :key="tag._id"
+                    v-for="tag in article.tags">{{ tag.label }}</el-tag>
+                  <span
+                    v-if="user.baseInfo && user.baseInfo._id === article.createUser._id"
+                    class="tags-setting"
+                    @click="toggleTags"
+                  >标签设置</span>
                 </div>
+                <div class="all-tags" v-if="openTags">
+                  <div class="selector-body">
+                    <el-checkbox-group v-model="articleTags">
+                      <el-checkbox-button
+                        :key="tag._id"
+                        :label="tag._id"
+                        v-for="tag in tags">
+                        {{ tag.label }}</el-checkbox-button>
+                    </el-checkbox-group>
+                  </div>
 
-                <div class="selector-footer">
-                  <el-button size="mini" round @click="toggleTags">取消</el-button>
-                  <el-button size="mini" round @click="handleTagsParams">保存</el-button>
+                  <div class="selector-footer">
+                    <el-button size="mini" round @click="toggleTags">取消</el-button>
+                    <el-button size="mini" round @click="handleTagsParams">保存</el-button>
+                  </div>
+
                 </div>
-
+              </div>
+              <div class="article-content">
+                <VueShowdown
+                  class="markdown-preview"
+                  :vueTemplate="true"
+                  :markdown="article.content || ''"
+                  flavor="github"
+                  :extensions="[showdownHighlight]"
+                  :options="options"> </VueShowdown>
               </div>
             </div>
-            <div class="article-content">
-              <VueShowdown
-                class="markdown-preview"
-                :vueTemplate="true"
-                :markdown="article.content || ''"
-                flavor="github"
-                :extensions="[showdownHighlight]"
-                :options="options"> </VueShowdown>
+
+            <div style="margin-top: 20px">
+              <Comment></Comment>
             </div>
+
           </div>
         </el-col>
 
@@ -79,13 +86,15 @@
 
   import { VueShowdown } from 'vue-showdown';
   import showdownHighlight from 'showdown-highlight';
+  import Comment from './Comment';
 
   import { mapState, mapActions } from 'vuex';
   import dayjs from 'dayjs';
 
   export default {
     components: {
-      VueShowdown
+      VueShowdown,
+      Comment
     },
     data () {
       return {

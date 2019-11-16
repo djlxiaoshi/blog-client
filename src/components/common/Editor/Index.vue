@@ -1,6 +1,6 @@
 <template>
   <div class="app-editor">
-    <RichTextEditor v-if="type === 'richText'" v-bind="$attrs"></RichTextEditor>
+    <RichTextEditor v-if="type === 'richText'" v-bind="$attrs" v-on="listeners"></RichTextEditor>
     <MarkdownEditor v-else v-bind="$attrs"></MarkdownEditor>
   </div>
 </template>
@@ -30,7 +30,14 @@
         },
         methods: {
 
+        },
+      computed: {
+        listeners () {
+          return {
+            ...this.$listeners
+          };
         }
+      }
     };
 </script>
 
