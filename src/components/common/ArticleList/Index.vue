@@ -38,7 +38,6 @@
     props: ['data'],
     methods: {
       formateTime (time) {
-        console.log(time);
         return dayjs(time).format('YYYY-MM-DD');
       },
       view (article, index) {
@@ -50,6 +49,8 @@
 
 <style scoped lang="less">
   .article-list {
+    list-style: none;
+    margin-top: 0;
     padding: 10px;
     .list-item {
       /deep/ .el-row {
@@ -68,10 +69,12 @@
         line-height: 25px;
         font-size: 18px;
         font-weight: 700;
-        cursor: pointer;
         color: #333;
-        &:hover {
-          text-decoration: underline;
+        a {
+          cursor:pointer;
+          &:hover {
+            text-decoration: underline;
+          }
         }
       }
       .item-abstract {

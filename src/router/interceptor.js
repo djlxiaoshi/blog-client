@@ -61,15 +61,15 @@ export default function (router, store) {
     const finallyMatched = to.matched[matched.length - 1];
 
     // 如果该页面不需要获取用户信息且vuex中无用户信息，则发送请求以获得用户信息
-    if (!finallyMatched.meta.NoNeedUserMsg && !store.state.user.baseInfo) {
+    if (!finallyMatched.meta.NoNeedUserMsg && !store.state.userInfo) {
         await saveUserInStore(store, router);
     }
 
     // 需要登录
     if (finallyMatched.meta.requiredLogin) {
-      if (store.state.user.baseInfo) {
+      if (store.state.userInfo) {
         // 权限验证
-        if (checkPermission(finallyMatched, store.state.user.baseInfo)) {
+        if (checkPermission(finallyMatched, store.state.userInfo)) {
           goToTargetPage(finallyMatched.path, store, next);
         } else {
           next('/no-permission');

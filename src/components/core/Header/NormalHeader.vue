@@ -15,10 +15,10 @@
 
             <div class="header-right">
 
-              <div class="avatar-wrap" v-if="user.baseInfo">
+              <div class="avatar-wrap" v-if="userInfo">
                 <el-dropdown @command="eventHandler" trigger="click">
                   <a class="user-avatar">
-                    <img :src="userInfo.avatar" width="100%">
+                    <img :src="avatar" width="100%">
                   </a>
 
                   <el-dropdown-menu slot="dropdown">
@@ -44,6 +44,8 @@
   import HeaderMenu from './Menu';
   import { mapState, mapMutations } from 'vuex';
   import { SET_ACTIVE_MENU, SET_USER_INFO } from 'store/mutation-types';
+  import defaultAvatar from '@/assets/img/avatar.jpg';
+
   export default {
     components: {
       HeaderMenu
@@ -58,15 +60,12 @@
     computed: {
       ...mapState([
         'activeMenu',
-        'user',
+        'userInfo',
         'menuList'
       ]),
-      userInfo () {
-        const user = this.$store.getters['getUserInfo'].baseInfo;
-        return {
-          ...user,
-          avatar: `${this.$globalConfig.IMAGE_ADDRESS}/${user.avatarKey}?v=${new Date().getTime()}`
-        };
+      avatar () {
+        if (!this.userInfo) return defaultAvatar;
+        return `${this.$globalConfig.IMAGE_ADDRESS}/${this.userInfo.avatarKey}?v=${new Date().getTime()}`;
       }
     },
     mounted () {
@@ -89,16 +88,16 @@
         }
       },
       logout () {
-        if (this.user) {
+        if (this.userInfo) {
           const { xhrInstance } = this.$http({
             url: '/logout',
             data: {
-              id: this.user._id
+              id: this.userInfo._id
             }
           });
 
           xhrInstance.then(() => {
-
+            debugger;
             this.clearUserMsg();
             this.goToHomePage();
 

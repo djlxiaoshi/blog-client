@@ -3,9 +3,10 @@
     <el-row type="flex" justify="space-around">
       <el-col :xs="24" :sm="23" :md="17" :lg="18" :xl="19">
         <div class="page-left" ref="loadingTarget">
-          <AppEmpty :isEmpty="articles.length === 0">
+          <AppEmpty :isEmpty="allArticles.length === 0">
             <ArticleList
-              :data="articles"
+              v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10"
+              :data="allArticles"
               @onView="viewArticle"
             ></ArticleList>
           </AppEmpty>
@@ -24,7 +25,8 @@
   import ArticleList from '@/components/common/ArticleList/Index';
   import SideBar from './SideBar';
   import AppEmpty from '@/components/common/Empty/Index';
-  import { mapState, mapActions } from 'vuex';
+  import { mapState, mapActions, mapMutations } from 'vuex';
+  import { SET_ALL_ARTICLES } from 'store/mutation-types';
 
   export default {
     name: '',
@@ -33,23 +35,81 @@
       AppEmpty,
       SideBar
     },
+    data () {
+      return {
+        currentPage: 2, // asyncData中已经加载过一夜，所以当前页为2
+        pageSize: 2,
+        artilceTotals: Infinity,
+        busy: false
+      };
+    },
     computed: {
       ...mapState([
-        'articles'
+        'allArticles'
       ])
     },
     asyncData ({ store, route }) {
       return Promise.all([
-        store.dispatch('getArticles'),
+        store.dispatch('getAllArticles', {
+          currentPage: 1,
+          pageSize: 2
+        }),
         store.dispatch('getAllTags')
       ]);
     },
+    mounted () {
+      
+    },
     methods: {
+      ...mapMutations({
+        'setAllArticle': SET_ALL_ARTICLES
+      }),
       ...mapActions([
-        'getArticles'
+        'getAllArticles'
       ]),
       viewArticle (article) {
         this.$router.push(`/article/${article._id}`);
+      },
+      getMoreArtilces () {
+        const { xhrInstance } = this.$http({
+          url: '/articles',
+          data: {
+            pageSize: this.pageSize,
+            currentPage: this.currentPage
+          },
+          method: 'get',
+          showSuccessMsg: false,
+          showErrorMsg: false
+        });
+
+        return xhrInstance.then((articles) => {
+          return articles;
+        }, (e) => {
+          return e;
+        });
+      },
+      async loadMore () {
+        if (this.allArticles.length < this.artilceTotals) {
+          
+          this.busy = true;
+          const data = await this.getMoreArtilces({
+            currentPage: this.currentPage,
+            pageSize: this.pageSize
+          });
+
+          this.artilceTotals = data.total;
+          
+          this.allArticles.splice((this.currentPage - 1) * this.pageSize);
+          this.allArticles.push(...data.list);
+
+          this.setAllArticle(this.allArticles);
+
+          // 如果到了下一页，则增加
+          if (this.allArticles.length % this.pageSize === 0) {
+            this.currentPage++;
+          }
+          this.busy = false;
+        }
       }
     }
   };

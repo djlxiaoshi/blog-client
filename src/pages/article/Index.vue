@@ -11,7 +11,7 @@
                 <span class="details-item">阅读 {{ article.views }}</span>
 
                 <span
-                  v-if="user.baseInfo && user.baseInfo._id === article.createUser._id"
+                  v-if="userInfo && (userInfo._id === article.createUser._id)"
                   class="operate-wrap">
                 <span
                   class="edit"
@@ -32,7 +32,7 @@
                     :key="tag._id"
                     v-for="tag in article.tags">{{ tag.label }}</el-tag>
                   <span
-                    v-if="user.baseInfo && user.baseInfo._id === article.createUser._id"
+                    v-if="userInfo && (userInfo._id === article.createUser._id)"
                     class="tags-setting"
                     @click="toggleTags"
                   >标签设置</span>
@@ -115,7 +115,7 @@
     computed: {
       ...mapState([
         'article',
-        'user',
+        'userInfo',
         'tags'
       ]),
       author () {

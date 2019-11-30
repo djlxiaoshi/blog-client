@@ -44,10 +44,15 @@
           ]
         }
       },
+      data () {
+        return {
+          editor: null
+        };
+      },
       mounted () {
         const element = this.$refs.pell;
 
-        pell.init({
+        this.editor = pell.init({
           element: element,
           onChange: html => {
             this.$emit('input', html);
@@ -56,7 +61,12 @@
         });
       },
       methods: {
-        ensureHTTP: str => /^https?:\/\//.test(str) && str || `http://${str}`
+        ensureHTTP: str => /^https?:\/\//.test(str) && str || `http://${str}`,
+        clear () {
+            if (this.editor) {
+              this.editor.content.innerHTML = '';
+            }
+        }
       }
     };
 </script>

@@ -3,9 +3,9 @@
     <el-row type="flex" justify="space-around">
       <el-col :xs="24" :sm="23" :md="17" :lg="18" :xl="19">
         <div class="page-left">
-          <AppEmpty :isEmpty="user.articles.length === 0">
+          <AppEmpty :isEmpty="userArticles.length === 0">
             <ArticleList
-              :data="user.articles"
+              :data="userArticles"
               @onView="viewArticle"
             ></ArticleList>
           </AppEmpty>
@@ -31,7 +31,7 @@
     },
     computed: {
       ...mapState([
-        'user'
+        'userArticles'
       ])
     },
     asyncData ({ store, router }) {
@@ -39,7 +39,7 @@
     },
     methods: {
       ...mapActions([
-        'getArticlesByUser'
+        'getUserArticles'
       ]),
       viewArticle (article) {
         this.$router.push(`/article/${article._id}`);

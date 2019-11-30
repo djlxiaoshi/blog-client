@@ -1,27 +1,27 @@
 <template>
-    <div class="comment-wrap">
+    <div class="comment-wrap" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
       <div class="edit-wrap">
-        <Editor type="richText" :actions="actions" @input="onInputChange"></Editor>
+        <Editor type="richText" :actions="actions" @input="onInputChange" ref='reply-editor'></Editor>
         <div class="operate-wrap">
           <el-button type="danger" round size="mini" @click="postComment()">发布</el-button>
-          <el-button round size="mini">清空</el-button>
+          <el-button round size="mini" @click='clear()'>清空</el-button>
         </div>
       </div>
       <div class="separator">精彩评论</div>
       <ul class="comment-list-wrap">
         <li class="comment-item" v-for="(comment, index) in comments" :key="comment._id">
           <div class="comment-desc">
-            <span class="comment-floor">{{ index }}楼</span>
+            <span class="comment-floor">{{ index + 1}}楼</span>
             <span class="comment-user">{{ comment.createUser.username }}</span>
             <span v-if="comment.replyUser">
               <span>回复</span>
               <span>{{ comment.replyUser.username }}</span>
             </span>
-            <span class="comment-time">{{ comment.createTime }}</span>
+            <span class="comment-time">{{ formatTime(comment.createTime) }}</span>
           </div>
           <p class="comment-content" v-html="comment.content"></p>
           <div class="operate-wrap">
-            <el-button type="text" @click="toggleReplyVisible(true, true, index)" class="reply-btn">回复</el-button>
+            <a @click="toggleReplyVisible(true, true, index)" class="reply-btn">回复</a>
           </div>
           <div class="reply-wrap" v-if="comment._visible">
             <Editor type="richText" @input="onInputChange($event, true, index)" :actions="actions"></Editor>
@@ -37,6 +37,8 @@
 
 <script>
   import Editor from 'components/common/Editor/Index.vue';
+  import dayjs from 'dayjs';
+
   export default {
     name: '',
     components: {
@@ -47,13 +49,17 @@
         visible: false,
         actions: [],
         content: '',
-        comments: []
+        comments: [],
+        commentsTotal: 10,
+        currentPage: 1,
+        pageSize: 10,
+        busy: false
       };
     },
-    mounted () {
-      this.getComments();
-    },
     methods: {
+      formatTime (timestamp) {
+        return dayjs(timestamp).format('YYYY-MM-DD');
+      },
       onInputChange (html, isReplyOthers, index) {
         if (isReplyOthers) {
           this.comments[index]._replyContent = html;
@@ -68,32 +74,48 @@
           this.visible = status;
         }
       },
-      getComments () {
+      getComments (currentPage) {
         const articleId = this.$route.params.id;
         if (articleId) {
           const { xhrInstance } = this.$http({
             url: `/comments`,
             method: 'get',
             data: {
-              pageSize: 10,
-              currentPage: 1,
+              pageSize: this.pageSize,
+              currentPage: currentPage,
               articleId
             },
             showSuccessMsg: false,
             showErrorMsg: true
           });
 
-          xhrInstance.then((data) => {
-            this.comments = data.list;
+          return xhrInstance.then((data) => {
+            this.commentsTotal = data.total;
+
+            this.comments.splice((this.currentPage - 1) * this.pageSize);
+            this.comments.push(...data.list);
+            // 如果到了下一页，则增加
+            if (this.comments.length % this.pageSize === 0) {
+              this.currentPage++;
+            }
+            
+
           }, () => {
 
           });
         }
       },
+      async loadMore () {
+        if (this.comments.length < this.commentsTotal) {
+          this.busy = true;
+          await this.getComments(this.currentPage);
+          this.busy = false;
+        }
+      },
       postComment (isReplyOthers, index) {
-        debugger;
         const articleId = this.$route.params.id;
         if (articleId) {
+          // 如果是回复其他评论
           if (isReplyOthers) {
             this.sendRequest({
               articleId,
@@ -101,12 +123,18 @@
               content: this.comments[index]._replyContent
             });
           } else {
+            // 直接评论文章
             this.sendRequest({
               articleId,
               content: this.content
             });
           }
         }
+      },
+      clear () {
+        // TODO 有无更加优雅的方式 获取孙子节点  或者实现清空功能
+        this.content = '';
+        this.$refs['reply-editor'].$refs['rich-text-editor'].clear();
       },
       sendRequest (params) {
         const articleId = this.$route.params.id;
@@ -119,9 +147,9 @@
             showErrorMsg: true
           });
 
-          xhrInstance.then(() => {
-            this.content = '';
-            this.getComments();
+          xhrInstance.then((comment) => {
+            this.clrer();
+            this.getComments(this.currentPage);
           }, () => {
 
           });
@@ -155,6 +183,8 @@
     padding-left: 20px;
     .comment-item {
       list-style: none;
+      padding: 20px 0;
+      border-bottom: 1px solid #e5e5e5;
      .comment-desc {
        font-size: 12px;
        span {
@@ -170,6 +200,8 @@
       .operate-wrap {
         .reply-btn {
           font-size: 12px;
+          color: #409eff;
+          cursor: pointer;
         }
       }
       .reply-wrap {

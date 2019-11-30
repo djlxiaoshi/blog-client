@@ -61,7 +61,7 @@
       border-bottom: 2px solid #999999;
     }
     .module-title {
-      margin-bottom: 5px;
+      margin: 5px auto;
       color: lightgreen;
       font-size: 14px;
     }

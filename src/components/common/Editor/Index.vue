@@ -1,6 +1,6 @@
 <template>
   <div class="app-editor">
-    <RichTextEditor v-if="type === 'richText'" v-bind="$attrs" v-on="listeners"></RichTextEditor>
+    <RichTextEditor v-if="type === 'richText'" v-bind="$attrs" v-on="listeners" ref='rich-text-editor'></RichTextEditor>
     <MarkdownEditor v-else v-bind="$attrs"></MarkdownEditor>
   </div>
 </template>

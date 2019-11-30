@@ -2,7 +2,7 @@
  * 异步操作state
  */
 import http from '../assets/js/utils/http';
-import { SET_ARTICLES, SET_CURRENT_ARTICLE, SET_USER_ARTICLES, SET_TAGS, SET_TAG, SET_USER_INFO } from './mutation-types';
+import { SET_ALL_ARTICLES, SET_CURRENT_ARTICLE, SET_USER_ARTICLES, SET_TAGS, SET_TAG, SET_USER_INFO } from './mutation-types';
 
 export default {
   getUserInfo ({ commit }) {
@@ -18,10 +18,13 @@ export default {
         return e;
     });
   },
-  getArticles ({ commit }, { loadingTarget } = {}) {
+  getAllArticles ({ commit }, { loadingTarget, pageSize, currentPage } = {}) {
     const { xhrInstance } = http({
       url: '/articles',
-      data: {},
+      data: {
+        pageSize: pageSize || 10,
+        currentPage: currentPage || 1
+      },
       method: 'get',
       showSuccessMsg: false,
       showErrorMsg: false,
@@ -29,12 +32,13 @@ export default {
     });
 
     return xhrInstance.then((articles) => {
-      commit(SET_ARTICLES, articles.list);
+      commit(SET_ALL_ARTICLES, articles.list);
+      return articles;
     }, (e) => {
       return e;
     });
   },
-  getArticlesByUser ({ commit }) {
+  getUserArticles ({ commit }) {
     const { xhrInstance } = http({
       url: `/user/articles/`,
       method: 'get',

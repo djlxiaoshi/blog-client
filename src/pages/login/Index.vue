@@ -82,7 +82,7 @@
           this.setUserMsg({
             username: user.username,
             info: user.info,
-            avatar: user.avatar,
+            avatarKey: user.avatarKey,
             role: user.role,
             email: user.email,
             _id: user._id

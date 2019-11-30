@@ -8,7 +8,7 @@
           label-width="80px"
           label-position="left">
           <el-form-item label="头像" prop="url">
-            <img class="user-avatar avatar-left" :src="userInfo.avatar" alt="">
+            <img class="user-avatar avatar-left" :src="avatar" alt="">
             <div class="avatar-right">
               <el-upload
                 ref="upload"
@@ -26,13 +26,13 @@
           </el-form-item>
 
           <el-form-item label="用户名" prop="username" class="username-input-item">
-            <el-input v-model="userInfo.username" v-if="isEditStatus"></el-input>
-            <p v-else>{{ user.baseInfo.username }}</p>
+            <el-input v-model="baseInfo.username" v-if="isEditStatus"></el-input>
+            <p v-else>{{ userInfo.username }}</p>
           </el-form-item>
 
           <el-form-item label="用户邮箱" prop="email" class="username-input-item">
-            <el-input v-model="userInfo.email" v-if="isEditStatus"></el-input>
-            <p v-else>{{ user.baseInfo.email }}</p>
+            <el-input v-model="baseInfo.email" v-if="isEditStatus"></el-input>
+            <p v-else>{{ userInfo.email }}</p>
           </el-form-item>
 
           <el-form-item label="个人介绍" class="user-info-input-item">
@@ -40,15 +40,15 @@
               v-if="isEditStatus"
               type="textarea"
               :rows="6"
-              v-model="userInfo.info"
+              v-model="baseInfo.info"
             >
             </el-input>
-            <p v-else>{{ user.baseInfo.info }}</p>
+            <p v-else>{{ userInfo.info }}</p>
           </el-form-item>
 
           <el-form-item label="">
             <el-button @click="toggleEditStatus" type="default" size="small" plain>{{ isEditStatus ? '取消' : '编辑' }}</el-button>
-            <el-button @click="save" type="success" size="small" plain>保存</el-button>
+            <el-button @click="save" type="success" size="small" plain v-if='isEditStatus'>保存</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -58,6 +58,7 @@
 <script>
   import { mapActions, mapMutations, mapState } from 'vuex';
   import { SET_USER_INFO } from 'store/mutation-types';
+  import defaultAvatar from '@/assets/img/avatar.jpg';
 
     export default {
       data () {
@@ -74,7 +75,6 @@
 
         return {
           isEditStatus: false,
-          // userInfo: {},
           rules: {
             username: [
               { required: true, trigger: 'blur', message: '请输入用户名' }
@@ -93,14 +93,14 @@
       computed: {
         ...mapState([
           'isMiniWidth',
-          'user'
+          'userInfo'
         ]),
-        userInfo () {
-          const user = this.$store.getters['getUserInfo'].baseInfo;
-          return {
-            ...user,
-            avatar: `${this.$globalConfig.IMAGE_ADDRESS}/${user.avatarKey}?v=${new Date().getTime()}`
-          };
+        baseInfo () {
+          return JSON.parse(JSON.stringify(this.userInfo));
+        },
+        avatar () {
+          if (!this.userInfo) return defaultAvatar;
+          return `${this.$globalConfig.IMAGE_ADDRESS}/${this.userInfo.avatarKey}?v=${new Date().getTime()}`;
         }
       },
       asyncData ({ store, route }) {
@@ -116,14 +116,11 @@
         ...mapActions([
           'getUserInfo'
         ]),
-        getAvatarUrl () {
-          return this.$globalConfig.IMAGE_ADDRESS + '/' + this.userInfo.avatarKey + '?v=' + new Date().getTime();
-        },
         handleSuccess (res) {
           // 由于七牛云采用的同名覆盖，覆盖上传后，路径不会变化，所以在这里用时间戳进行强制刷新
           this.$set(this.userInfo, 'avatarKey', res.data.avatarKey);
-          // 更新vuex 中用户信息
-          this.setUserInfo(this.userInfo);
+          // 更新vuex 中用户信息  这里必须要传入一个新的对象，触发更新
+          this.setUserInfo(JSON.parse(JSON.stringify(this.userInfo)));
           this.$notify.success('上传成功');
         },
         beforeAvatarUpload (file) {
@@ -162,9 +159,9 @@
             url: '/user',
             method: 'put',
             data: {
-              info: this.userInfo.info,
-              username: this.userInfo.username,
-              email: this.userInfo.email
+              info: this.baseInfo.info,
+              username: this.baseInfo.username,
+              email: this.baseInfo.email
             },
             showErrorMsg: true,
             showSuccessMsg: true

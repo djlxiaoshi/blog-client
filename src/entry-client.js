@@ -3,6 +3,9 @@ import { createApp } from './app';
 import ProgressBar from 'components/common/Progress/Index';
 import PageLoading from 'components/common/PageLoading/Index';
 import 'nprogress/nprogress.css';
+import infiniteScroll from 'vue-infinite-scroll';
+
+Vue.use(infiniteScroll);
 
 // import './assets/js/register-sw'; // 注册Service Worker
 
@@ -24,6 +27,7 @@ if (window.__INITIAL_STATE__) {
 }
 
 // a global mixin that calls `asyncData` when a route component's params change
+// 例如 当从user/1 跳转到user/2 都应当再次执行asyncData
 Vue.mixin({
   beforeRouteUpdate (to, from, next) {
     const { asyncData } = this.$options;
@@ -43,6 +47,7 @@ router.onReady(() => {
   router.beforeResolve((to, from, next) => {
     const matched = router.getMatchedComponents(to);
     const prevMatched = router.getMatchedComponents(from);
+
     let diffed = false;
     const activated = matched.filter((c, i) => {
       return diffed || (diffed = (prevMatched[i] !== c));

@@ -6,7 +6,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const { basePath, resolve, join, posixJoin } = require('./config');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
@@ -24,13 +24,10 @@ module.exports = merge(baseConfig, {
     chunkFilename: posixJoin(basePath, 'js/[name].[hash:8].js')
   },
   optimization: {
+    minimize: true,
     minimizer: [
       new OptimizeCSSAssetsPlugin({}),
-      new UglifyJsPlugin({
-        cache: true,
-        parallel: true,
-        sourceMap: false // set to true if you want JS source maps
-      })
+      new TerserPlugin()
     ],
     splitChunks: {
       cacheGroups: {
