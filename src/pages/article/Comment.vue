@@ -50,7 +50,7 @@
         actions: [],
         content: '',
         comments: [],
-        commentsTotal: 10,
+        commentsTotal: Infinity,
         currentPage: 1,
         pageSize: 10,
         busy: false

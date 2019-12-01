@@ -117,6 +117,7 @@
 
 <style scoped lang="less">
   .explore-page {
+    margin-bottom: 20px;
     .page-left {
       border: 1px solid #dddddd;
     }

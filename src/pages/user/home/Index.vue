@@ -35,7 +35,7 @@
       ])
     },
     asyncData ({ store, router }) {
-      return store.dispatch('getArticlesByUser');
+      return store.dispatch('getUserArticles');
     },
     methods: {
       ...mapActions([

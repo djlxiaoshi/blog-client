@@ -1,10 +1,18 @@
 <template>
   <section class="app-login">
     <el-row type="flex" justify="center" align="middle">
-      <el-col :xs="24" :sm="16" :md="12" :lg="8" :xl="6">
-        <el-card class="box-card">
-          <div slot="header" class="card-header">
-            <span>登录</span>
+      <el-col :xs="24" :sm="10" :md="8" :lg="8" :xl="8">
+
+        <div class="page-header">
+          <div class="page-logo">
+            <img src="@/assets/img/avatar.jpg" alt="">
+          </div>
+          <h1 class="page-title">欢迎登陆</h1>
+        </div>
+
+        <div class="box-card">
+          <div class="card-header">
+            
           </div>
           <div class="card-body">
             <el-form
@@ -27,7 +35,7 @@
             <span class="go-register" @click="goToRegisterPage">注册账户</span>
             <span class="forget-password">忘记密码</span>
           </div>
-        </el-card>
+        </div>
       </el-col>
     </el-row>
   </section>
@@ -119,11 +127,31 @@
     top: 0;
     bottom: 0;
     z-index: 1001;
+    padding: 20px;
     background: #ffffff;
+    .page-header {
+      .page-logo {
+        text-align: center;
+        margin-bottom: 40px;
+        img {
+          border-radius: 50%;
+          width: 100px;
+          height: 100px;
+        }
+      }
+      .page-title {
+        font-size: 20px;
+      }
+    }
+    
     /deep/ .el-row {
       height: 100%;
     }
     .box-card {
+      
+      .card-header {
+
+      }
       .login-btn {
         width: 100%;
         border-radius: 20px;

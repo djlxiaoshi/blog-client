@@ -15,7 +15,8 @@
       <div class="donate-me module">
         <h5 class="module-title">支持博主</h5>
         <div class="module-content">
-          <!--<img src="//blog.djl.pub/avatar_677ea207-ad72-4a72-af4f-d482df1d49da.jpg" alt="">-->
+          <img src="@/assets/img/wechart-pay.jpg" alt="">
+          <img src="@/assets/img/ali-pay.jpg" alt="">
         </div>
       </div>
       <div class="contact-me module">
@@ -62,7 +63,7 @@
     }
     .module-title {
       margin: 5px auto;
-      color: lightgreen;
+      color: #999;
       font-size: 14px;
     }
     .tags-wrap {
@@ -89,12 +90,16 @@
     }
 
     .contact-me {
+      
       p {
         margin: 8px auto;
-        color: #999999;
+        padding-left: 10px;
+        font-size: 14px;
         a {
+          color: lightsalmon;
+          text-decoration: none;
           &:hover {
-            color: lightsalmon;
+            text-decoration: underline;
           }
         }
       }

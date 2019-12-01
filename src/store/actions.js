@@ -2,7 +2,9 @@
  * 异步操作state
  */
 import http from '../assets/js/utils/http';
-import { SET_ALL_ARTICLES, SET_CURRENT_ARTICLE, SET_USER_ARTICLES, SET_TAGS, SET_TAG, SET_USER_INFO } from './mutation-types';
+import { groupBy } from '@/assets/js/utils/tools';
+import dayjs from 'dayjs';
+import { SET_ALL_ARTICLES, SET_CURRENT_ARTICLE, SET_USER_ARTICLES, SET_TAGS, SET_TAG, SET_USER_INFO, SET_TIME_LINE } from './mutation-types';
 
 export default {
   getUserInfo ({ commit }) {
@@ -34,6 +36,33 @@ export default {
     return xhrInstance.then((articles) => {
       commit(SET_ALL_ARTICLES, articles.list);
       return articles;
+    }, (e) => {
+      return e;
+    });
+  },
+  getTimelines ({ commit }, { pageSize, currentPage } = {}) {
+    const { xhrInstance } = http({
+      url: '/timelines',
+      data: {
+        pageSize: pageSize || 10,
+        currentPage: currentPage || 1
+      },
+      method: 'get',
+      showSuccessMsg: false,
+      showErrorMsg: false
+    });
+
+    return xhrInstance.then((articles) => {
+      const data = articles.list;
+
+      data.forEach(item => {
+        item._group = dayjs(item.createTime).format('YYYY-MM');
+      });
+
+      const timelines = groupBy(data, '_group');
+
+      commit(SET_TIME_LINE, timelines);
+      return timelines;
     }, (e) => {
       return e;
     });

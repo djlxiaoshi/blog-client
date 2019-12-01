@@ -1,10 +1,18 @@
 <template>
   <section class="app-register">
     <el-row type="flex" justify="center" align="middle">
-      <el-col :xs="24" :sm="16" :md="12" :lg="8" :xl="6">
-        <el-card class="box-card">
-          <div slot="header" class="card-header">
-            <span>注册</span>
+      <el-col :xs="24" :sm="10" :md="8" :lg="8" :xl="8">
+
+        <div class="page-header">
+          <div class="page-logo">
+            <img src="@/assets/img/avatar.jpg" alt="">
+          </div>
+          <h1 class="page-title">欢迎注册</h1>
+        </div>
+
+        <div class="box-card">
+          <div class="card-header">
+            
           </div>
           <div class="card-body">
             <el-form
@@ -28,7 +36,7 @@
           <div class="card-footer">
             <span class="login-text">已有账户，直接<span @click="goToLogin" class="go-login">登录</span></span>
           </div>
-        </el-card>
+        </div>
       </el-col>
     </el-row>
   </section>
@@ -131,8 +139,25 @@
     right: 0;
     top: 0;
     bottom: 0;
+    padding: 20px;
     z-index: 1001;
     background: #ffffff;
+
+    .page-header {
+      .page-logo {
+        text-align: center;
+        margin-bottom: 40px;
+        img {
+          border-radius: 50%;
+          width: 100px;
+          height: 100px;
+        }
+      }
+      .page-title {
+        font-size: 20px;
+      }
+    }
+
     /deep/ .el-row {
       height: 100%;
     }
@@ -151,6 +176,7 @@
         display: flex;
 
         .login-text {
+          font-size: 14px;
           margin-left: auto;
           color: #999;
         }

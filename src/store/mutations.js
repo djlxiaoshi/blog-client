@@ -6,7 +6,7 @@ import {
   SET_USER_INFO, SET_MENU_LIST, SET_ACTIVE_MENU,
   TOGGLE_IS_MINI_WIDTH, CHANGE_SIDEBAR_VISIBLE,
   SET_ALL_ARTICLES, SET_CURRENT_ARTICLE, SET_USER_ARTICLES,
-  SET_TAGS, SET_TAG
+  SET_TAGS, SET_TAG, SET_TIME_LINE
 } from './mutation-types';
 
 export default {
@@ -39,5 +39,8 @@ export default {
   },
   [SET_TAG] (state, tag) {
     state.tag = tag;
+  },
+  [SET_TIME_LINE] (state, timelines) {
+    state.timelines = timelines;
   }
 };

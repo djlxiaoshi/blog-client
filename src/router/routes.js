@@ -83,7 +83,7 @@ export default [
     component: () => import(/* webpackChunkName: "user" */'../pages/user/Index'),
     children: [
       {
-        path: '',
+        path: ':id',
         component: () => import(/* webpackChunkName: "user-home" */'../pages/user/home/Index'),
         hidden: true,
         desc: '用户首页',

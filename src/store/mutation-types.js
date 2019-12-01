@@ -22,3 +22,5 @@ export const SET_CURRENT_ARTICLE = 'SET_CURRENT_ARTICLE';
 export const SET_TAGS = 'SET_TAGS';
 // 设置标签详情
 export const SET_TAG = 'SET_TAG';
+// 设置时间轴
+export const SET_TIME_LINE = 'SET_TIME_LINE';

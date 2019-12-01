@@ -27,12 +27,12 @@
 
           <el-form-item label="用户名" prop="username" class="username-input-item">
             <el-input v-model="baseInfo.username" v-if="isEditStatus"></el-input>
-            <p v-else>{{ userInfo.username }}</p>
+            <span v-else>{{ userInfo.username }}</span>
           </el-form-item>
 
           <el-form-item label="用户邮箱" prop="email" class="username-input-item">
             <el-input v-model="baseInfo.email" v-if="isEditStatus"></el-input>
-            <p v-else>{{ userInfo.email }}</p>
+            <span v-else>{{ userInfo.email }}</span>
           </el-form-item>
 
           <el-form-item label="个人介绍" class="user-info-input-item">
@@ -43,7 +43,7 @@
               v-model="baseInfo.info"
             >
             </el-input>
-            <p v-else>{{ userInfo.info }}</p>
+            <span v-else>{{ userInfo.info }}</span>
           </el-form-item>
 
           <el-form-item label="">
@@ -180,7 +180,6 @@
   .author-info-page {
     .user-info-panel {
       padding: 20px;
-      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
       /deep/ .el-upload {
         text-align: left;
       }

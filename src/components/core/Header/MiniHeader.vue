@@ -16,10 +16,7 @@
           <a class="user-avatar" v-if="userInfo">
             <img :src="avatar" width="100%">
           </a>
-          <div v-else>
-            <a class="login-btn" href="javascript:void(0)" @click="goToLoginPage">登录</a>
-            <a class="register-btn" href="javascript:void(0)" @click="goToRegisterPage">注册</a>
-          </div>
+          <a class="user-avatar" v-else @click="goToLoginPage"></a>
         </div>
       </el-col>
     </el-row>

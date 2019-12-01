@@ -36,3 +36,13 @@ export function isNullObject (obj) {
     return false;
   }
 }
+
+/* 
+分组
+*/
+export function groupBy (xs, key, result = {}) {
+  return xs.reduce(function (rv, x) {
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+  }, result);
+};

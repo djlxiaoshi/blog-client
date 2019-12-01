@@ -24,7 +24,7 @@
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item command="post">发表文章</el-dropdown-item>
                     <el-dropdown-item command="center">用户中心</el-dropdown-item>
-                    <el-dropdown-item command="userInfo">用户信息</el-dropdown-item>
+                    <el-dropdown-item command="userInfo">用户设置</el-dropdown-item>
                     <el-dropdown-item command="logout">退出登录</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
@@ -76,6 +76,8 @@
         'setUserInfo': SET_USER_INFO
       }),
       eventHandler (event) {
+        const userId = this.userInfo._id;
+
         if (event === 'logout') {
           this.logout();
         } else if (event === 'userInfo') {
@@ -84,7 +86,7 @@
         } else if (event === 'post') {
           this.$router.push('/post');
         } else if (event === 'center') {
-          this.$router.push('/user/info');
+          this.$router.push(`/user/${ userId }`);
         }
       },
       logout () {

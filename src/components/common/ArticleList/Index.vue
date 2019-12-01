@@ -19,7 +19,7 @@
             </div>
             <div class="details-bottom">
               <span class="item-time">{{ formateTime(article.createTime) }}</span>
-              <span class="item-author">{{ article.author }}</span>
+              <span class="item-author">{{ article.createUser.username }}</span>
               <i class="el-icon-view operate-icon" @click="view(article, index)"></i>
               <i class="el-icon-s-comment operate-icon"></i>
               <i class="el-icon-star-off operate-icon"></i>
