@@ -1,14 +1,30 @@
 <template>
     <div class="create-article-page">
       <div class="article-title">
-        <el-input :value="article.title" placeholder="请输入文章标题" @change="setTitle"></el-input>
+        <el-input :value="article.title" placeholder="请输入文章标题" @input="setTitle"></el-input>
       </div>
 
       <div class="operate-bar">
-        <i class="operate-icon el-icon-view" @click="changeViewMode(2)"></i>
-        <i class="operate-icon el-icon-edit-outline" @click="changeViewMode(3)"></i>
-        <i class="operate-icon el-icon-menu" @click="changeViewMode(1)"></i>
-        <i class="operate-icon el-icon-check" @click="handleParams"></i>
+        <el-tooltip class="item" effect="dark" content="编辑模式" placement="top">
+          <i class="operate-icon iconfont icon-bianji" @click="changeViewMode(2)"></i>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" content="预览模式" placement="top">
+          <i class="operate-icon iconfont icon-yulan" @click="changeViewMode(3)"></i>
+        </el-tooltip>
+        
+        <el-tooltip class="item" effect="dark" content="预览编辑模式" placement="top">
+          <i class="operate-icon iconfont icon-fenlan" @click="changeViewMode(1)"></i>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" content="保存" placement="top">
+          <i class="operate-icon iconfont icon-baocun" @click="handleParams"></i>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" content="发布" placement="top">
+          <i class="operate-icon iconfont icon-fabu" @click="handleParams"></i>
+        </el-tooltip>
+
       </div>
 
       <div class="article-content">
@@ -35,6 +51,9 @@
           viewMode: 1,
           title: ''
         };
+      },
+      mounted () {
+        this.title = this.article.title;
       },
       asyncData ({ store, route }) {
           if (route.params.id) {
@@ -75,7 +94,8 @@
           this.title = value;
         },
         handleParams () {
-          const title = this.title || '';
+          const title = this.title;
+
           if (!title.trim()) {
             this.$notify.warning('文章标题不能为空');
             return;
@@ -205,7 +225,7 @@
       flex: 0 0 40px;
       background: #dddddd;
       .operate-icon {
-        padding: 0 8px;
+        padding: 0 15px;
         cursor: pointer;
         &:hover {
           color: #5cb6ff;

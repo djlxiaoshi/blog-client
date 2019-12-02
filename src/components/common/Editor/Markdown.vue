@@ -83,7 +83,7 @@
       height: 100%;
       padding: 10px;
       box-sizing: border-box;
-      overflow: auto;
+      overflow: hidden;
       textarea {
         border: none;
         width: 100%;
