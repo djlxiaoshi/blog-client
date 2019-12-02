@@ -112,7 +112,7 @@
           });
 
           xhrInstance.then(() => {
-            this.goToHomePage();
+            this.goToLogin();
           }, () => {});
         },
         formValidate () {

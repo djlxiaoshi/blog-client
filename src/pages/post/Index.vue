@@ -1,7 +1,7 @@
 <template>
     <div class="create-article-page">
       <div class="article-title">
-        <el-input v-model="title" placeholder="请输入文章标题"></el-input>
+        <el-input :value="article.title" placeholder="请输入文章标题" @change="setTitle"></el-input>
       </div>
 
       <div class="operate-bar">
@@ -12,7 +12,7 @@
       </div>
 
       <div class="article-content">
-        <Editor :content="content" :mode="viewMode" ref="editor"></Editor>
+        <Editor :content="article.content || ''" :mode="viewMode" ref="editor"></Editor>
       </div>
 
     </div>
@@ -20,19 +20,21 @@
 
 <script>
   import Editor from '@/components/common/Editor/Index';
-  import { mapState, mapActions } from 'vuex';
+  import { mapState, mapActions, mapMutations } from 'vuex';
+  import { SET_CURRENT_ARTICLE } from 'store/mutation-types';
+
   const CREATE_MODE = 1;
   const EDIT_MODE = 2;
 
     export default {
-        name: 'Index',
         components: {
             Editor
         },
       data () {
-          return {
-            viewMode: 1
-          };
+        return {
+          viewMode: 1,
+          title: ''
+        };
       },
       asyncData ({ store, route }) {
           if (route.params.id) {
@@ -48,29 +50,39 @@
         },
         mode () {
           return this.$route.params.id ? EDIT_MODE : CREATE_MODE;
-        },
-        title () {
-          return this.article.title;
-        },
-        content () {
-          return this.article.content;
+        }
+      },
+      beforeRouteLeave (to, from, next) {
+        // 导航离开该组件的对应路由时调用
+        // 可以访问组件实例 `this`
+        const result = confirm('该操作不会对您的更改进行保存，请在离开之前进行保存操作！');
+        if (result) {
+          this.setCurrentArticle({});
+          next();
         }
       },
       methods: {
         ...mapActions([
           'getArticle'
         ]),
+        ...mapMutations({
+          'setCurrentArticle': SET_CURRENT_ARTICLE
+        }),
         changeViewMode (mode) {
           this.viewMode = mode;
         },
+        setTitle (value) {
+          this.title = value;
+        },
         handleParams () {
-          if (!this.title.trim()) {
+          const title = this.title || '';
+          if (!title.trim()) {
             this.$notify.warning('文章标题不能为空');
             return;
           }
 
           const params = {
-            title: this.title,
+            title: title.trim(),
             thumbnail: this.getThumbnail(),
             abstract: this.getAbstract(),
             content: this.getContent()
@@ -175,19 +187,22 @@
 <style scoped lang="less">
   .create-article-page {
     position: fixed;
+    box-sizing: border-box;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: 0px;
     top: 0;
     z-index: 1001;
     background: #ffffff;
+    display: flex;
+    flex-direction: column;
     .article-title {
-
+      flex: 0 0 60px;
     }
     .operate-bar {
       display: flex;
       align-items: center;
-      height: 40px;
+      flex: 0 0 40px;
       background: #dddddd;
       .operate-icon {
         padding: 0 8px;
@@ -198,7 +213,8 @@
       }
     }
     .article-content {
-      height: calc(100vh - 120px);
+      flex: 1;
+      height: calc(100vh - 100px);
     }
     /deep/ .el-input{
       .el-input__inner {

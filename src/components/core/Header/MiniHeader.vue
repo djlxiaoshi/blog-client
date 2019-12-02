@@ -14,7 +14,7 @@
       <el-col :span="6">
         <div class="header-login">
           <a class="user-avatar" v-if="userInfo">
-            <img :src="avatar" width="100%">
+            <img :src="avatar" width="100%" ref="avatar" @error="setDefaultAvatar">
           </a>
           <a class="user-avatar" v-else @click="goToLoginPage"></a>
         </div>
@@ -48,6 +48,9 @@
       ...mapMutations({
         'changeSidebarVisible': CHANGE_SIDEBAR_VISIBLE
       }),
+      setDefaultAvatar () {
+        this.$refs['avatar'].src = defaultAvatar;
+      },
       toggleSideMenu () {
         this.changeSidebarVisible(!this.sidebarVisible);
       },

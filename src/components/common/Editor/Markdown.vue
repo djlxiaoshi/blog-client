@@ -8,7 +8,8 @@
         :lg="mode === 3 ? 24: 12"
         :xl="mode === 3 ? 24: 12">
         <div class="markdown-wrap">
-          <textarea v-model="content" id="markdown-textarea"></textarea>
+          <!-- 默认情况下 textarea的高度是不会随着内容增加的 -->
+          <textarea v-model="articleContent" id="markdown-textarea" class="common-scroll"></textarea>
         </div>
       </el-col>
 
@@ -18,12 +19,12 @@
         :lg="mode === 2 ? 24: 12"
         :xl="mode === 2 ? 24: 12"
         class="hidden-sm-and-down">
-        <div class="html-wrap">
+        <div class="html-wrap common-scroll">
           <VueShowdown
               class="markdown-preview"
               id="vue-showdown"
               :vueTemplate="true"
-              :markdown="content"
+              :markdown="articleContent"
               flavor="github"
               :extensions="[showdownHighlight]"
               :options="options"
@@ -39,27 +40,31 @@
   import showdownHighlight from 'showdown-highlight';
 
     export default {
-        data () {
-            return {
-              textValue: '',
-              showdownHighlight,
-              options: {
-                omitExtraWLInCodeBlocks: true,
-                ghCodeBlocks: true
-              }
-            };
+      data () {
+          return {
+            textValue: '',
+            showdownHighlight,
+            options: {
+              omitExtraWLInCodeBlocks: true,
+              ghCodeBlocks: true
+            },
+            articleContent: this.content
+          };
+      },
+      props: {
+        mode: {
+          default: 1
         },
-        props: {
-          mode: {
-            default: 1
-          },
-          content: {
-            type: String,
-            default: ''
-          }
-        },
+        content: {
+          type: String,
+          default: ''
+        }
+      },
       components: {
         VueShowdown
+      },
+      computed: {
+        
       },
       methods: {
 
@@ -76,8 +81,9 @@
     .markdown-wrap {
       border: 2px solid #dddddd;
       height: 100%;
-      overflow: hidden;
       padding: 10px;
+      box-sizing: border-box;
+      overflow: auto;
       textarea {
         border: none;
         width: 100%;
@@ -97,6 +103,8 @@
       height: 100%;
       padding: 10px;
       overflow: auto;
+      height: 100%;
+      box-sizing: border-box;
       #vue-showdown {
       }
     }

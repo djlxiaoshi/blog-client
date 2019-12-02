@@ -10,6 +10,9 @@ export default {
   allArticles: [], // 所有文章
   tags: [], // 标签列表
   tag: {}, // 当前标签详情
-  article: {}, // 当前文章
+  article: {
+    title: '',
+    content: ''
+  }, // 当前文章
   timelines: {} // 时光轴
 };

@@ -11,7 +11,7 @@
                 <span class="details-item">阅读 {{ article.views }}</span>
 
                 <span
-                  v-if="userInfo && (userInfo._id === article.createUser._id)"
+                  v-if="hasOperateAuth()"
                   class="operate-wrap">
                 <span
                   class="edit"
@@ -32,7 +32,7 @@
                     :key="tag._id"
                     v-for="tag in article.tags">{{ tag.label }}</el-tag>
                   <span
-                    v-if="userInfo && (userInfo._id === article.createUser._id)"
+                    v-if="hasOperateAuth()"
                     class="tags-setting"
                     @click="toggleTags"
                   >标签设置</span>
@@ -87,8 +87,8 @@
   import { VueShowdown } from 'vue-showdown';
   import showdownHighlight from 'showdown-highlight';
   import Comment from './Comment';
-
-  import { mapState, mapActions } from 'vuex';
+  import { mapState, mapActions, mapMutations } from 'vuex';
+  import { SET_CURRENT_ARTICLE } from 'store/mutation-types';
   import dayjs from 'dayjs';
 
   export default {
@@ -125,13 +125,26 @@
         return this.article.tags.map(tag => tag._id);
       }
     },
+    beforeRouteLeave (to, from, next) {
+      // 导航离开该组件的对应路由时调用
+      // 可以访问组件实例 `this`
+      // 清除state中article数据
+      this.setCurrentArticle({});
+      next();
+    },
     methods: {
       ...mapActions([
         'getArticle',
         'getAllTags'
       ]),
+      ...mapMutations({
+        'setCurrentArticle': SET_CURRENT_ARTICLE
+      }),
       formatTime (time) {
         return time ? dayjs(time).format('YYYY-MM-DD') : '';
+      },
+      hasOperateAuth () {
+        return this.userInfo && this.article && this.article.createUser && (this.userInfo._id === this.article.createUser._id)
       },
       isChecked (tag) {
         const flag = !!this.article.tags.find(articleTag => articleTag._id === tag._id);

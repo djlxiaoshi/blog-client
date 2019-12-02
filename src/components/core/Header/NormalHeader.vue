@@ -18,7 +18,7 @@
               <div class="avatar-wrap" v-if="userInfo">
                 <el-dropdown @command="eventHandler" trigger="click">
                   <a class="user-avatar">
-                    <img :src="avatar" width="100%">
+                    <img :src="avatar" width="100%" @error="setDefaultAvatar" ref='avatar'>
                   </a>
 
                   <el-dropdown-menu slot="dropdown">
@@ -89,6 +89,9 @@
           this.$router.push(`/user/${ userId }`);
         }
       },
+      setDefaultAvatar () {
+        this.$refs['avatar'].src = defaultAvatar;
+      },
       logout () {
         if (this.userInfo) {
           const { xhrInstance } = this.$http({
@@ -99,7 +102,6 @@
           });
 
           xhrInstance.then(() => {
-            debugger;
             this.clearUserMsg();
             this.goToHomePage();
 
