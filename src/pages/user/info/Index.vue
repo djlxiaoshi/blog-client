@@ -8,7 +8,17 @@
           label-width="80px"
           label-position="left">
           <el-form-item label="头像" prop="url">
-            <img class="user-avatar avatar-left" :src="avatar" alt="">
+            <LoadImage
+              :src="avatar"
+              class="avatar-left"
+              :imgStyle="{ 
+                display: 'inline-block',
+                width: '80px',
+                height: '80px',
+                border: '2px solid #dddddd',
+                'border-radius': '50%'
+              }"></LoadImage>
+
             <div class="avatar-right">
               <el-upload
                 ref="upload"
@@ -59,8 +69,12 @@
   import { mapActions, mapMutations, mapState } from 'vuex';
   import { SET_USER_INFO } from 'store/mutation-types';
   import defaultAvatar from '@/assets/img/avatar.jpg';
+  import LoadImage from 'components/common/LoadImg/Index';
 
     export default {
+      components: {
+        LoadImage
+      },
       data () {
         const checkEmail = (rule, value, callback) => {
 
@@ -184,13 +198,15 @@
         text-align: left;
       }
       .avatar-left, .avatar-right{
-        display: inline-block;
         vertical-align: middle;
       }
       .avatar-left {
+        text-align: left;
         margin-right: 20px;
+        width: auto;
       }
       .user-avatar {
+        display: inline-block;
         width: 80px;
         height: 80px;
         border: 1px solid #e5e5e5;

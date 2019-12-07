@@ -15,8 +15,8 @@
       <div class="donate-me module">
         <h5 class="module-title">支持博主</h5>
         <div class="module-content">
-          <img src="@/assets/img/wechart-pay.jpg" alt="">
-          <img src="@/assets/img/ali-pay.jpg" alt="">
+          <LoadImage :src="alipay" alt="" :imgStyle="{ width: '120px', height: '120px' }" type="img"></LoadImage>
+          <LoadImage :src="wechatpay" alt="" :imgStyle="{ width: '120px', height: '120px' }" type="img"></LoadImage>
         </div>
       </div>
       <div class="contact-me module">
@@ -33,9 +33,22 @@
 
 <script>
   import { mapState, mapActions } from 'vuex';
+  import LoadImage from 'components/common/LoadImg/Index';
+
+  import wechatpay from '@/assets/img/wechat-pay.jpg';
+  import alipay from '@/assets/img/ali-pay.jpg';
 
   export default {
     name: '',
+    components: {
+      LoadImage
+    },
+    data () {
+      return {
+        wechatpay,
+        alipay
+      };
+    },
     computed: {
       ...mapState([
         'tags'

@@ -31,16 +31,11 @@ function getUserInfo (next) {
 
 // 保存用户信息在Vuex中
 async function saveUserInStore (store, router) {
-  try {
-    const result = await getUserInfo();
-    store.commit(SET_USER_INFO, result);
+  const result = await getUserInfo();
+  store.commit(SET_USER_INFO, result);
 
-    // todo 还未有相关接口，先前端写死
-    // store.commit(SET_MENU_LIST, result ? (result.menu || []) : []);
-  } catch (e) {
-    //  服务器异常
-    console.log('获取用户信息接口异常', e);
-  }
+  // TODO 还未有相关接口，先前端写死
+  
 }
 
 function goToTargetPage (path, store, next) {
@@ -62,7 +57,15 @@ export default function (router, store) {
 
     // 如果该页面不需要获取用户信息且vuex中无用户信息，则发送请求以获得用户信息
     if (!finallyMatched.meta.NoNeedUserMsg && !store.state.userInfo) {
+      try {
         await saveUserInStore(store, router);
+      } catch (e) {
+        // 服务器异常
+        console.log('获取用户信息接口异常', e);
+        // TODO 后面优化
+        // router.push('/server-exception');
+        // return;
+      }
     }
 
     // 需要登录

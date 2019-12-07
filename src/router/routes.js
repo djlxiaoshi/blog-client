@@ -83,19 +83,19 @@ export default [
     component: () => import(/* webpackChunkName: "user" */'../pages/user/Index'),
     children: [
       {
-        path: ':id',
-        component: () => import(/* webpackChunkName: "user-home" */'../pages/user/home/Index'),
+        path: 'info',
+        component: () => import(/* webpackChunkName: "user-info" */'../pages/user/info/Index'),
         hidden: true,
-        desc: '用户首页',
+        desc: '用户信息',
         meta: {
           requiredLogin: true
         }
       },
       {
-        path: 'info',
-        component: () => import(/* webpackChunkName: "user-info" */'../pages/user/info/Index'),
+        path: ':id',
+        component: () => import(/* webpackChunkName: "user-home" */'../pages/user/home/Index'),
         hidden: true,
-        desc: '用户信息',
+        desc: '用户首页',
         meta: {
           requiredLogin: true
         }

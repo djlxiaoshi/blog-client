@@ -18,11 +18,11 @@
         </el-tooltip>
 
         <el-tooltip class="item" effect="dark" content="保存" placement="top">
-          <i class="operate-icon iconfont icon-baocun" @click="handleParams"></i>
+          <i class="operate-icon iconfont icon-baocun" @click="handleParams(true)"></i>
         </el-tooltip>
 
-        <el-tooltip class="item" effect="dark" content="发布" placement="top">
-          <i class="operate-icon iconfont icon-fabu" @click="handleParams"></i>
+        <el-tooltip class="item" effect="dark" :content="mode === 1 ? '发布' : '重新发布'" placement="top">
+          <i class="operate-icon iconfont icon-fabu" @click="handleParams(false)"></i>
         </el-tooltip>
 
       </div>
@@ -56,9 +56,9 @@
         this.title = this.article.title;
       },
       asyncData ({ store, route }) {
-          if (route.params.id) {
-            return store.dispatch('getArticle', route.params.id);
-          }
+        if (route.params.id) {
+          return store.dispatch('getArticle', route.params.id);
+        }
       },
       computed: {
         ...mapState([
@@ -72,11 +72,17 @@
         }
       },
       beforeRouteLeave (to, from, next) {
-        // 导航离开该组件的对应路由时调用
-        // 可以访问组件实例 `this`
-        const result = confirm('该操作不会对您的更改进行保存，请在离开之前进行保存操作！');
-        if (result) {
-          this.setCurrentArticle({});
+        if (this.mode === EDIT_MODE) {
+          // 导航离开该组件的对应路由时调用
+          // 可以访问组件实例 `this`
+          const result = confirm('该操作不会对您的更改进行保存，请在离开之前进行保存操作！');
+          if (result) {
+            this.setCurrentArticle({});
+            next();
+          } else {
+            next(false);
+          }
+        } else {
           next();
         }
       },
@@ -93,7 +99,7 @@
         setTitle (value) {
           this.title = value;
         },
-        handleParams () {
+        handleParams (justSave) {
           const title = this.title;
 
           if (!title.trim()) {
@@ -105,13 +111,14 @@
             title: title.trim(),
             thumbnail: this.getThumbnail(),
             abstract: this.getAbstract(),
-            content: this.getContent()
+            content: this.getContent(),
+            status: justSave ? 0 : 1
           };
-
+          const message = justSave ? '文章保存成功' : '文章发布成功'
           if (this.mode === CREATE_MODE) {
             this.createArticle(params);
           } else {
-            this.updateArticle(params);
+            this.updateArticle(params, message);
           }
 
         },
@@ -175,8 +182,8 @@
             showErrorMsg: true
           });
 
-          xhrInstance.then(() => {
-
+          xhrInstance.then((article) => {
+            this.$router.push(`/post/${article._id}`);
           }, () => {
 
           });
@@ -185,12 +192,12 @@
          * 更新文章
          * @param params
          */
-        updateArticle (params) {
+        updateArticle (params, message) {
           const { xhrInstance } = this.$http({
             url: `/article/${ this.articleId }`,
             data: params,
             method: 'put',
-            showSuccessMsg: true,
+            showSuccessMsg: message,
             showErrorMsg: true
           });
 

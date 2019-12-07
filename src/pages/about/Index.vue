@@ -3,7 +3,14 @@
       <ul class="info-list">
         <li class="info-item">
           <div class="author-avatar">
-            <img src="@/assets/img/avatar.jpg" alt="">
+            <LoadImage :src="avatarImage" 
+              :imgStyle="{ 
+                display: 'inline-block',
+                width: '100px',
+                height: '100px',
+                border: '2px solid #dddddd',
+                'border-radius': '50%'
+              }"></LoadImage>
           </div>
         </li>
         <li class="info-item">
@@ -39,8 +46,19 @@
 </template>
 
 <script>
+  import LoadImage from 'components/common/LoadImg/Index';
+  import avatarImage from '@/assets/img/avatar.jpg';
+
   export default {
-    name: ''
+    name: '',
+    components: {
+      LoadImage
+    },
+    data () {
+      return {
+        avatarImage
+      };
+    }
   };
 </script>
 
@@ -63,13 +81,7 @@
       }
     }
     .author-avatar {
-      img {
-        display: inline-block;
-        width: 100px;
-        height: 100px;
-        border: 2px solid #dddddd;
-        border-radius: 50%;
-      }
+      
     }
     .author-desc {
       .item-value {

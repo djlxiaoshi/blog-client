@@ -106,11 +106,15 @@
           ghCodeBlocks: true
         },
         openTags: false,
-        selectTags: []
+        selectTags: [],
+        articleTags: []
       };
     },
     asyncData ({ store, route }) {
       return store.dispatch('getArticle', route.params.id);
+    },
+    mounted () {
+      this.articleTags = this.article.tags.map(tag => tag._id);
     },
     computed: {
       ...mapState([
@@ -120,9 +124,6 @@
       ]),
       author () {
         return this.article.createUser;
-      },
-      articleTags () {
-        return this.article.tags.map(tag => tag._id);
       }
     },
     beforeRouteLeave (to, from, next) {

@@ -1,9 +1,9 @@
 <template>
     <div class="tags-page">
       <div class="page-header">
-        <h1>所有标签</h1>
+        <!-- <h1>所有标签</h1> -->
         <div class="add-btn">
-          <el-button type="success" plain size="small" @click="openOperateTagDialog()">添加</el-button>
+          <el-button type="success" plain size="small" @click="openOperateTagDialog()" v-if="isAdmin()">添加</el-button>
         </div>
       </div>
 
@@ -15,11 +15,11 @@
           :xs="24" :sm="12" :md="8" :lg="6" :xl="6">
           <el-card :body-style="{ padding: '0px' }">
             <div class="img-wrap" @click="goToTagDetails(tag)">
-              <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
+              <LoadImage src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"></LoadImage>
             </div>
             <div class="card-bottom">
               <span class="tag-name">{{ tag.label }}</span>
-              <span class="operate-wrap">
+              <span class="operate-wrap" v-if="isAdmin()">
                 <i class="el-icon-edit" @click="openOperateTagDialog(tag)"></i>
                 <i class="el-icon-delete" @click="openDeleteTagDialog(tag)"></i>
               </span>
@@ -32,9 +32,13 @@
 
 <script>
   import { mapState, mapActions } from 'vuex';
+  import LoadImage from 'components/common/LoadImg/Index';
 
   export default {
     name: '',
+    components: {
+      LoadImage
+    },
     data () {
       return {
         currentTag: {}
@@ -42,7 +46,8 @@
     },
     computed: {
       ...mapState([
-        'tags'
+        'tags',
+        'userInfo'
       ])
     },
     asyncData ({ store }) {
@@ -52,6 +57,9 @@
       ...mapActions([
         'getAllTags'
       ]),
+      isAdmin () {
+        return this.userInfo && this.userInfo.role === 0;
+      },
       goToTagDetails (tag) {
         this.$router.push(`/tag/${tag._id}`);
       },
@@ -169,6 +177,7 @@
       .list-item {
         margin-bottom: 20px;
         .img-wrap {
+          height: 150px;
           overflow: hidden;
           cursor: pointer;
           .image {

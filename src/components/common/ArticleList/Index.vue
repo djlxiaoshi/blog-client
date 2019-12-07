@@ -3,10 +3,11 @@
     <li class="list-item" v-for="(article, index) in data" :key="index">
       <el-row
         type="flex"
+        align="center"
         justify="space-around">
-        <el-col :xs="24" :sm="5" :md="5" :lg="4" :xl="3">
+        <el-col :xs="0" :sm="5" :md="5" :lg="4" :xl="3">
           <div class="item-thumbnail">
-            <img :src="article.thumbnail" alt="">
+            <LoadImage :src="getThumbnail(article)" alt=""></LoadImage>
           </div>
         </el-col>
         <el-col :xs="24" :sm="18" :md="18" :lg="19" :xl="20">
@@ -20,6 +21,7 @@
             <div class="details-bottom">
               <span class="item-time">{{ formateTime(article.createTime) }}</span>
               <span class="item-author">{{ article.createUser.username }}</span>
+              <span class="item-status">{{ getStatus(article.status) }}</span>
               <i class="el-icon-view operate-icon" @click="view(article, index)"></i>
               <i class="el-icon-s-comment operate-icon"></i>
               <i class="el-icon-star-off operate-icon"></i>
@@ -33,15 +35,32 @@
 
 <script>
   import dayjs from 'dayjs';
+  import LoadImage from '../LoadImg/Index';
+  import defaultThumbnail from 'components/common/ArticleList/thumbnail.jpg';
+
   export default {
     name: '',
     props: ['data'],
+    components: {
+      LoadImage
+    },
     methods: {
+      getStatus (status) {
+        switch(status) {
+          case 0: return '未发布';
+          case 1: return '已发布';
+          case 2: return '待删除';
+          default: return '未知';
+        }
+      },
       formateTime (time) {
         return dayjs(time).format('YYYY-MM-DD');
       },
       view (article, index) {
         this.$emit('onView', article, index);
+      },
+      getThumbnail (article) {
+        return article.thumbnail || defaultThumbnail
       }
     }
   };
@@ -84,11 +103,6 @@
       }
       .item-thumbnail {
         overflow: hidden;
-        max-height: 200px;
-        img {
-          width: 100%;
-          height: auto;
-        }
       }
       .details-wrap {
         .details-top {
