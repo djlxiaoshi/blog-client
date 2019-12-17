@@ -2,167 +2,160 @@
   <div class="normal-header">
     <el-row type="flex" align="middle" justify="center">
       <el-col :xs="24" :sm="20" :md="20" :lg="20" :xl="20">
-          <div class="header-content">
-            <div class="header-left">
-              <header-menu
-                text-color="#fff"
-                background-color="#545c64"
-                active-text-color="#ffd04b"
-                :activeMenu="activeMenu"
-                mode="horizontal"
-                :menuConfig="menuList"></header-menu>
+        <div class="header-content">
+          <div class="header-left">
+            <header-menu
+              text-color="#fff"
+              background-color="#545c64"
+              active-text-color="#ffd04b"
+              :activeMenu="activeMenu"
+              mode="horizontal"
+              :menuConfig="menuList"
+            ></header-menu>
+          </div>
+
+          <div class="header-right">
+            <div class="avatar-wrap" v-if="userInfo">
+              <el-dropdown @command="eventHandler" trigger="click">
+                <a class="user-avatar">
+                  <img :src="avatar" width="100%" @error="setDefaultAvatar" ref="avatar" />
+                </a>
+
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item command="post">写文章</el-dropdown-item>
+                  <el-dropdown-item command="center">用户中心</el-dropdown-item>
+                  <el-dropdown-item command="userInfo">用户设置</el-dropdown-item>
+                  <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </div>
-
-            <div class="header-right">
-
-              <div class="avatar-wrap" v-if="userInfo">
-                <el-dropdown @command="eventHandler" trigger="click">
-                  <a class="user-avatar">
-                    <img :src="avatar" width="100%" @error="setDefaultAvatar" ref='avatar'>
-                  </a>
-
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item command="post">发表文章</el-dropdown-item>
-                    <el-dropdown-item command="center">用户中心</el-dropdown-item>
-                    <el-dropdown-item command="userInfo">用户设置</el-dropdown-item>
-                    <el-dropdown-item command="logout">退出登录</el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </div>
-              <div class="login-or-register" v-else>
-                <a class="login-btn" href="javascript:void(0)" @click="goToLoginPage">登录</a>
-                <a class="register-btn" href="javascript:void(0)" @click="goToRegisterPage">注册</a>
-              </div>
+            <div class="login-or-register" v-else>
+              <a class="login-btn" href="javascript:void(0)" @click="goToLoginPage">登录</a>
+              <a class="register-btn" href="javascript:void(0)" @click="goToRegisterPage">注册</a>
             </div>
           </div>
+        </div>
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-  import HeaderMenu from './Menu';
-  import { mapState, mapMutations } from 'vuex';
-  import { SET_ACTIVE_MENU, SET_USER_INFO } from 'store/mutation-types';
-  import defaultAvatar from '@/assets/img/avatar.jpg';
+import HeaderMenu from './Menu';
+import { mapState, mapMutations } from 'vuex';
+import { SET_ACTIVE_MENU, SET_USER_INFO } from 'store/mutation-types';
+import defaultAvatar from '@/assets/img/avatar.jpg';
 
-  export default {
-    components: {
-      HeaderMenu
-    },
-    data () {
-      return {
-        selectSystem: {
-          name: ''
-        }
-      };
-    },
-    computed: {
-      ...mapState([
-        'activeMenu',
-        'userInfo',
-        'menuList'
-      ]),
-      avatar () {
-        if (!this.userInfo) return defaultAvatar;
-        return `${this.$globalConfig.IMAGE_ADDRESS}/${this.userInfo.avatarKey}?v=${new Date().getTime()}`;
+export default {
+  components: {
+    HeaderMenu
+  },
+  data () {
+    return {
+      selectSystem: {
+        name: ''
       }
-    },
-    mounted () {
-    },
-    methods: {
-      ...mapMutations({
-        'setActiveMenu': SET_ACTIVE_MENU,
-        'setUserInfo': SET_USER_INFO
-      }),
-      eventHandler (event) {
-        const userId = this.userInfo._id;
-
-        if (event === 'logout') {
-          this.logout();
-        } else if (event === 'userInfo') {
-          this.$router.push('/user/info');
-          this.setActiveMenu('');
-        } else if (event === 'post') {
-          this.$router.push('/post');
-        } else if (event === 'center') {
-          this.$router.push(`/user/${ userId }`);
-        }
-      },
-      setDefaultAvatar () {
-        this.$refs['avatar'].src = defaultAvatar;
-      },
-      logout () {
-        if (this.userInfo) {
-          const { xhrInstance } = this.$http({
-            url: '/logout',
-            data: {
-              id: this.userInfo._id
-            }
-          });
-
-          xhrInstance.then(() => {
-            this.clearUserMsg();
-            this.goToHomePage();
-
-          });
-        }
-      },
-      clearUserMsg () {
-        this.setUserInfo(null);
-      },
-      goToHomePage () {
-        this.$router.push('/');
-      },
-      goToLoginPage () {
-        this.$router.push('/login');
-      },
-      goToRegisterPage () {
-        this.$router.push('/register');
-      }
-    },
-    watch: {
-
+    };
+  },
+  computed: {
+    ...mapState(['activeMenu', 'userInfo', 'menuList']),
+    avatar () {
+      if (!this.userInfo) return defaultAvatar;
+      return `${this.$globalConfig.IMAGE_ADDRESS}/${
+        this.userInfo.avatarKey
+      }?v=${new Date().getTime()}`;
     }
-  };
+  },
+  mounted () {},
+  methods: {
+    ...mapMutations({
+      setActiveMenu: SET_ACTIVE_MENU,
+      setUserInfo: SET_USER_INFO
+    }),
+    eventHandler (event) {
+      const userId = this.userInfo._id;
+
+      if (event === 'logout') {
+        this.logout();
+      } else if (event === 'userInfo') {
+        this.$router.push('/user/info');
+        this.setActiveMenu('');
+      } else if (event === 'post') {
+        this.$router.push('/post');
+      } else if (event === 'center') {
+        this.$router.push(`/user/${userId}`);
+      }
+    },
+    setDefaultAvatar () {
+      this.$refs['avatar'].src = defaultAvatar;
+    },
+    logout () {
+      if (this.userInfo) {
+        const { xhrInstance } = this.$http({
+          url: '/logout',
+          data: {
+            id: this.userInfo._id
+          }
+        });
+
+        xhrInstance.then(() => {
+          this.clearUserMsg();
+          this.goToHomePage();
+        });
+      }
+    },
+    clearUserMsg () {
+      this.setUserInfo(null);
+    },
+    goToHomePage () {
+      this.$router.push('/');
+    },
+    goToLoginPage () {
+      this.$router.push('/login');
+    },
+    goToRegisterPage () {
+      this.$router.push('/register');
+    }
+  },
+  watch: {}
+};
 </script>
 
 <style scoped lang="less">
-  @import "../../../assets/css/theme";
-  .normal-header {
-    .header-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: @AppHeaderHeight;
-    }
-    .header-left {
+@import '../../../assets/css/theme';
+.normal-header {
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: @AppHeaderHeight;
+  }
+  .header-left {
+  }
 
-    }
-
-    .header-right {
-      display: flex;
-      .avatar-wrap {
-        .user-avatar {
-          display: inline-block;
-          overflow: hidden;
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          border: 2px solid #e5e5e5;
-          cursor: pointer;
-        }
+  .header-right {
+    display: flex;
+    .avatar-wrap {
+      .user-avatar {
+        display: inline-block;
+        overflow: hidden;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid #e5e5e5;
+        cursor: pointer;
       }
-      .login-or-register {
-        .register-btn, .login-btn {
-          color: #ffffff;
-          padding: 0 5px 5px 5px;
-          &:hover {
-            color: rgb(255, 208, 75);
-          }
+    }
+    .login-or-register {
+      .register-btn,
+      .login-btn {
+        color: #ffffff;
+        padding: 0 5px 5px 5px;
+        &:hover {
+          color: rgb(255, 208, 75);
         }
       }
     }
   }
-
+}
 </style>

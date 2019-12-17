@@ -3,7 +3,6 @@
 @AppHeaderHeight: 60px;
 
 .markdown-preview {
-
   /deep/ a {
     text-decoration: underline;
     color: lightcoral;
@@ -28,7 +27,8 @@
   }
 
   /deep/ p code {
-    font-family: source-code-pro,Menlo,Monaco,Consolas,Courier New,monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, Courier New,
+      monospace;
     font-size: 1em;
     color: #c7254e;
     background-color: #f2f2f2;
@@ -47,9 +47,21 @@
     background: #282c34;
 
     code {
-      font-family: source-code-pro,Menlo,Monaco,Consolas,Courier New,monospace;
+      font-family: source-code-pro, Menlo, Monaco, Consolas, Courier New,
+        monospace;
       font-size: 1em;
       background: inherit;
+
+      &::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: #d8d8d8;
+      }
+      &::-webkit-scrollbar-thumb:hover {
+        background-color: #bbb;
+      }
     }
   }
 
@@ -74,7 +86,10 @@
     }
   }
 
-  /deep/ h2, /deep/ h3, /deep/ h4, /deep/ h5 {
+  /deep/ h2,
+  /deep/ h3,
+  /deep/ h4,
+  /deep/ h5 {
     margin: 20px auto;
   }
 

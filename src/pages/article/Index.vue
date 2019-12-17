@@ -1,305 +1,288 @@
 <template>
-    <div class="view-article-page">
-      <el-row type="flex" justify="space-around">
-        <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-          <div class="page-left">
-            <div class="article-wrap">
-              <h1 class="article-title">{{ article.title }}</h1>
-              <div class="article-details">
-                <span class="details-item">{{ formatTime(article.createTime) }}</span>
-                <span class="details-item">字数 {{ article.wordCount }}</span>
-                <span class="details-item">阅读 {{ article.views }}</span>
+  <div class="view-article-page">
+    <el-row type="flex" justify="space-around">
+      <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+        <div class="page-left">
+          <div class="article-wrap">
+            <h1 class="article-title">{{ article.title }}</h1>
+            <div class="article-details">
+              <span class="details-item">{{ formatTime(article.createTime) }}</span>
+              <span class="details-item">字数 {{ article.wordCount }}</span>
+              <span class="details-item">阅读 {{ article.views }}</span>
 
-                <span
-                  v-if="hasOperateAuth()"
-                  class="operate-wrap">
-                <span
-                  class="edit"
-                  @click="editArticle"
-                >编辑文章</span>
+              <span v-if="hasOperateAuth()" class="operate-wrap">
+                <span class="edit" @click="editArticle">编辑文章</span>
 
-                <span
-                  class="delete"
-                  @click="userConfirm"
-                >删除文章</span>
+                <span class="delete" @click="userConfirm">删除文章</span>
               </span>
-
+            </div>
+            <div class="article-tags">
+              <div class="selected-tags">
+                <el-tag size="mini" :key="tag._id" v-for="tag in article.tags">{{ tag.label }}</el-tag>
+                <span v-if="hasOperateAuth()" class="tags-setting" @click="toggleTags">标签设置</span>
               </div>
-              <div class="article-tags">
-                <div class="selected-tags">
-                  <el-tag
-                    size="mini"
-                    :key="tag._id"
-                    v-for="tag in article.tags">{{ tag.label }}</el-tag>
-                  <span
-                    v-if="hasOperateAuth()"
-                    class="tags-setting"
-                    @click="toggleTags"
-                  >标签设置</span>
+              <div class="all-tags" v-if="openTags">
+                <div class="selector-body">
+                  <el-checkbox-group v-model="articleTags">
+                    <el-checkbox-button
+                      :key="tag._id"
+                      :label="tag._id"
+                      v-for="tag in tags"
+                    >{{ tag.label }}</el-checkbox-button>
+                  </el-checkbox-group>
                 </div>
-                <div class="all-tags" v-if="openTags">
-                  <div class="selector-body">
-                    <el-checkbox-group v-model="articleTags">
-                      <el-checkbox-button
-                        :key="tag._id"
-                        :label="tag._id"
-                        v-for="tag in tags">
-                        {{ tag.label }}</el-checkbox-button>
-                    </el-checkbox-group>
-                  </div>
 
-                  <div class="selector-footer">
-                    <el-button size="mini" round @click="toggleTags">取消</el-button>
-                    <el-button size="mini" round @click="handleTagsParams">保存</el-button>
-                  </div>
-
+                <div class="selector-footer">
+                  <el-button size="mini" round @click="toggleTags">取消</el-button>
+                  <el-button size="mini" round @click="handleTagsParams">保存</el-button>
                 </div>
               </div>
-              <div class="article-content">
-                <VueShowdown
-                  class="markdown-preview"
-                  :vueTemplate="true"
-                  :markdown="article.content || ''"
-                  flavor="github"
-                  :extensions="[showdownHighlight]"
-                  :options="options"> </VueShowdown>
-              </div>
             </div>
-
-            <div style="margin-top: 20px">
-              <Comment></Comment>
+            <div class="article-content">
+              <VueShowdown
+                class="markdown-preview"
+                :vueTemplate="true"
+                :markdown="article.content || ''"
+                flavor="github"
+                :extensions="[showdownHighlight]"
+                :options="options"
+              ></VueShowdown>
             </div>
-
           </div>
-        </el-col>
 
-        <!--<el-col class="hidden-sm-and-down" :md="6" :lg="5" :xl="4">-->
-          <!--<div class="page-right"></div>-->
-        <!--</el-col>-->
-      </el-row>
+          <div style="margin-top: 20px">
+            <Comment></Comment>
+          </div>
+        </div>
+      </el-col>
 
-    </div>
+      <!--<el-col class="hidden-sm-and-down" :md="6" :lg="5" :xl="4">-->
+      <!--<div class="page-right"></div>-->
+      <!--</el-col>-->
+    </el-row>
+  </div>
 </template>
 
 <script>
-  /* eslint-disable no-extra-boolean-cast */
+/* eslint-disable no-extra-boolean-cast */
 
-  import { VueShowdown } from 'vue-showdown';
-  import showdownHighlight from 'showdown-highlight';
-  import Comment from './Comment';
-  import { mapState, mapActions, mapMutations } from 'vuex';
-  import { SET_CURRENT_ARTICLE } from 'store/mutation-types';
-  import dayjs from 'dayjs';
+import { VueShowdown } from 'vue-showdown';
+import showdownHighlight from 'showdown-highlight';
+import Comment from './Comment';
+import { mapState, mapActions, mapMutations } from 'vuex';
+import { SET_CURRENT_ARTICLE } from 'store/mutation-types';
+import dayjs from 'dayjs';
 
-  export default {
-    components: {
-      VueShowdown,
-      Comment
+export default {
+  components: {
+    VueShowdown,
+    Comment
+  },
+  data () {
+    return {
+      content: '',
+      title: '',
+      showdownHighlight,
+      options: {
+        omitExtraWLInCodeBlocks: true,
+        ghCodeBlocks: true
+      },
+      openTags: false,
+      selectTags: [],
+      articleTags: []
+    };
+  },
+  asyncData ({ store, route }) {
+    return store.dispatch('getArticle', route.params.id);
+  },
+  mounted () {
+    this.articleTags = Array.isArray(this.article.tags)
+      ? this.article.tags.map(tag => tag._id)
+      : [];
+  },
+  computed: {
+    ...mapState(['article', 'userInfo', 'tags']),
+    author () {
+      return this.article.createUser;
+    }
+  },
+  beforeRouteLeave (to, from, next) {
+    // 导航离开该组件的对应路由时调用
+    // 可以访问组件实例 `this`
+    // 清除state中article数据
+    this.setCurrentArticle({});
+    next();
+  },
+  methods: {
+    ...mapActions(['getArticle', 'getAllTags']),
+    ...mapMutations({
+      setCurrentArticle: SET_CURRENT_ARTICLE
+    }),
+    formatTime (time) {
+      return time ? dayjs(time).format('YYYY-MM-DD') : '';
     },
-    data () {
-      return {
-        content: '',
-        title: '',
-        showdownHighlight,
-        options: {
-          omitExtraWLInCodeBlocks: true,
-          ghCodeBlocks: true
-        },
-        openTags: false,
-        selectTags: [],
-        articleTags: []
-      };
+    hasOperateAuth () {
+      return (
+        this.userInfo &&
+        this.article &&
+        this.article.createUser &&
+        this.userInfo._id === this.article.createUser._id
+      );
     },
-    asyncData ({ store, route }) {
-      return store.dispatch('getArticle', route.params.id);
+    isChecked (tag) {
+      const flag = !!this.article.tags.find(
+        articleTag => articleTag._id === tag._id
+      );
+      return flag;
     },
-    mounted () {
-      this.articleTags = this.article.tags.map(tag => tag._id);
-    },
-    computed: {
-      ...mapState([
-        'article',
-        'userInfo',
-        'tags'
-      ]),
-      author () {
-        return this.article.createUser;
+    toggleTags () {
+      this.openTags = !this.openTags;
+      if (!this.tags || this.tags.length === 0) {
+        this.getAllTags();
       }
     },
-    beforeRouteLeave (to, from, next) {
-      // 导航离开该组件的对应路由时调用
-      // 可以访问组件实例 `this`
-      // 清除state中article数据
-      this.setCurrentArticle({});
-      next();
+    editArticle () {
+      this.$router.push(`/post/${this.$route.params.id}`);
     },
-    methods: {
-      ...mapActions([
-        'getArticle',
-        'getAllTags'
-      ]),
-      ...mapMutations({
-        'setCurrentArticle': SET_CURRENT_ARTICLE
-      }),
-      formatTime (time) {
-        return time ? dayjs(time).format('YYYY-MM-DD') : '';
-      },
-      hasOperateAuth () {
-        return this.userInfo && this.article && this.article.createUser && (this.userInfo._id === this.article.createUser._id)
-      },
-      isChecked (tag) {
-        const flag = !!this.article.tags.find(articleTag => articleTag._id === tag._id);
-        return flag;
-      },
-      toggleTags () {
-        this.openTags = !this.openTags;
-        if (!this.tags || this.tags.length === 0) {
-          this.getAllTags();
+    userConfirm () {
+      this.$alert({
+        title: '警告',
+        text: '您确定要删除这篇文章吗？',
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true
+      }).then(willDelete => {
+        if (willDelete) {
+          this.deleteArticle();
+        } else {
         }
-      },
-      editArticle () {
-        this.$router.push(`/post/${this.$route.params.id}`);
-      },
-      userConfirm () {
-        this.$alert({
-          title: '警告',
-          text: '您确定要删除这篇文章吗？',
-          icon: 'warning',
-          buttons: true,
-          dangerMode: true
-        }).then((willDelete) => {
-          if (willDelete) {
-            this.deleteArticle();
-          } else {
+      });
+    },
+    handleTagsParams () {
+      this.saveArticleTags(this.articleTags);
+    },
+    saveArticleTags (tags) {
+      const { xhrInstance } = this.$http({
+        url: `/article/${this.$route.params.id}`,
+        method: 'put',
+        data: {
+          tags
+        },
+        showSuccessMsg: '标签设置成功',
+        showErrorMsg: true
+      });
 
-          }
-        });
-      },
-      handleTagsParams () {
-        this.saveArticleTags(this.articleTags);
-      },
-      saveArticleTags (tags) {
-        const { xhrInstance } = this.$http({
-          url: `/article/${this.$route.params.id}`,
-          method: 'put',
-          data: {
-            tags
-          },
-          showSuccessMsg: '标签设置成功',
-          showErrorMsg: true
-        });
-
-        xhrInstance.then(() => {
+      xhrInstance.then(
+        () => {
           this.getArticle(this.$route.params.id);
           this.openTags = false;
-        }, () => {
+        },
+        () => {}
+      );
+    },
+    deleteArticle () {
+      const { xhrInstance } = this.$http({
+        url: `/article/${this.$route.params.id}`,
+        method: 'delete',
+        showSuccessMsg: true,
+        showErrorMsg: true
+      });
 
-        });
-      },
-      deleteArticle () {
-        const { xhrInstance } = this.$http({
-          url: `/article/${this.$route.params.id}`,
-          method: 'delete',
-          showSuccessMsg: true,
-          showErrorMsg: true
-        });
-
-        xhrInstance.then(() => {
-        //  返回用户文章列表页
+      xhrInstance.then(
+        () => {
+          //  返回用户文章列表页
           this.$router.push('/');
-        }, () => {
-
-        });
-      }
+        },
+        () => {}
+      );
     }
-  };
+  }
+};
 </script>
 
 <style scoped lang="less">
-  .view-article-page {
-    .page-left {
-      padding: 10px;
-      .article-title {
-        margin-bottom: 30px;
-        text-align: center;
-        font-size: 30px;
+.view-article-page {
+  .page-left {
+    padding: 10px;
+    .article-title {
+      margin-bottom: 30px;
+      text-align: center;
+      font-size: 30px;
+    }
+    .article-details {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      color: #969696;
+      font-size: 13px;
+      .details-item {
+        margin-right: 8px;
       }
-      .article-details {
-        display: flex;
-        align-items: center;
-        margin-bottom: 15px;
-        color: #969696;
-        font-size: 13px;
-        .details-item {
+      .operate-wrap {
+        margin-left: auto;
+        .edit {
+          cursor: pointer;
           margin-right: 8px;
         }
-        .operate-wrap {
-          margin-left: auto;
-          .edit {
-            cursor: pointer;
-            margin-right: 8px;
-          }
-          .delete {
-            cursor: pointer;
-            color: red;
-          }
-        }
-
-      }
-      .article-tags {
-
-      }
-      .selected-tags {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-        .tags-setting {
-          margin-left: auto;
-          font-size: 12px;
+        .delete {
           cursor: pointer;
-          text-decoration: underline;
+          color: red;
         }
-        /deep/ .el-tag {
-          margin: 2px;
-        }
-      }
-      .all-tags {
-        padding: 10px;
-        border: 1px solid #e5e5e5;
-        border-radius: 8px;
-        .selector-body {
-          margin-bottom: 5px;
-          /deep/ .el-checkbox-button{
-            margin: 2px 4px;
-            .el-checkbox-button__inner {
-              border: 1px solid #dcdfe6;
-              border-radius: 4px;
-              padding: 5px 8px;
-              font-size: 12px;
-            }
-            &.is-checked {
-              .el-checkbox-button__inner {
-                box-shadow: none !important;
-              }
-            }
-          }
-        }
-        .selector-footer {
-          text-align: right;
-          /deep/ .el-button {
-            padding: 3px 8px;
-          }
-        }
-      }
-      .article-content {
-        margin-top: 30px;
-        height: 100%;
       }
     }
-
-    .page-right {
-      height: 100px;
-      border: 1px solid #dddddd;
+    .article-tags {
+    }
+    .selected-tags {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      .tags-setting {
+        margin-left: auto;
+        font-size: 12px;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+      /deep/ .el-tag {
+        margin: 2px;
+      }
+    }
+    .all-tags {
+      padding: 10px;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      .selector-body {
+        margin-bottom: 5px;
+        /deep/ .el-checkbox-button {
+          margin: 2px 4px;
+          .el-checkbox-button__inner {
+            border: 1px solid #dcdfe6;
+            border-radius: 4px;
+            padding: 5px 8px;
+            font-size: 12px;
+          }
+          &.is-checked {
+            .el-checkbox-button__inner {
+              box-shadow: none !important;
+            }
+          }
+        }
+      }
+      .selector-footer {
+        text-align: right;
+        /deep/ .el-button {
+          padding: 3px 8px;
+        }
+      }
+    }
+    .article-content {
+      margin-top: 30px;
+      height: 100%;
     }
   }
+
+  .page-right {
+    height: 100px;
+    border: 1px solid #dddddd;
+  }
+}
 </style>

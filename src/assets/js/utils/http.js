@@ -8,18 +8,24 @@ const CancelToken = axios.CancelToken;
 const prefix = '/api';
 
 // 请求发送拦截
-axios.interceptors.request.use(function (config) {
-  return config;
-}, function (error) {
-  return Promise.reject(error);
-});
+axios.interceptors.request.use(
+  function (config) {
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
 
 // 增加响应拦截器（判断用户是否登录）
-axios.interceptors.response.use((response) => {
-  return response;
-}, function (error) {
-  return Promise.reject(error);
-});
+axios.interceptors.response.use(
+  response => {
+    return response;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
 
 export default function Http (config) {
   const obj = {};
@@ -29,12 +35,12 @@ export default function Http (config) {
     'Content-Type': 'application/json'
   };
   // 服务端发送请求的时候，手动添加cookie
-  if ((!isBrowserEnv) && global.__VUE_SSR_CONTEXT__.cookies) {
+  if (!isBrowserEnv && global.__VUE_SSR_CONTEXT__.cookies) {
     commonHeaders.Cookie = global.__VUE_SSR_CONTEXT__.cookies;
   }
   const axiosConfig = {
     method: config.method || 'get',
-    url: envConfig.SERVER_ADDRESS + prefix + config.url,
+    url: getFinalUrl(prefix, config.url),
     withCredentials: config.withCredentials || true,
     headers: Object.assign({}, commonHeaders, config.headers),
     cancelToken: new CancelToken(function executor (cancel) {
@@ -51,8 +57,8 @@ export default function Http (config) {
 
   // 设置请求参数
   axiosConfig.method === 'get'
-    ? axiosConfig.params = config.data
-    : axiosConfig.data = config.data;
+    ? (axiosConfig.params = config.data)
+    : (axiosConfig.data = config.data);
 
   obj.xhrInstance = new Promise((resolve, reject) => {
     if (isBrowserEnv) {
@@ -67,49 +73,58 @@ export default function Http (config) {
       });
     }
 
-    axios(axiosConfig).then(response => {
-      const data = response.data;
+    axios(axiosConfig)
+      .then(response => {
+        const data = response.data;
 
-      if (!config.disableLoginCheck) {
-        // 登录验证
-        loginCheck(data);
-      }
+        if (!config.disableLoginCheck) {
+          // 登录验证
+          loginCheck(data);
+        }
 
-      if (data.code !== 0) {
+        if (data.code !== 0) {
+          if (config.showErrorMsg) {
+            Notification.error(data.message);
+          }
+          reject(data.message);
+        } else {
+          if (config.showSuccessMsg) {
+            // 如果前端设置了提示信息则采用前端设置的提示信息，否则使用服务端返回的提示信息
+            Notification.success(
+              typeof config.showSuccessMsg === 'string'
+                ? config.showSuccessMsg
+                : data.message
+            );
+          }
+          resolve(data.data);
+        }
+      })
+      .catch(function (error) {
         if (config.showErrorMsg) {
-          Notification.error(data.message);
+          Notification.error(
+            typeof config.showErrorMsg === 'string'
+              ? config.showErrorMsg
+              : error.message
+          );
         }
-        reject(data.message);
-      } else {
-        if (config.showSuccessMsg) {
-          // 如果前端设置了提示信息则采用前端设置的提示信息，否则使用服务端返回的提示信息
-          Notification.success(typeof config.showSuccessMsg === 'string' ? config.showSuccessMsg : data.message);
+        reject(error);
+      })
+      .finally(() => {
+        // 关闭loading
+        if (config.loading) {
+          obj.loadingInstance.close();
         }
-        resolve(data.data);
-      }
-    }).catch(function (error) {
 
-      if (config.showErrorMsg) {
-        Notification.error(typeof config.showErrorMsg === 'string' ? config.showErrorMsg : error.message);
-      }
-      reject(error);
-    }).finally(() => {
+        // 更新请求缓存列表
+        const xhrIndex = xhrCacheList.indexOf(obj);
+        xhrCacheList.splice(xhrIndex, 1);
 
-      // 关闭loading
-      if (config.loading) {
-        obj.loadingInstance.close();
-      }
-
-      // 更新请求缓存列表
-      const xhrIndex = xhrCacheList.indexOf(obj);
-      xhrCacheList.splice(xhrIndex, 1);
-
-      if (xhrCacheList.length === 0) {
-        if (isBrowserEnv) {
-          // NProgress.done();
+        if (xhrCacheList.length === 0) {
+          if (isBrowserEnv) {
+            // NProgress.done();
+          }
         }
-      }
-    });
+      });
   });
 
   xhrCacheList.push(obj);
@@ -147,4 +162,12 @@ function loginCheck (response) {
   if (response.code === -1000) {
     window.location.href = '/login';
   }
+}
+
+// 获取请求路径
+function getFinalUrl (prefix, url) {
+  if (/^(https:\/\/)|^(http:\/\/)|^(\/\/)/.test(url)) {
+    return url;
+  }
+  return envConfig.SERVER_ADDRESS + prefix + url;
 }
