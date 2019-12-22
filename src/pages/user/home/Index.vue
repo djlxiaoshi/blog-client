@@ -5,6 +5,9 @@
         <div class="page-left">
           <AppEmpty :isEmpty="userArticles.length === 0">
             <ArticleList
+              v-infinite-scroll="loadMore"
+              infinite-scroll-disabled="busy"
+              infinite-scroll-distance="10"
               :data="userArticles"
               @onView="viewArticle"
             ></ArticleList>
@@ -19,44 +22,99 @@
 </template>
 
 <script>
-  import ArticleList from '@/components/common/ArticleList/Index';
-  import AppEmpty from '@/components/common/Empty/Index';
-  import { mapState, mapActions } from 'vuex';
+import ArticleList from '@/components/common/ArticleList/Index'
+import AppEmpty from '@/components/common/Empty/Index'
+import { mapState, mapActions, mapMutations } from 'vuex'
+import { SET_USER_ARTICLES } from 'store/mutation-types'
 
-  export default {
-    name: '',
-    components: {
-      ArticleList,
-      AppEmpty
+const PAGE_SIZE = 10
+export default {
+  name: '',
+  components: {
+    ArticleList,
+    AppEmpty
+  },
+  data () {
+    return {
+      currentPage: 2, // asyncData中已经加载过一夜，所以当前页为2
+      pageSize: PAGE_SIZE,
+      artilceTotals: Infinity, 
+      busy: false
+    }
+  },
+  computed: {
+    ...mapState(['userArticles'])
+  },
+  asyncData({ store, router }) {
+    return store.dispatch('getUserArticles', {
+      currentPage: 1,
+      pageSize: PAGE_SIZE
+    })
+  },
+  methods: {
+    ...mapMutations({
+      setUserArticle: SET_USER_ARTICLES
+    }),
+    ...mapActions(['getUserArticles']),
+    viewArticle(article) {
+      this.$router.push(`/article/${article._id}`)
     },
-    computed: {
-      ...mapState([
-        'userArticles'
-      ])
+    getMoreArtilces() {
+      const { xhrInstance } = this.$http({
+        url: '/user/articles/',
+        data: {
+          pageSize: this.pageSize,
+          currentPage: this.currentPage
+        },
+        method: 'get',
+        showSuccessMsg: false,
+        showErrorMsg: false
+      })
+
+      return xhrInstance.then(
+        articles => {
+          return articles
+        },
+        e => {
+          return e
+        }
+      )
     },
-    asyncData ({ store, router }) {
-      return store.dispatch('getUserArticles');
-    },
-    methods: {
-      ...mapActions([
-        'getUserArticles'
-      ]),
-      viewArticle (article) {
-        this.$router.push(`/article/${article._id}`);
+    async loadMore() {
+      if (this.userArticles.length < this.artilceTotals) {
+        this.busy = true
+        const data = await this.getMoreArtilces({
+          currentPage: this.currentPage,
+          pageSize: this.pageSize
+        })
+
+        this.artilceTotals = data.total
+
+        this.userArticles.splice((this.currentPage - 1) * this.pageSize)
+        this.userArticles.push(...data.list)
+
+        this.setUserArticle(this.userArticles)
+
+        // 如果到了下一页，则增加
+        if (this.userArticles.length % this.pageSize === 0) {
+          this.currentPage++
+        }
+        this.busy = false
       }
     }
-  };
+  }
+}
 </script>
 
 <style scoped lang="less">
-  .user-home-page {
-    .page-left {
-      border: 1px solid #dddddd;
-    }
-
-    .page-right {
-      height: 100px;
-      border: 1px solid #dddddd;
-    }
+.user-home-page {
+  .page-left {
+    border: 1px solid #dddddd;
   }
+
+  .page-right {
+    height: 100px;
+    border: 1px solid #dddddd;
+  }
+}
 </style>

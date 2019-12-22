@@ -1,11 +1,11 @@
-import Vue from 'vue';
-import App from './App.vue';
-import { createStore } from './store';
-import { createRouter } from './router';
-import { sync } from 'vuex-router-sync';
-import http from './assets/js/utils/http';
-import envConfig from './assets/js/global/env';
-import interceptor from './router/interceptor';
+import Vue from "vue";
+import App from "./App.vue";
+import { createStore } from "./store";
+import { createRouter } from "./router";
+import { sync } from "vuex-router-sync";
+import http from "./assets/js/utils/http";
+import envConfig from "./assets/js/global/env";
+import interceptor from "./router/interceptor";
 
 import {
   Button,
@@ -32,15 +32,15 @@ import {
   Tooltip,
   Select,
   Option
-} from 'element-ui';
+} from "element-ui";
 
-import swal from 'sweetalert';
+import swal from "sweetalert";
 
-import 'element-ui/lib/theme-chalk/display.css';
+import "element-ui/lib/theme-chalk/display.css";
 
-import './assets/css/common.less';
+import "./assets/css/common.less";
 
-import 'highlight.js/styles/monokai-sublime.css';
+import "highlight.js/styles/monokai-sublime.css";
 
 Vue.config.productionTip = false; // 开启vuex 调试工具
 
@@ -73,7 +73,7 @@ Vue.use(Tooltip);
 Vue.use(Select);
 Vue.use(Option);
 
-export function createApp (context) {
+export function createApp(context) {
   // 创建 router 实例
   const router = createRouter();
 

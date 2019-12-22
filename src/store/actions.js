@@ -1,127 +1,160 @@
 /**
  * 异步操作state
  */
-import http from '../assets/js/utils/http';
-import { groupBy } from '@/assets/js/utils/tools';
-import dayjs from 'dayjs';
-import { SET_ALL_ARTICLES, SET_CURRENT_ARTICLE, SET_USER_ARTICLES, SET_TAGS, SET_TAG, SET_USER_INFO, SET_TIME_LINE } from './mutation-types';
+import http from "../assets/js/utils/http";
+import { groupBy } from "@/assets/js/utils/tools";
+import dayjs from "dayjs";
+import {
+  SET_ALL_ARTICLES,
+  SET_CURRENT_ARTICLE,
+  SET_USER_ARTICLES,
+  SET_TAGS,
+  SET_TAG,
+  SET_USER_INFO,
+  SET_TIME_LINE
+} from "./mutation-types";
 
 export default {
-  getUserInfo ({ commit }) {
+  getUserInfo({ commit }) {
     const { xhrInstance } = http({
       url: `/user`,
-      method: 'get',
+      method: "get",
       showErrorMsg: true
     });
 
-    return xhrInstance.then((user) => {
-      commit(SET_USER_INFO, user);
-    }, (e) => {
+    return xhrInstance.then(
+      user => {
+        commit(SET_USER_INFO, user);
+      },
+      e => {
         return e;
-    });
+      }
+    );
   },
-  getAllArticles ({ commit }, { loadingTarget, pageSize, currentPage } = {}) {
+  getAllArticles({ commit }, { loadingTarget, pageSize, currentPage } = {}) {
     const { xhrInstance } = http({
-      url: '/articles',
+      url: "/articles",
       data: {
         pageSize: pageSize || 10,
         currentPage: currentPage || 1
       },
-      method: 'get',
+      method: "get",
       showSuccessMsg: false,
       showErrorMsg: false,
       loading: loadingTarget
     });
 
-    return xhrInstance.then((articles) => {
-      commit(SET_ALL_ARTICLES, articles.list);
-      return articles;
-    }, (e) => {
-      return e;
-    });
+    return xhrInstance.then(
+      articles => {
+        commit(SET_ALL_ARTICLES, articles.list);
+        return articles;
+      },
+      e => {
+        return e;
+      }
+    );
   },
   getTimelines ({ commit }, { pageSize, currentPage } = {}) {
     const { xhrInstance } = http({
-      url: '/timelines',
+      url: "/timelines", 
       data: {
         pageSize: pageSize || 10,
         currentPage: currentPage || 1
       },
-      method: 'get',
+      method: "get",
       showSuccessMsg: false,
       showErrorMsg: false
     });
 
-    return xhrInstance.then((articles) => {
-      const data = articles.list;
+    return xhrInstance.then(
+      articles => {
+        const data = articles.list;
 
-      data.forEach(item => {
-        item._group = dayjs(item.createTime).format('YYYY-MM');
-      });
+        data.forEach(item => {
+          item._group = dayjs(item.createTime).format("YYYY-MM");
+        });
 
-      const timelines = groupBy(data, '_group');
+        const timelines = groupBy(data, "_group");
 
-      commit(SET_TIME_LINE, timelines);
-      return timelines;
-    }, (e) => {
-      return e;
-    });
+        commit(SET_TIME_LINE, timelines);
+        return timelines;
+      },
+      e => {
+        return e;
+      }
+    );
   },
-  getUserArticles ({ commit }) {
+  getUserArticles({ commit }, { loadingTarget, pageSize, currentPage } = {}) {
     const { xhrInstance } = http({
       url: `/user/articles/`,
-      method: 'get',
+      method: "get",
+      data: {
+        pageSize: pageSize || 10,
+        currentPage: currentPage || 1
+      },
       showSuccessMsg: false,
       showErrorMsg: false
     });
 
-    return xhrInstance.then((articles) => {
-      commit(SET_USER_ARTICLES, articles.list);
-    }, (e) => {
-      return e;
-    });
+    return xhrInstance.then(
+      articles => {
+        commit(SET_USER_ARTICLES, articles.list);
+      },
+      e => {
+        return e;
+      }
+    );
   },
-  getArticle ({ commit }, articleId) {
+  getArticle({ commit }, articleId) {
     const { xhrInstance } = http({
       url: `/article/${articleId}`,
-      method: 'get',
+      method: "get",
       showSuccessMsg: false,
       showErrorMsg: false
     });
 
-    return xhrInstance.then((article) => {
-      commit(SET_CURRENT_ARTICLE, article);
-    }, (e) => {
-      return e;
-    });
+    return xhrInstance.then(
+      article => {
+        commit(SET_CURRENT_ARTICLE, article);
+      },
+      e => {
+        return e;
+      }
+    );
   },
-  getAllTags ({ commit }, { loadingTarget } = {}) {
+  getAllTags({ commit }, { loadingTarget } = {}) {
     const { xhrInstance } = http({
       url: `/tags`,
-      method: 'get',
+      method: "get",
       showSuccessMsg: false,
       showErrorMsg: true,
       loading: loadingTarget
     });
 
-    return xhrInstance.then((tags) => {
-      commit(SET_TAGS, tags);
-    }, (e) => {
-      return e;
-    });
+    return xhrInstance.then(
+      tags => {
+        commit(SET_TAGS, tags);
+      },
+      e => {
+        return e;
+      }
+    );
   },
-  getTag ({ commit }, tagId) {
+  getTag({ commit }, tagId) {
     const { xhrInstance } = http({
       url: `/tag/${tagId}`,
-      method: 'get',
+      method: "get",
       showSuccessMsg: false,
       showErrorMsg: true
     });
 
-    return xhrInstance.then((tag) => {
-      commit(SET_TAG, tag);
-    }, (e) => {
-      return e;
-    });
+    return xhrInstance.then(
+      tag => {
+        commit(SET_TAG, tag);
+      },
+      e => {
+        return e;
+      }
+    );
   }
 };

@@ -6,7 +6,9 @@
           <div class="article-wrap">
             <h1 class="article-title">{{ article.title }}</h1>
             <div class="article-details">
-              <span class="details-item">{{ formatTime(article.createTime) }}</span>
+              <span class="details-item">{{
+                formatTime(article.createTime)
+              }}</span>
               <span class="details-item">字数 {{ article.wordCount }}</span>
               <span class="details-item">阅读 {{ article.views }}</span>
 
@@ -18,8 +20,18 @@
             </div>
             <div class="article-tags">
               <div class="selected-tags">
-                <el-tag size="mini" :key="tag._id" v-for="tag in article.tags">{{ tag.label }}</el-tag>
-                <span v-if="hasOperateAuth()" class="tags-setting" @click="toggleTags">标签设置</span>
+                <el-tag
+                  size="mini"
+                  :key="tag._id"
+                  v-for="tag in article.tags"
+                  >{{ tag.label }}</el-tag
+                >
+                <span
+                  v-if="hasOperateAuth()"
+                  class="tags-setting"
+                  @click="toggleTags"
+                  >标签设置</span
+                >
               </div>
               <div class="all-tags" v-if="openTags">
                 <div class="selector-body">
@@ -28,20 +40,25 @@
                       :key="tag._id"
                       :label="tag._id"
                       v-for="tag in tags"
-                    >{{ tag.label }}</el-checkbox-button>
+                      >{{ tag.label }}</el-checkbox-button
+                    >
                   </el-checkbox-group>
                 </div>
 
                 <div class="selector-footer">
-                  <el-button size="mini" round @click="toggleTags">取消</el-button>
-                  <el-button size="mini" round @click="handleTagsParams">保存</el-button>
+                  <el-button size="mini" round @click="toggleTags"
+                    >取消</el-button
+                  >
+                  <el-button size="mini" round @click="handleTagsParams"
+                    >保存</el-button
+                  >
                 </div>
               </div>
             </div>
             <div class="article-content">
               <VueShowdown
                 class="markdown-preview"
-                :vueTemplate="true"
+                :vueTemplate="false"
                 :markdown="article.content || ''"
                 flavor="github"
                 :extensions="[showdownHighlight]"
@@ -78,7 +95,7 @@ export default {
     VueShowdown,
     Comment
   },
-  data () {
+  data() {
     return {
       content: '',
       title: '',
@@ -92,21 +109,21 @@ export default {
       articleTags: []
     };
   },
-  asyncData ({ store, route }) {
+  asyncData({ store, route }) {
     return store.dispatch('getArticle', route.params.id);
   },
-  mounted () {
+  mounted() {
     this.articleTags = Array.isArray(this.article.tags)
       ? this.article.tags.map(tag => tag._id)
       : [];
   },
   computed: {
     ...mapState(['article', 'userInfo', 'tags']),
-    author () {
+    author() {
       return this.article.createUser;
     }
   },
-  beforeRouteLeave (to, from, next) {
+  afterRouteLeave(to, from, next) {
     // 导航离开该组件的对应路由时调用
     // 可以访问组件实例 `this`
     // 清除state中article数据
@@ -118,10 +135,10 @@ export default {
     ...mapMutations({
       setCurrentArticle: SET_CURRENT_ARTICLE
     }),
-    formatTime (time) {
+    formatTime(time) {
       return time ? dayjs(time).format('YYYY-MM-DD') : '';
     },
-    hasOperateAuth () {
+    hasOperateAuth() {
       return (
         this.userInfo &&
         this.article &&
@@ -129,22 +146,22 @@ export default {
         this.userInfo._id === this.article.createUser._id
       );
     },
-    isChecked (tag) {
+    isChecked(tag) {
       const flag = !!this.article.tags.find(
         articleTag => articleTag._id === tag._id
       );
       return flag;
     },
-    toggleTags () {
+    toggleTags() {
       this.openTags = !this.openTags;
       if (!this.tags || this.tags.length === 0) {
         this.getAllTags();
       }
     },
-    editArticle () {
+    editArticle() {
       this.$router.push(`/post/${this.$route.params.id}`);
     },
-    userConfirm () {
+    userConfirm() {
       this.$alert({
         title: '警告',
         text: '您确定要删除这篇文章吗？',
@@ -158,10 +175,10 @@ export default {
         }
       });
     },
-    handleTagsParams () {
+    handleTagsParams() {
       this.saveArticleTags(this.articleTags);
     },
-    saveArticleTags (tags) {
+    saveArticleTags(tags) {
       const { xhrInstance } = this.$http({
         url: `/article/${this.$route.params.id}`,
         method: 'put',
@@ -180,7 +197,7 @@ export default {
         () => {}
       );
     },
-    deleteArticle () {
+    deleteArticle() {
       const { xhrInstance } = this.$http({
         url: `/article/${this.$route.params.id}`,
         method: 'delete',

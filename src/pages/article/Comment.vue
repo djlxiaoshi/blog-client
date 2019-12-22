@@ -18,10 +18,10 @@
         class="comment-item"
         v-for="(comment, index) in comments"
         :key="comment._id"
-        :id="`comment_id_${ comment._id }`"
+        :id="`comment_id_${comment._id}`"
       >
         <div class="comment-desc">
-          <span class="comment-floor">{{ index + 1}}楼</span>
+          <span class="comment-floor">{{ index + 1 }}楼</span>
           <span class="comment-user">{{ comment.createUser.username }}</span>
           <span v-if="comment.replyUser">
             <span>回复</span>
@@ -55,12 +55,14 @@
 import Editor from 'components/common/Editor/Index.vue';
 import dayjs from 'dayjs';
 
+const PAGE_SIZE = 10;
+
 export default {
   name: '',
   components: {
     Editor
   },
-  data () {
+  data() {
     return {
       visible: false,
       actions: [],
@@ -68,29 +70,29 @@ export default {
       comments: [],
       commentsTotal: Infinity,
       currentPage: 1,
-      pageSize: 10,
+      pageSize: PAGE_SIZE,
       busy: false
     };
   },
   methods: {
-    formatTime (timestamp) {
+    formatTime(timestamp) {
       return dayjs(timestamp).format('YYYY-MM-DD');
     },
-    onInputChange (html, isReplyOthers, index) {
+    onInputChange(html, isReplyOthers, index) {
       if (isReplyOthers) {
         this.comments[index]._replyContent = html;
       } else {
         this.content = html;
       }
     },
-    toggleReplyVisible (status, isReplyOthers, index) {
+    toggleReplyVisible(status, isReplyOthers, index) {
       if (isReplyOthers) {
         this.$set(this.comments[index], '_visible', status);
       } else {
         this.visible = status;
       }
     },
-    getComments (currentPage) {
+    getComments(currentPage) {
       const articleId = this.$route.params.id;
       if (articleId) {
         const { xhrInstance } = this.$http({
@@ -120,14 +122,14 @@ export default {
         );
       }
     },
-    async loadMore () {
+    async loadMore() {
       if (this.comments.length < this.commentsTotal) {
         this.busy = true;
         await this.getComments(this.currentPage);
         this.busy = false;
       }
     },
-    postComment (isReplyOthers, index) {
+    postComment(isReplyOthers, index) {
       const articleId = this.$route.params.id;
       if (articleId) {
         // 如果是回复其他评论
@@ -146,12 +148,12 @@ export default {
         }
       }
     },
-    clear () {
+    clear() {
       // TODO 有无更加优雅的方式 获取孙子节点  或者实现清空功能
       this.content = '';
       this.$refs['reply-editor'].$refs['rich-text-editor'].clear();
     },
-    sendRequest (params) {
+    sendRequest(params) {
       const articleId = this.$route.params.id;
       if (articleId) {
         const { xhrInstance } = this.$http({

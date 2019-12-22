@@ -14,114 +14,114 @@
 
 export default [
   {
-    path: '/',
-    label: '发现',
+    path: "/",
+    label: "发现",
     component: () =>
-      import(/* webpackChunkName: "home" */ '../pages/explore/Index')
+      import(/* webpackChunkName: "home" */ "../pages/explore/Index")
   },
   {
-    path: '/timeline',
-    label: '时光轴',
+    path: "/timeline",
+    label: "时光轴",
     component: () =>
-      import(/* webpackChunkName: "timeline" */ '../pages/timeline/Index')
+      import(/* webpackChunkName: "timeline" */ "../pages/timeline/Index")
   },
   {
-    path: '/tags',
-    label: '归档',
-    component: () => import(/* webpackChunkName: "tags" */ '../pages/tag/Index')
+    path: "/tags",
+    label: "归档",
+    component: () => import(/* webpackChunkName: "tags" */ "../pages/tag/Index")
   },
   {
-    path: '/about',
+    path: "/about",
     component: () =>
-      import(/* webpackChunkName: "about" */ '../pages/about/Index'),
-    label: '关于本站'
+      import(/* webpackChunkName: "about" */ "../pages/about/Index"),
+    label: "关于本站"
   },
   {
-    path: '/post',
+    path: "/post",
     component: () =>
-      import(/* webpackChunkName: "post" */ '../pages/post/Index'),
+      import(/* webpackChunkName: "post" */ "../pages/post/Index"),
     hidden: true,
-    desc: '写文章',
+    desc: "写文章",
     meta: {
       requiredLogin: true
     }
   },
   {
-    path: '/crawl',
+    path: "/crawl",
     component: () =>
-      import(/* webpackChunkName: "crawl" */ '../pages/crawl-article/Index'),
+      import(/* webpackChunkName: "crawl" */ "../pages/crawl-article/Index"),
     hidden: true,
-    desc: '爬取文章',
+    desc: "爬取文章",
     meta: {
       requiredLogin: true
     }
   },
   {
-    path: '/article/:id',
+    path: "/article/:id",
     component: () =>
-      import(/* webpackChunkName: "article" */ '../pages/article/Index'),
-    label: '文章详情',
+      import(/* webpackChunkName: "article" */ "../pages/article/Index"),
+    label: "文章详情",
     hidden: true
   },
   {
-    path: '/tag/:id/',
+    path: "/tag/:id/",
     component: () =>
-      import(/* webpackChunkName: "tag" */ '../pages/tag/Details'),
+      import(/* webpackChunkName: "tag" */ "../pages/tag/Details"),
     hidden: true
   },
   {
-    path: '/post/:id',
+    path: "/post/:id",
     component: () =>
-      import(/* webpackChunkName: "edit" */ '../pages/post/Index'),
-    label: '编辑文章',
+      import(/* webpackChunkName: "edit" */ "../pages/post/Index"),
+    label: "编辑文章",
     meta: {
       requiredLogin: true
     },
     hidden: true
   },
   {
-    path: '/login',
+    path: "/login",
     hidden: true,
     component: () =>
-      import(/* webpackChunkName: "login" */ '../pages/login/Index'),
+      import(/* webpackChunkName: "login" */ "../pages/login/Index"),
     meta: {
       NoNeedUserMsg: true
     }
   },
   {
-    path: '/register',
+    path: "/register",
     component: () =>
-      import(/* webpackChunkName: "register" */ '../pages/register/Index'),
+      import(/* webpackChunkName: "register" */ "../pages/register/Index"),
     hidden: true,
     meta: {
       NoNeedUserMsg: true
     }
   },
   {
-    path: '/user',
+    path: "/user",
     component: () =>
-      import(/* webpackChunkName: "user" */ '../pages/user/Index'),
+      import(/* webpackChunkName: "user" */ "../pages/user/Index"),
     children: [
       {
-        path: 'info',
+        path: "info",
         component: () =>
           import(
-            /* webpackChunkName: "user-info" */ '../pages/user/info/Index'
+            /* webpackChunkName: "user-info" */ "../pages/user/info/Index"
           ),
         hidden: true,
-        desc: '用户信息',
+        desc: "用户信息",
         meta: {
           requiredLogin: true
         }
       },
       {
-        path: ':id',
+        path: ":id",
         component: () =>
           import(
-            /* webpackChunkName: "user-home" */ '../pages/user/home/Index'
+            /* webpackChunkName: "user-home" */ "../pages/user/home/Index"
           ),
         hidden: true,
-        desc: '用户首页',
+        desc: "用户首页",
         meta: {
           requiredLogin: true
         }
@@ -133,18 +133,18 @@ export default [
     }
   },
   {
-    path: '/test',
-    label: '测试',
-    component: () => import(/* webpackChunkName: "test" */ '../pages/test'),
+    path: "/test",
+    label: "测试",
+    component: () => import(/* webpackChunkName: "test" */ "../pages/test"),
     hidden: true,
     meta: {
       requiredLogin: true
     }
   },
   {
-    path: '/server-exception',
+    path: "/server-exception",
     component: () =>
-      import(/* webpackChunkName: "exception" */ '../pages/exception/Index'),
+      import(/* webpackChunkName: "exception" */ "../pages/exception/Index"),
     hidden: true,
     props: { type: 500 },
     meta: {
@@ -152,9 +152,9 @@ export default [
     }
   },
   {
-    path: '/no-permission',
+    path: "/no-permission",
     component: () =>
-      import(/* webpackChunkName: "exception" */ '../pages/exception/Index'),
+      import(/* webpackChunkName: "exception" */ "../pages/exception/Index"),
     hidden: true,
     props: { type: 403 },
     meta: {
@@ -162,9 +162,9 @@ export default [
     }
   },
   {
-    path: '**',
+    path: "**",
     component: () =>
-      import(/* webpackChunkName: "exception" */ '../pages/exception/Index'),
+      import(/* webpackChunkName: "exception" */ "../pages/exception/Index"),
     hidden: true,
     props: { type: 404 },
     meta: {

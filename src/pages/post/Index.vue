@@ -33,74 +33,77 @@
 </template>
 
 <script>
-import Editor from '@/components/common/Editor/Index';
-import { mapState, mapActions, mapMutations } from 'vuex';
-import { SET_CURRENT_ARTICLE } from 'store/mutation-types';
+import Editor from '@/components/common/Editor/Index'
+import { mapState, mapActions, mapMutations } from 'vuex'
+import { SET_CURRENT_ARTICLE } from 'store/mutation-types'
 
-const CREATE_MODE = 1;
-const EDIT_MODE = 2;
+const CREATE_MODE = 1
+const EDIT_MODE = 2
 
 export default {
   components: {
     Editor
   },
-  data () {
+  data() {
     return {
       viewMode: 1,
       title: ''
-    };
+    }
   },
-  mounted () {
-    this.title = this.article.title;
+  mounted() {
+    this.title = this.article.title
   },
-  asyncData ({ store, route }) {
+  asyncData({ store, route }) {
     if (route.params.id) {
-      return store.dispatch('getArticle', route.params.id);
+      return store.dispatch('getArticle', route.params.id)
     }
   },
   computed: {
     ...mapState(['article']),
-    articleId () {
-      return this.$route.params.id;
+    articleId() {
+      return this.$route.params.id
     },
-    mode () {
-      return this.$route.params.id ? EDIT_MODE : CREATE_MODE;
+    mode() {
+      return this.$route.params.id ? EDIT_MODE : CREATE_MODE
     }
   },
-  beforeRouteLeave (to, from, next) {
+  beforeRouteLeave(to, from, next) {
     if (this.mode === EDIT_MODE) {
       // 导航离开该组件的对应路由时调用
       // 可以访问组件实例 `this`
       const result = confirm(
         '该操作不会对您的更改进行保存，请在离开之前进行保存操作！'
-      );
+      )
       if (result) {
-        this.setCurrentArticle({});
-        next();
+        next()
       } else {
-        next(false);
+        next(false)
       }
     } else {
-      next();
+      next()
     }
+  },
+  afterRouteLeave() {
+    // 清空state中的article信息，不能在beforeRouteLeave中清除，否则会有一个闪动
+    this.setCurrentArticle({})
   },
   methods: {
     ...mapActions(['getArticle']),
     ...mapMutations({
       setCurrentArticle: SET_CURRENT_ARTICLE
     }),
-    changeViewMode (mode) {
-      this.viewMode = mode;
+    changeViewMode(mode) {
+      this.viewMode = mode
     },
-    setTitle (value) {
-      this.title = value;
+    setTitle(value) {
+      this.title = value
     },
-    handleParams (justSave) {
-      const title = this.title;
+    handleParams(justSave) {
+      const title = this.title
 
       if (!title.trim()) {
-        this.$notify.warning('文章标题不能为空');
-        return;
+        this.$notify.warning('文章标题不能为空')
+        return
       }
 
       const params = {
@@ -109,98 +112,98 @@ export default {
         abstract: this.getAbstract(),
         content: this.getContent(),
         status: justSave ? 0 : 1
-      };
-      const message = justSave ? '文章保存成功' : '文章发布成功';
+      }
+      const message = justSave ? '文章保存成功' : '文章发布成功'
       if (this.mode === CREATE_MODE) {
-        this.createArticle(params);
+        this.createArticle(params)
       } else {
-        this.updateArticle(params, message);
+        this.updateArticle(params, message)
       }
     },
     /**
      * 获取文章内容
      * @returns {*|string}
      */
-    getContent () {
-      const editorDom = this.$refs.editor.$el;
-      const textAreaDom = editorDom.querySelector('#markdown-textarea');
+    getContent() {
+      const editorDom = this.$refs.editor.$el
+      const textAreaDom = editorDom.querySelector('textarea')
       if (textAreaDom) {
-        return textAreaDom.value;
+        return textAreaDom.value
       }
     },
     /**
      * 获取文章缩略图
      * @returns {string}
      */
-    getThumbnail () {
-      let imgSrc = '';
-      const editorDom = this.$refs.editor.$el;
-      const contentDom = editorDom.querySelector('#vue-showdown');
+    getThumbnail() {
+      let imgSrc = ''
+      const editorDom = this.$refs.editor.$el
+      const contentDom = editorDom.querySelector('#vue-showdown')
       if (contentDom) {
-        const firstImageDom = contentDom.getElementsByTagName('img')[0];
+        const firstImageDom = contentDom.getElementsByTagName('img')[0]
         if (firstImageDom) {
-          imgSrc = firstImageDom.src;
+          imgSrc = firstImageDom.src
         }
       }
-      return imgSrc;
+      return imgSrc
     },
     /**
      * 获取文章摘要
      * @returns {string}
      */
-    getAbstract () {
-      const editorDom = this.$refs.editor.$el;
-      const contentDom = editorDom.querySelector('#vue-showdown');
+    getAbstract() {
+      const editorDom = this.$refs.editor.$el
+      const contentDom = editorDom.querySelector('#vue-showdown')
       if (contentDom) {
-        let abstract = '';
-        const paragraphList = contentDom.getElementsByTagName('p');
-        const paragraphArr = Array.from(paragraphList);
+        let abstract = ''
+        const paragraphList = contentDom.getElementsByTagName('p')
+        const paragraphArr = Array.from(paragraphList)
         for (let item of paragraphArr) {
-          abstract += item.innerText.replace(/[\r\n]/g, ''); // 去除回车换行
+          abstract += item.innerText.replace(/[\r\n]/g, '') // 去除回车换行
           if (abstract.length >= 100) {
-            return abstract.substr(0, 100);
+            return abstract.substr(0, 100)
           }
         }
-        return abstract;
+        return abstract
       }
     },
     /**
      * 新增文章
      * @param params
      */
-    createArticle (params) {
+    createArticle(params) {
       const { xhrInstance } = this.$http({
         url: '/article',
         data: params,
         method: 'post',
         showSuccessMsg: true,
         showErrorMsg: true
-      });
+      })
 
       xhrInstance.then(
         article => {
-          this.$router.push(`/post/${article._id}`);
+          this.$router.push(`/post/${article._id}`)
         },
         () => {}
-      );
+      )
     },
     /**
      * 更新文章
      * @param params
      */
-    updateArticle (params, message) {
+    updateArticle(params, message) {
       const { xhrInstance } = this.$http({
         url: `/article/${this.articleId}`,
         data: params,
         method: 'put',
         showSuccessMsg: message,
         showErrorMsg: true
-      });
+      })
 
-      xhrInstance.then(() => {}, () => {});
+      xhrInstance.then(() => {}, () => {})
     }
   }
-};
+}
 </script>
 
 <style scoped lang="less">

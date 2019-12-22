@@ -13,11 +13,13 @@ module.exports = {
     // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
     'plugin:vue/essential',
     // https://github.com/standard/standard/blob/master/docs/RULES-en.md
-    'standard'
+    'standard',
+    'plugin:prettier/recommended'
   ],
   // required to lint *.vue files
   plugins: [
-    'vue'
+    'vue',
+    "prettier"
   ],
   // add your custom rules here
   rules: {
@@ -28,6 +30,7 @@ module.exports = {
     'semi': ['error', 'always'],
     'indent': 0,
     'no-trailing-spaces': 0,
-    'padded-blocks': 0
+    'padded-blocks': 0,
+    "prettier/prettier": "error"
   }
 }

@@ -5,29 +5,29 @@
         v-if="mode !== 2"
         :xs="24"
         :sm="24"
-        :md="mode === 3 ? 24: 12"
-        :lg="mode === 3 ? 24: 12"
-        :xl="mode === 3 ? 24: 12"
+        :md="mode === 3 ? 24 : 12"
+        :lg="mode === 3 ? 24 : 12"
+        :xl="mode === 3 ? 24 : 12"
       >
         <div class="markdown-wrap">
           <!-- 默认情况下 textarea的高度是不会随着内容增加的 -->
-          <textarea v-model="articleContent" id="markdown-textarea" class="common-scroll"></textarea>
+          <!-- 这里使用v-model双向绑定，当传入的value值是vue模板时，会进行编译从而报错 -->
+          <textarea class="common-scroll" ref="textarea" @input="textareaChange"></textarea>
         </div>
       </el-col>
 
       <el-col
         v-if="mode !== 3"
-        :md="mode === 2 ? 24: 12"
-        :lg="mode === 2 ? 24: 12"
-        :xl="mode === 2 ? 24: 12"
+        :md="mode === 2 ? 24 : 12"
+        :lg="mode === 2 ? 24 : 12"
+        :xl="mode === 2 ? 24 : 12"
         class="hidden-sm-and-down"
       >
         <div class="html-wrap common-scroll">
           <VueShowdown
             class="markdown-preview"
             id="vue-showdown"
-            :vueTemplate="true"
-            :markdown="articleContent"
+            :markdown="markdownContent"
             flavor="github"
             :extensions="[showdownHighlight]"
             :options="options"
@@ -43,7 +43,7 @@ import { VueShowdown } from 'vue-showdown';
 import showdownHighlight from 'showdown-highlight';
 
 export default {
-  data () {
+  data() {
     return {
       textValue: '',
       showdownHighlight,
@@ -51,7 +51,7 @@ export default {
         omitExtraWLInCodeBlocks: true,
         ghCodeBlocks: true
       },
-      articleContent: this.content
+      markdownContent: this.content
     };
   },
   props: {
@@ -67,10 +67,21 @@ export default {
     VueShowdown
   },
   computed: {},
-  methods: {},
+  mounted() {
+    if (this.$refs.textarea) {
+      this.$refs.textarea.value = this.markdownContent;
+    }
+  },
+  methods: {
+    textareaChange(e) {
+      const value = e.target.value;
+      this.markdownContent = value;
+      this.$emit('change', value);
+    }
+  },
   watch: {
-    content (value) {
-      this.articleContent = value;
+    content(value) {
+      this.markdownContent = value;
     }
   }
 };
