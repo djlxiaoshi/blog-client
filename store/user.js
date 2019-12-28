@@ -1,7 +1,12 @@
 export const state = () => ({
-  userInfo: null,
-  name: 'djlxs'
+  userInfo: null
 });
+
+export const getters = {
+  userInfo(state) {
+    return state.userInfo;
+  }
+};
 
 export const mutations = {
   setUserInfo(state, userInfo) {

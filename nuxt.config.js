@@ -26,6 +26,7 @@ module.exports = {
   css: [
     'element-ui/lib/theme-chalk/index.css',
     'element-ui/lib/theme-chalk/display.css',
+    'highlight.js/styles/monokai-sublime.css',
     '@/assets/css/common.less'
   ],
   /*
@@ -65,5 +66,11 @@ module.exports = {
      ** You can extend webpack config here
      */
     extend(config, ctx) { }
+  },
+  vue: {
+    config: {
+      productionTip: false,
+      devtools: true
+    }
   }
 };

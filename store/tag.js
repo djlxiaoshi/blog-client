@@ -4,6 +4,12 @@ export const state = () => ({
   tags: []
 });
 
+export const getters = {
+  tags(state) {
+    return state.tags;
+  }
+};
+
 export const mutations = {
   setAllTags(state, tags) {
     state.tags = tags;
