@@ -11,8 +11,12 @@
     <div class="donate-me module">
       <h5 class="module-title">支持博主</h5>
       <div class="module-content">
-        <el-image :src="alipay" class="qr-code"></el-image>
-        <el-image :src="wechatpay" class="qr-code"></el-image>
+        <el-image :src="alipay" class="qr-code">
+          <AppLoading slot="placeholder" size="large"></AppLoading>
+        </el-image>
+        <el-image :src="wechatpay" class="qr-code">
+          <AppLoading slot="placeholder" size="large"></AppLoading>
+        </el-image>
       </div>
     </div>
     <div class="contact-me module">
@@ -42,13 +46,16 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
+import AppLoading from '~/components/common/app-loading';
 
 import wechatpay from '@/assets/img/wechat-pay.jpg';
 import alipay from '@/assets/img/ali-pay.jpg';
 
 export default {
-  components: {},
+  components: {
+    AppLoading
+  },
   data() {
     return {
       wechatpay,
@@ -56,10 +63,11 @@ export default {
     };
   },
   computed: {
-    ...mapState(['tags'])
+    ...mapState({
+      tags: (state) => state.tag.list
+    })
   },
   methods: {
-    ...mapActions(['getAllTags']),
     viewTag(tag) {
       this.$router.push(`/tag/${tag._id}`);
     }

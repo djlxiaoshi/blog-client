@@ -29,6 +29,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
+  width: 100%;
   img {
     width: 15%;
     &.mini {

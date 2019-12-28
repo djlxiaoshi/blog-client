@@ -163,7 +163,12 @@ export default {
   padding: 20px;
   z-index: 1001;
   background: #ffffff;
-
+  /deep/ .el-row {
+    height: 100%;
+    .el-col {
+      max-width: 350px;
+    }
+  }
   .page-header {
     .page-logo {
       text-align: center;
@@ -177,10 +182,6 @@ export default {
     .page-title {
       font-size: 20px;
     }
-  }
-
-  /deep/ .el-row {
-    height: 100%;
   }
   .box-card {
     /deep/ .el-form-item {

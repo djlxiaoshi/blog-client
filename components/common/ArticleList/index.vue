@@ -10,9 +10,11 @@
               fit="contain"
               style="width: 100%; height: 100px"
             >
-              <div slot="placeholder" class="image-slot">
-                <AppLoading size="large"></AppLoading>
-              </div>
+              <AppLoading
+                slot="placeholder"
+                size="large"
+                class="image-slot"
+              ></AppLoading>
             </el-image>
           </div>
         </el-col>
@@ -115,11 +117,8 @@ export default {
     .item-thumbnail {
       margin-top: 15px;
       .image-slot {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
+        box-sizing: border-box;
+        border: 1px solid #e5e5e5;
       }
     }
     .details-wrap {

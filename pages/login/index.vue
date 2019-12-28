@@ -1,7 +1,7 @@
 <template>
   <section class="app-login">
     <el-row type="flex" justify="center" align="middle">
-      <el-col :xs="24" :sm="10" :md="8" :lg="8" :xl="8">
+      <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
         <div class="page-header">
           <div class="page-logo">
             <img src="@/assets/img/avatar.jpg" alt />
@@ -139,8 +139,15 @@ export default {
   top: 0;
   bottom: 0;
   z-index: 1001;
+  margin: auto;
   padding: 20px;
   background: #ffffff;
+  /deep/ .el-row {
+    height: 100%;
+    .el-col {
+      max-width: 350px;
+    }
+  }
   .page-header {
     .page-logo {
       text-align: center;
@@ -154,10 +161,6 @@ export default {
     .page-title {
       font-size: 20px;
     }
-  }
-
-  /deep/ .el-row {
-    height: 100%;
   }
   .box-card {
     .login-btn {
