@@ -1,7 +1,8 @@
 import http from '~/assets/js/utils/http';
 
 export const state = () => ({
-  tags: []
+  list: [],
+  currentTag: {}
 });
 
 export const getters = {
@@ -12,7 +13,10 @@ export const getters = {
 
 export const mutations = {
   setAllTags(state, tags) {
-    state.tags = tags;
+    state.list = tags;
+  },
+  setTag(state, tag) {
+    state.currentTag = tag;
   }
 };
 
@@ -29,6 +33,23 @@ export const actions = {
     return xhrInstance.then(
       (tags) => {
         commit('setAllTags', tags);
+      },
+      (e) => {
+        return e;
+      }
+    );
+  },
+  getTag({ commit }, tagId) {
+    const { xhrInstance } = http({
+      url: `/tag/${tagId}`,
+      method: 'get',
+      showSuccessMsg: false,
+      showErrorMsg: true
+    });
+
+    return xhrInstance.then(
+      (tag) => {
+        commit('setTag', tag);
       },
       (e) => {
         return e;

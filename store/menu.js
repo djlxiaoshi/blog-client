@@ -10,7 +10,7 @@ export const state = () => ({
       label: '时光轴'
     },
     {
-      path: '/tags',
+      path: '/tag',
       label: '归档'
     },
     {

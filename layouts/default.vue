@@ -3,7 +3,7 @@
     <AppHeader></AppHeader>
     <div class="app-body">
       <div class="placeholder hidden-sm-and-down"></div>
-      <el-row type="flex" align="middle" justify="center">
+      <el-row type="flex" justify="center">
         <el-col :xs="24" :sm="20" :md="20" :lg="20" :xl="20">
           <nuxt />
         </el-col>

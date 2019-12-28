@@ -11,8 +11,8 @@
     <div class="donate-me module">
       <h5 class="module-title">支持博主</h5>
       <div class="module-content">
-        <img :src="alipay" :style="{ width: '120px', height: '120px' }" />
-        <img :src="wechatpay" :style="{ width: '120px', height: '120px' }" />
+        <el-image :src="alipay" class="qr-code"></el-image>
+        <el-image :src="wechatpay" class="qr-code"></el-image>
       </div>
     </div>
     <div class="contact-me module">
@@ -96,7 +96,7 @@ export default {
   .donate-me {
     .module-content {
       text-align: center;
-      img {
+      .qr-code {
         width: 120px;
         height: 120px;
         border: 1px solid #e5e5e5;
