@@ -1,12 +1,9 @@
 <template>
   <el-menu
-    :background-color="backgroundColor"
-    :text-color="textColor"
-    :active-text-color="activeTextColor"
+    v-bind="$attrs"
+    v-on="$listeners"
     :router="true"
-    :default-active="activeMenu"
     :mode="mode"
-    @select="handleSelect"
     class="app-header-menu"
   >
     <template v-for="menu in menuList">
@@ -31,33 +28,13 @@ export default {
     menuList: {
       type: Array,
       default: () => []
-    },
-    backgroundColor: {
-      type: String,
-      default: ''
-    },
-    textColor: {
-      type: String,
-      default: ''
-    },
-    activeTextColor: {
-      type: String,
-      default: ''
-    },
-    activeMenu: {
-      type: String,
-      default: ''
     }
   },
   data() {
     return {};
   },
   mounted() {},
-  methods: {
-    handleSelect(key) {
-      this.$emit('menuSelect', key);
-    }
-  }
+  methods: {}
 };
 </script>
 

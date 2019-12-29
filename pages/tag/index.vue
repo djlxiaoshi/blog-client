@@ -27,10 +27,17 @@
         <el-card :body-style="{ padding: '0px' }">
           <div @click="goToTagDetails(tag)" class="img-wrap">
             <el-image
+              style="width: 100%; height: 100%"
               fit="cover"
               lazy
               src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-            ></el-image>
+            >
+              <AppLoading
+                slot="placeholder"
+                size="large"
+                class="image-slot"
+              ></AppLoading>
+            </el-image>
           </div>
           <div class="card-bottom">
             <span class="tag-name">{{ tag.label }}</span>
@@ -47,9 +54,10 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import AppLoading from '~/components/common/app-loading';
 
 export default {
-  name: '',
+  name: 'TagPage',
   header: {
     title: `归档`,
     titleTemplate: '%s - DJL箫氏的博客!',
@@ -58,7 +66,9 @@ export default {
       amp: true
     }
   },
-  components: {},
+  components: {
+    AppLoading
+  },
   data() {
     return {
       currentTag: {}
@@ -215,6 +225,7 @@ export default {
       .card-bottom {
         padding: 15px;
         display: flex;
+        border-top: 1px solid #e5e5e5;
         .operate-wrap {
           margin-left: auto;
           i {

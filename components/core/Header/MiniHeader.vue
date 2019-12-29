@@ -30,13 +30,15 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import { CHANGE_SIDEBAR_VISIBLE } from '~/store/mutation-types';
 import defaultAvatar from '~/assets/img/avatar.jpg';
 
 export default {
   components: {},
   computed: {
-    ...mapState(['userInfo', 'sidebarVisible']),
+    ...mapState({
+      userInfo: (state) => state.user.userInfo,
+      sidebarVisible: (state) => state.sidebarVisible
+    }),
     avatar() {
       if (!this.userInfo) return defaultAvatar;
       return `${this.$globalConfig.IMAGE_ADDRESS}/${
@@ -49,7 +51,7 @@ export default {
   },
   methods: {
     ...mapMutations({
-      changeSidebarVisible: CHANGE_SIDEBAR_VISIBLE
+      changeSidebarVisible: 'changeSidebarVisible'
     }),
     setDefaultAvatar() {
       if (this.$refs.avatar) {

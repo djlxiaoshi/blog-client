@@ -1,18 +1,18 @@
 <template>
   <header class="app-header">
-    <!-- <mini-header class="hidden-md-and-up"></mini-header> -->
-    <normal-header class="hidden-sm-and-down"></normal-header>
+    <mini-header class="hidden-sm-and-up"></mini-header>
+    <normal-header class="hidden-xs-only"></normal-header>
   </header>
 </template>
 
 <script>
-// import MiniHeader from './MiniHeader';
+import MiniHeader from './MiniHeader';
 import NormalHeader from './NormalHeader';
 
 export default {
   name: 'AppHeader',
   components: {
-    // MiniHeader,
+    MiniHeader,
     NormalHeader
   },
   data() {

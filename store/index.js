@@ -1,9 +1,9 @@
 export const state = () => ({
-  counter: 0
+  sidebarVisible: false
 });
 
 export const mutations = {
-  increment(state) {
-    state.counter++;
+  changeSidebarVisible(state, visible) {
+    state.sidebarVisible = visible;
   }
 };

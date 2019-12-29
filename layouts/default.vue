@@ -2,27 +2,35 @@
   <div class="djlxs-blog">
     <AppHeader></AppHeader>
     <div class="app-body">
-      <!-- <div class="placeholder hidden-sm-and-down"></div> -->
       <el-row type="flex" justify="center">
         <el-col :xs="24" :sm="20" :md="20" :lg="20" :xl="20">
           <nuxt />
         </el-col>
       </el-row>
     </div>
-    <!-- <AppSideBar v-if="sidebarVisible" @onSelect="menuSelect"></AppSideBar> -->
+    <AppSideBar v-if="sidebarVisible"></AppSideBar>
   </div>
 </template>
 
 <script>
-import AppHeader from '~/components/core/Header/index';
+import { mapState } from 'vuex';
+import AppHeader from '~/components/core/Header';
+import AppSideBar from '~/components/core/SideBar';
 
 export default {
   components: {
-    AppHeader
+    AppHeader,
+    AppSideBar
   },
   data() {
     return {};
-  }
+  },
+  computed: {
+    ...mapState({
+      sidebarVisible: (state) => state.sidebarVisible
+    })
+  },
+  methods: {}
 };
 </script>
 
@@ -31,8 +39,8 @@ export default {
 
 .djlxs-blog {
   .app-body {
-    min-height: calc(100vh - @AppHeaderHeight);
-    margin-top: @AppHeaderHeight;
+    margin-top: calc(@AppHeaderHeight + @marginToHeader);
+    min-height: calc(100vh - @AppHeaderHeight - @marginToHeader);
     /deep/ .el-row {
       min-height: inherit;
     }

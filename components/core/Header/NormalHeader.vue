@@ -5,8 +5,9 @@
         <div class="header-content">
           <div class="header-left">
             <header-menu
-              :activeMenu="activeMenu"
+              :default-active="activeMenu"
               :menuList="menuList"
+              @select="menuSelect"
               text-color="#fff"
               background-color="#545c64"
               active-text-color="#ffd04b"
@@ -58,7 +59,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 import HeaderMenu from '~/components/common/app-menu';
 import defaultAvatar from '~/assets/img/avatar.jpg';
 
@@ -70,15 +71,11 @@ export default {
     return {};
   },
   computed: {
-    activeMenu() {
-      return this.$store.state.menu.activeMenu;
-    },
-    userInfo() {
-      return this.$store.state.user.userInfo;
-    },
-    menuList() {
-      return this.$store.state.menu.list;
-    },
+    ...mapState({
+      activeMenu: (state) => state.menu.activeMenu,
+      menuList: (state) => state.menu.list,
+      userInfo: (state) => state.user.userInfo
+    }),
     avatar() {
       if (!this.userInfo) return defaultAvatar;
       return `${this.$globalConfig.IMAGE_ADDRESS}/${
@@ -92,6 +89,9 @@ export default {
       setActiveMenu: 'menu/setActiveMenu',
       setUserInfo: 'user/setUserInfo'
     }),
+    menuSelect(menuName) {
+      this.setActiveMenu(menuName);
+    },
     eventHandler(event) {
       const userId = this.userInfo._id;
 
