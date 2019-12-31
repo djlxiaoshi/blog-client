@@ -11,14 +11,14 @@
     <div class="operate-bar">
       <el-tooltip class="item" effect="dark" content="编辑模式" placement="top">
         <i
-          @click="changeViewMode(2)"
+          @click="changeViewMode(3)"
           class="operate-icon iconfont icon-bianji"
         ></i>
       </el-tooltip>
 
       <el-tooltip class="item" effect="dark" content="预览模式" placement="top">
         <i
-          @click="changeViewMode(3)"
+          @click="changeViewMode(2)"
           class="operate-icon iconfont icon-yulan"
         ></i>
       </el-tooltip>
@@ -35,7 +35,12 @@
         ></i>
       </el-tooltip>
 
-      <el-tooltip class="item" effect="dark" content="保存" placement="top">
+      <el-tooltip
+        class="item"
+        effect="dark"
+        content="保存为草稿"
+        placement="top"
+      >
         <i
           @click="handleParams(true)"
           class="operate-icon iconfont icon-baocun"

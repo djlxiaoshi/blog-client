@@ -124,16 +124,14 @@ export default {
       inputStatus: {
         usernameDisabled: true,
         infoDisabled: true
-      }
+      },
+      baseInfo: {}
     };
   },
   computed: {
     ...mapState({
       userInfo: (state) => state.user.userInfo
     }),
-    baseInfo() {
-      return JSON.parse(JSON.stringify(this.userInfo));
-    },
     avatar() {
       if (!this.userInfo) return defaultAvatar;
       return `${this.$globalConfig.IMAGE_ADDRESS}/${
@@ -143,6 +141,9 @@ export default {
   },
   asyncData({ store, route }) {
     return store.dispatch('user/getUserInfo');
+  },
+  mounted() {
+    this.baseInfo = JSON.parse(JSON.stringify(this.userInfo));
   },
   methods: {
     ...mapMutations({
@@ -164,10 +165,10 @@ export default {
       const isLt2M = file.size / 1024 < 300;
 
       if (!(isJPG || isPNG)) {
-        this.$message.error('上传头像图片只能是 JPG或者PNG 格式!');
+        this.$notify.error('上传头像图片只能是 JPG或者PNG 格式!');
       }
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 300KB!');
+        this.$notify.error('上传头像图片大小不能超过 300KB!');
       }
       return (isJPG || isPNG) && isLt2M;
     },
@@ -179,7 +180,7 @@ export default {
         if (valid) {
           this.updateUserInfo().then((user) => {
             // 更新vuex store中用户信息
-            this.setUserInfo(Object.assign(this.userInfo, user));
+            this.setUserInfo(Object.assign({}, this.userInfo, user));
             // 重置状态
             this.resetStatus();
           });

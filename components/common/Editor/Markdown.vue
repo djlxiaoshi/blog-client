@@ -120,12 +120,12 @@ export default {
     }
   }
   .html-wrap {
-    border: 2px solid #dddddd;
+    box-sizing: border-box;
     height: 100%;
     padding: 10px;
     overflow: auto;
-    height: 100%;
-    box-sizing: border-box;
+    border: 2px solid #dddddd;
+    background: #e5e5e5;
   }
 }
 </style>
