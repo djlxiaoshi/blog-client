@@ -19,20 +19,20 @@
             <div v-if="userInfo" class="avatar-wrap">
               <el-dropdown @command="eventHandler" trigger="click">
                 <a class="user-avatar">
-                  <img
-                    ref="avatar"
-                    :src="avatar"
-                    @error="setDefaultAvatar"
-                    width="100%"
-                  />
+                  <el-image ref="avatar" :src="avatar" width="100%">
+                    >
+                    <AppLoading
+                      slot="placeholder"
+                      size="large"
+                      class="image-slot"
+                    ></AppLoading>
+                  </el-image>
                 </a>
 
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="post">写文章</el-dropdown-item>
-                  <el-dropdown-item command="center">用户中心</el-dropdown-item>
-                  <el-dropdown-item command="userInfo"
-                    >用户设置</el-dropdown-item
-                  >
+                  <el-dropdown-item command="center">用户主页</el-dropdown-item>
+                  <el-dropdown-item command="userInfo">设置</el-dropdown-item>
                   <el-dropdown-item command="logout">退出登录</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -62,10 +62,12 @@
 import { mapMutations, mapState } from 'vuex';
 import HeaderMenu from '~/components/common/app-menu';
 import defaultAvatar from '~/assets/img/avatar.jpg';
+import AppLoading from '~/components/common/app-loading';
 
 export default {
   components: {
-    HeaderMenu
+    HeaderMenu,
+    AppLoading
   },
   data() {
     return {};
@@ -113,14 +115,15 @@ export default {
     },
     logout() {
       if (this.userInfo) {
-        const { xhrInstance } = this.$http({
+        const { response } = this.$http({
           url: '/logout',
           data: {
             id: this.userInfo._id
-          }
+          },
+          showSuccessMsg: true
         });
 
-        xhrInstance.then(() => {
+        response.then(() => {
           this.clearUserMsg();
           this.goToHomePage();
         });
@@ -154,14 +157,24 @@ export default {
   .header-right {
     display: flex;
     .avatar-wrap {
+      /deep/ .el-dropdown {
+        &:focus {
+          outline: none;
+        }
+      }
       .user-avatar {
         display: inline-block;
+        box-sizing: border-box;
         overflow: hidden;
+        border-radius: 50%;
         width: 40px;
         height: 40px;
-        border-radius: 50%;
         border: 2px solid #e5e5e5;
         cursor: pointer;
+        /deep/ .el-image {
+          width: 100%;
+          height: 100%;
+        }
       }
     }
     .login-or-register {

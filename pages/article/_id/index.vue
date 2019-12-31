@@ -184,7 +184,7 @@ export default {
       this.saveArticleTags(this.articleTags);
     },
     saveArticleTags(tags) {
-      const { xhrInstance } = this.$http({
+      const { response } = this.$http({
         url: `/article/${this.$route.params.id}`,
         method: 'put',
         data: {
@@ -194,7 +194,7 @@ export default {
         showErrorMsg: true
       });
 
-      xhrInstance.then(
+      response.then(
         () => {
           this.getArticle(this.$route.params.id);
           this.openTags = false;
@@ -203,14 +203,14 @@ export default {
       );
     },
     deleteArticle() {
-      const { xhrInstance } = this.$http({
+      const { response } = this.$http({
         url: `/article/${this.$route.params.id}`,
         method: 'delete',
         showSuccessMsg: true,
         showErrorMsg: true
       });
 
-      xhrInstance.then(
+      response.then(
         () => {
           //  返回用户文章列表页
           this.$router.push('/');

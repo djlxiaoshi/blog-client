@@ -1,7 +1,4 @@
-import http from '~/assets/js/utils/http';
-
 export const state = () => ({
-  userArticles: [], // 用户文章列表
   allArticles: [], // 所有文章
   // 当前文章
   currentArticle: {
@@ -27,14 +24,31 @@ export const mutations = {
 
 export const actions = {
   getArticle({ commit }, articleId) {
-    const { xhrInstance } = http({
+    const { response } = this.$http({
       url: `/article/${articleId}`,
       method: 'get',
       showSuccessMsg: false,
       showErrorMsg: false
     });
 
-    return xhrInstance.then(
+    return response.then(
+      (article) => {
+        commit('setCurrentArticle', article);
+      },
+      (e) => {
+        return e;
+      }
+    );
+  },
+  getArticleByUser({ commit }, articleId) {
+    const { response } = this.$http({
+      url: `/articleByUser/${articleId}`,
+      method: 'get',
+      showSuccessMsg: false,
+      showErrorMsg: false
+    });
+
+    return response.then(
       (article) => {
         commit('setCurrentArticle', article);
       },
@@ -44,7 +58,7 @@ export const actions = {
     );
   },
   getAllArticles({ commit }, { loadingTarget, pageSize, currentPage } = {}) {
-    const { xhrInstance } = http({
+    const { response } = this.$http({
       url: '/articles',
       data: {
         pageSize: pageSize || 10,
@@ -56,7 +70,7 @@ export const actions = {
       loading: loadingTarget
     });
 
-    return xhrInstance.then(
+    return response.then(
       (articles) => {
         commit('setAllArticle', articles.list);
         return articles;

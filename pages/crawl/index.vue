@@ -50,6 +50,7 @@ export default {
       amp: true
     }
   },
+  middleware: ['auth'],
   components: {},
   data() {
     return {
@@ -83,7 +84,7 @@ export default {
       }
     },
     crwalArticle() {
-      const { xhrInstance } = this.$http({
+      const { response } = this.$http({
         url: `/crawl`,
         method: 'get',
         data: {
@@ -95,7 +96,7 @@ export default {
         showErrorMsg: true
       });
 
-      return xhrInstance.then(
+      return response.then(
         (data) => {
           this.$router.push(`/post/${data._id}`);
         },

@@ -116,7 +116,7 @@ export default {
   },
   methods: {
     register() {
-      const { xhrInstance } = this.$http({
+      const { response } = this.$http({
         method: 'post',
         url: '/user',
         data: {
@@ -127,7 +127,7 @@ export default {
         showErrorMsg: true
       });
 
-      xhrInstance.then(
+      response.then(
         () => {
           this.goToLogin();
         },

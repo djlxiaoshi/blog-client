@@ -1,8 +1,8 @@
 <template>
-  <div class="explore-page">
+  <div class="user-home-page">
     <el-row type="flex" justify="space-around">
       <el-col :xs="24" :sm="23" :md="17" :lg="18" :xl="19">
-        <div ref="loadingTarget" class="page-left">
+        <div class="page-left">
           <AppEmpty :isEmpty="articles.length === 0">
             <ArticleList
               :data="articles"
@@ -15,26 +15,22 @@
         </div>
       </el-col>
       <el-col :md="6" :lg="5" :xl="4" class="hidden-sm-and-down">
-        <div class="page-right">
-          <SideBar></SideBar>
-        </div>
+        <div class="page-right"></div>
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex';
-import SideBar from './SideBar';
-import ArticleList from '~/components/common/ArticleList/Index';
-import AppEmpty from '~/components/common/Empty/Index';
+import { mapState, mapActions, mapMutations } from 'vuex';
+import ArticleList from '@/components/common/ArticleList/Index';
+import AppEmpty from '@/components/common/Empty/Index';
 
 const PAGE_SIZE = 10;
-
 export default {
   name: '',
   header: {
-    title: '主页',
+    title: `用户主页`,
     titleTemplate: '%s - DJL箫氏的博客!',
     htmlAttrs: {
       lang: 'en',
@@ -43,8 +39,7 @@ export default {
   },
   components: {
     ArticleList,
-    AppEmpty,
-    SideBar
+    AppEmpty
   },
   data() {
     return {
@@ -55,33 +50,30 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      userArticles: (state) => state.user.userArticles
+    }),
     articles() {
-      return JSON.parse(JSON.stringify(this.$store.state.article.allArticles));
+      return JSON.parse(JSON.stringify(this.$store.state.user.userArticles));
     }
   },
-  asyncData({ store, route }) {
-    return Promise.all([
-      store.dispatch('article/getAllArticles', {
-        currentPage: 1,
-        pageSize: PAGE_SIZE
-      }),
-      store.dispatch('tag/getAllTags')
-    ]);
+  asyncData({ store, router }) {
+    return store.dispatch('user/getUserArticles', {
+      currentPage: 1,
+      pageSize: PAGE_SIZE
+    });
   },
-  mounted() {},
   methods: {
     ...mapMutations({
-      setAllArticle: 'article/setAllArticle'
+      setUserArticle: 'user/setUserArticles'
     }),
-    ...mapActions({
-      getAllArticles: 'article/getAllArticles'
-    }),
+    ...mapActions(['getUserArticles']),
     viewArticle(article) {
       this.$router.push(`/article/${article._id}`);
     },
     getMoreArtilces() {
       const { response } = this.$http({
-        url: '/articles',
+        url: '/user/articles/',
         data: {
           pageSize: this.pageSize,
           currentPage: this.currentPage
@@ -113,7 +105,7 @@ export default {
         this.articles.splice((this.currentPage - 1) * this.pageSize);
         this.articles.push(...data.list);
 
-        this.setAllArticle(this.articles);
+        this.setUserArticle(this.articles);
 
         // 如果到了下一页，则增加
         if (this.articles.length % this.pageSize === 0) {
@@ -127,9 +119,13 @@ export default {
 </script>
 
 <style scoped lang="less">
-.explore-page {
-  margin-bottom: 20px;
+.user-home-page {
   .page-left {
+    border: 1px solid #dddddd;
+  }
+
+  .page-right {
+    height: 100px;
     border: 1px solid #dddddd;
   }
 }

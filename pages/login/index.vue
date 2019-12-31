@@ -15,14 +15,14 @@
             <el-form ref="form" :rules="rules" :model="form" label-width="0px">
               <el-form-item prop="username">
                 <el-input
-                  @change="formValidate"
+                  @keyup.enter.native="formValidate"
                   v-model="form.username"
                   placeholder="请输入用户名"
                 ></el-input>
               </el-form-item>
               <el-form-item prop="password">
                 <el-input
-                  @change="formValidate"
+                  @keyup.enter.native="formValidate"
                   v-model="form.password"
                   placeholder="请输入密码"
                   type="password"
@@ -51,6 +51,7 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex';
+import { urlToJson } from '~/assets/js/utils/tools';
 
 export default {
   name: 'AppLogin',
@@ -85,7 +86,7 @@ export default {
       setUserMsg: 'user/setUserInfo'
     }),
     login() {
-      const { xhrInstance } = this.$http({
+      const { response } = this.$http({
         url: '/login',
         data: {
           username: this.form.username,
@@ -96,7 +97,7 @@ export default {
         showErrorMsg: true
       });
 
-      xhrInstance.then(
+      response.then(
         (user) => {
           this.setUserMsg({
             username: user.username,
@@ -106,7 +107,7 @@ export default {
             email: user.email,
             _id: user._id
           });
-          this.goToHomePage(user.menus);
+          this.goToNextPage();
         },
         () => {}
       );
@@ -120,9 +121,12 @@ export default {
         });
       }
     },
-    goToHomePage(menuList) {
-      // todo 保留上一次退出去访问的页面
-      this.$router.push('/');
+    goToNextPage() {
+      // 返回登录前的页面
+      const urlParams = urlToJson();
+      const nextPage =
+        urlParams && urlParams._redirectUrl ? urlParams._redirectUrl : '/';
+      this.$router.push(nextPage);
     },
     goToRegisterPage() {
       this.$router.push('/register');

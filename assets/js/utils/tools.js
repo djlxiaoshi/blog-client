@@ -16,6 +16,31 @@ export function formatData(params) {
 }
 
 /**
+ * url参数转换为json
+ * @param url
+ */
+export function urlToJson(url) {
+  url = window.location.href || url;
+  const search = url.substring(url.lastIndexOf('?') + 1);
+  const obj = {};
+  const reg = /([^?&=]+)=([^?&=]*)/g;
+  search.replace(reg, function(rs, $1, $2) {
+    const name = decodeURIComponent($1);
+    const val = String(decodeURIComponent($2));
+    if (obj.hasOwnProperty(name)) {
+      if (typeof obj[name] === 'string') {
+        obj[name] = [obj[name]];
+      }
+      obj[name].push(val);
+    } else {
+      obj[name] = val;
+    }
+    return rs;
+  });
+  return obj;
+}
+
+/**
  * 获取 0 ~ num 的随机数（闭区间）
  */
 export function randomNum(num) {

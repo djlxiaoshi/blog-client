@@ -114,7 +114,7 @@ export default {
     getComments(currentPage) {
       const articleId = this.$route.params.id;
       if (articleId) {
-        const { xhrInstance } = this.$http({
+        const { response } = this.$http({
           url: `/comments`,
           method: 'get',
           data: {
@@ -126,7 +126,7 @@ export default {
           showErrorMsg: true
         });
 
-        return xhrInstance.then(
+        return response.then(
           (data) => {
             this.commentsTotal = data.total;
 
@@ -175,7 +175,7 @@ export default {
     sendRequest(params) {
       const articleId = this.$route.params.id;
       if (articleId) {
-        const { xhrInstance } = this.$http({
+        const { response } = this.$http({
           url: `/comment`,
           method: 'post',
           data: params,
@@ -183,7 +183,7 @@ export default {
           showErrorMsg: true
         });
 
-        xhrInstance.then(
+        response.then(
           (comment) => {
             this.clear();
             this.getComments(this.currentPage);

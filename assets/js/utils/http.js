@@ -36,6 +36,7 @@ export default function Http(config) {
   };
   // 服务端发送请求的时候，手动添加cookie
   if (!isBrowserEnv && global.__VUE_SSR_CONTEXT__.cookies) {
+    console.log('cookies', global.__VUE_SSR_CONTEXT__.cookies);
     commonHeaders.Cookie = global.__VUE_SSR_CONTEXT__.cookies;
   }
   const axiosConfig = {
@@ -86,7 +87,7 @@ export default function Http(config) {
           if (config.showErrorMsg) {
             Notification.error(data.message);
           }
-          reject(data.message);
+          reject(data);
         } else {
           if (config.showSuccessMsg) {
             // 如果前端设置了提示信息则采用前端设置的提示信息，否则使用服务端返回的提示信息
@@ -160,7 +161,7 @@ Http.getXhrCacheList = function() {
 function loginCheck(response) {
   // 未登录
   if (response.code === -1000) {
-    window.location.href = '/login';
+    // window.location.href = '/login';
   }
 }
 

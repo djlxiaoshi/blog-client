@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import http from '~/assets/js/utils/http';
 import { groupBy } from '~/assets/js/utils/tools';
 
 export const state = () => ({
@@ -14,7 +13,7 @@ export const mutations = {
 
 export const actions = {
   getTimelines({ commit }, { pageSize, currentPage } = {}) {
-    const { xhrInstance } = http({
+    const { response } = this.$http({
       url: '/timelines',
       data: {
         pageSize: pageSize || 10,
@@ -25,7 +24,7 @@ export const actions = {
       showErrorMsg: false
     });
 
-    return xhrInstance.then(
+    return response.then(
       (articles) => {
         const data = articles.list;
 

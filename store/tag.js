@@ -1,5 +1,3 @@
-import http from '~/assets/js/utils/http';
-
 export const state = () => ({
   list: [],
   currentTag: {}
@@ -22,7 +20,7 @@ export const mutations = {
 
 export const actions = {
   getAllTags({ commit }, { loadingTarget } = {}) {
-    const { xhrInstance } = http({
+    const { response } = this.$http({
       url: `/tags`,
       method: 'get',
       showSuccessMsg: false,
@@ -30,7 +28,7 @@ export const actions = {
       loading: loadingTarget
     });
 
-    return xhrInstance.then(
+    return response.then(
       (tags) => {
         commit('setAllTags', tags);
       },
@@ -40,14 +38,14 @@ export const actions = {
     );
   },
   getTag({ commit }, tagId) {
-    const { xhrInstance } = http({
+    const { response } = this.$http({
       url: `/tag/${tagId}`,
       method: 'get',
       showSuccessMsg: false,
       showErrorMsg: true
     });
 
-    return xhrInstance.then(
+    return response.then(
       (tag) => {
         commit('setTag', tag);
       },

@@ -35,7 +35,8 @@ module.exports = {
   plugins: [
     '@/plugins/element-ui',
     '@/plugins/vue-inject',
-    { src: '@/plugins/infinite-scroll', ssr: false }
+    { src: '@/plugins/infinite-scroll', ssr: false },
+    '@/plugins/axios'
   ],
   /*
    ** Nuxt.js dev-modules
@@ -50,7 +51,8 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    'cookie-universal-nuxt'
   ],
   /*
    ** Axios module configuration
@@ -65,12 +67,21 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) { }
+    extend(config, ctx) {}
   },
   vue: {
     config: {
       productionTip: false,
       devtools: true
+    }
+  },
+  router: {
+    middleware: ['router'],
+    extendRoutes(routes, resolve) {
+      routes.push({
+        path: '/',
+        component: resolve(__dirname, 'pages/explore/index.vue')
+      });
     }
   }
 };

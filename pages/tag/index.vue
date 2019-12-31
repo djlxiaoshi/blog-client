@@ -143,7 +143,7 @@ export default {
       });
     },
     addTag(tagName) {
-      const { xhrInstance } = this.$http({
+      const { response } = this.$http({
         url: `/tag`,
         method: 'post',
         data: {
@@ -153,7 +153,7 @@ export default {
         showErrorMsg: true
       });
 
-      xhrInstance.then(
+      response.then(
         () => {
           this.getAllTags();
         },
@@ -161,7 +161,7 @@ export default {
       );
     },
     updateTag(tagId, tagLabel) {
-      const { xhrInstance } = this.$http({
+      const { response } = this.$http({
         url: `/tag/${tagId}`,
         method: 'put',
         data: {
@@ -171,7 +171,7 @@ export default {
         showErrorMsg: true
       });
 
-      xhrInstance.then(
+      response.then(
         () => {
           this.getAllTags();
         },
@@ -179,14 +179,14 @@ export default {
       );
     },
     deleteTag(tagId) {
-      const { xhrInstance } = this.$http({
+      const { response } = this.$http({
         url: `/tag/${tagId}`,
         method: 'delete',
         showSuccessMsg: true,
         showErrorMsg: true
       });
 
-      xhrInstance.then(
+      response.then(
         () => {
           this.getAllTags();
         },
