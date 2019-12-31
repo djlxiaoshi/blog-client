@@ -145,7 +145,6 @@ function handleError(error, config, redirect) {
     case -1000: {
       // 用户未登录
       if (config.jumpLogin) {
-        debugger;
         if (process.client) {
           const { pathname, search } = window.location;
           redirect(

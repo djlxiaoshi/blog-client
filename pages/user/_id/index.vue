@@ -23,8 +23,8 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex';
-import ArticleList from '@/components/common/ArticleList/Index';
-import AppEmpty from '@/components/common/Empty/Index';
+import ArticleList from '~/components/common/ArticleList/index';
+import AppEmpty from '~/components/common/Empty/Index';
 
 const PAGE_SIZE = 10;
 export default {

@@ -26,7 +26,7 @@
 <script>
 import { mapActions, mapMutations } from 'vuex';
 import SideBar from './SideBar';
-import ArticleList from '~/components/common/ArticleList/Index';
+import ArticleList from '~/components/common/ArticleList/index';
 import AppEmpty from '~/components/common/Empty/Index';
 
 const PAGE_SIZE = 10;
