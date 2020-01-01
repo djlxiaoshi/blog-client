@@ -32,14 +32,21 @@ import AppEmpty from '~/components/common/Empty/Index';
 const PAGE_SIZE = 10;
 
 export default {
-  name: '',
-  header: {
+  name: 'Explore',
+  head: {
     title: '主页',
     titleTemplate: '%s - DJL箫氏的博客!',
     htmlAttrs: {
       lang: 'en',
       amp: true
-    }
+    },
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content: '这是DJL箫氏的博客的主页'
+      }
+    ]
   },
   components: {
     ArticleList,

@@ -26,14 +26,21 @@
 import { mapState, mapActions } from 'vuex';
 import dayjs from 'dayjs';
 export default {
-  name: '',
-  header: {
-    title: `时光轴`,
+  name: 'Timeline',
+  head: {
+    title: '时光轴',
     titleTemplate: '%s - DJL箫氏的博客!',
     htmlAttrs: {
       lang: 'en',
       amp: true
-    }
+    },
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content: '这是DJL箫氏的博客的时光轴页面，用来记录我的往事时光轴'
+      }
+    ]
   },
   data() {
     return {

@@ -78,13 +78,20 @@ const CREATE_MODE = 1;
 const EDIT_MODE = 2;
 
 export default {
-  header: {
-    title: `写文章`,
+  head: {
+    title: '写文章',
     titleTemplate: '%s - DJL箫氏的博客!',
     htmlAttrs: {
       lang: 'en',
       amp: true
-    }
+    },
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content: '这是DJL箫氏的博客的文章编辑页面'
+      }
+    ]
   },
   components: {
     Editor

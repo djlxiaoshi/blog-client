@@ -88,13 +88,20 @@ import defaultAvatar from '~/assets/img/avatar.jpg';
 import AppLoading from '~/components/common/app-loading';
 
 export default {
-  header: {
-    title: `用户信息`,
+  head: {
+    title: '用户信息',
     titleTemplate: '%s - DJL箫氏的博客!',
     htmlAttrs: {
       lang: 'en',
       amp: true
-    }
+    },
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content: '用户信息页面'
+      }
+    ]
   },
   components: {
     AppLoading

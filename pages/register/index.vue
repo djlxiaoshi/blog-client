@@ -57,13 +57,20 @@
 <script>
 export default {
   name: 'Register',
-  header: {
-    title: `用户注册`,
+  head: {
+    title: '注册',
     titleTemplate: '%s - DJL箫氏的博客!',
     htmlAttrs: {
       lang: 'en',
       amp: true
-    }
+    },
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content: '这是DJL箫氏的博客的注册页'
+      }
+    ]
   },
   data() {
     const checkEmail = (rule, value, callback) => {

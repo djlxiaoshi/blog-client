@@ -42,13 +42,21 @@
 
 <script>
 export default {
-  header: {
-    title: `文章提取`,
+  head: {
+    title: '文章爬取',
     titleTemplate: '%s - DJL箫氏的博客!',
     htmlAttrs: {
       lang: 'en',
       amp: true
-    }
+    },
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content:
+          '这是DJL箫氏的博客的文章爬取页面，用来爬取掘金、GitHub、简书等平台文章'
+      }
+    ]
   },
   middleware: ['auth'],
   components: {},

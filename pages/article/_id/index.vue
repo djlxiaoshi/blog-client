@@ -88,14 +88,21 @@ import dayjs from 'dayjs';
 import Comment from './Comment';
 
 export default {
-  header() {
+  head() {
     return {
-      title: `${'文章详情'}`,
+      title: `${this.article.title || '文章详情'}`,
       titleTemplate: '%s - DJL箫氏的博客!',
       htmlAttrs: {
         lang: 'en',
         amp: true
-      }
+      },
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: '这是DJL箫氏的博客的文章详情页面'
+        }
+      ]
     };
   },
   components: {

@@ -44,12 +44,12 @@
                 href="javascript:void(0)"
                 >登录</a
               >
-              <a
+              <!-- <a
                 @click="goToRegisterPage"
                 class="register-btn"
                 href="javascript:void(0)"
                 >注册</a
-              >
+              > -->
             </div>
           </div>
         </div>

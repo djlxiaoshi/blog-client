@@ -58,13 +58,20 @@ import AppLoading from '~/components/common/app-loading';
 
 export default {
   name: 'TagPage',
-  header: {
-    title: `归档`,
+  head: {
+    title: '归档',
     titleTemplate: '%s - DJL箫氏的博客!',
     htmlAttrs: {
       lang: 'en',
       amp: true
-    }
+    },
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content: '这是DJL箫氏的博客的归档页面'
+      }
+    ]
   },
   components: {
     AppLoading

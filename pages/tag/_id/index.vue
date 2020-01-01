@@ -8,6 +8,23 @@
 import { mapState, mapActions } from 'vuex';
 
 export default {
+  head() {
+    return {
+      title: `${this.tag.label || '标签详情'}`,
+      titleTemplate: '%s - DJL箫氏的博客!',
+      htmlAttrs: {
+        lang: 'en',
+        amp: true
+      },
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: '这是DJL箫氏的博客的归档页面'
+        }
+      ]
+    };
+  },
   computed: {
     ...mapState({
       tag: (state) => state.tag.currentTag

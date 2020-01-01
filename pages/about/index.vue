@@ -50,7 +50,7 @@
       <li class="info-item">
         <span class="item-label">作者简介</span>
         <span class="item-value"
-          >李晓龙李晓龙李晓龙李晓龙李晓龙李晓龙李晓龙</span
+          >大家好，我的网名叫做DJL箫氏，毕业于湖北工业大学，目前为一名前端开发工程师，工作经验2.5年。毕业校招进入博雅互动，现在平安城科从事前端开发工作</span
         >
       </li>
     </ul>
@@ -61,6 +61,21 @@
 import avatarImage from '~/assets/img/avatar.jpg';
 
 export default {
+  head: {
+    title: '关于本站',
+    titleTemplate: '%s - DJL箫氏的博客!',
+    htmlAttrs: {
+      lang: 'en',
+      amp: true
+    },
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'DJL箫氏的博客网站用于博主记录点点滴滴，包括技术、生活等等'
+      }
+    ]
+  },
   components: {},
   data() {
     return {

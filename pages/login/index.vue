@@ -55,13 +55,20 @@ import { urlToJson } from '~/assets/js/utils/tools';
 
 export default {
   name: 'AppLogin',
-  metaInfo: {
-    title: `用户登录`,
+  head: {
+    title: '登录',
     titleTemplate: '%s - DJL箫氏的博客!',
     htmlAttrs: {
       lang: 'en',
       amp: true
-    }
+    },
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content: '这是DJL箫氏的博客的登录页'
+      }
+    ]
   },
   components: {},
   data() {
