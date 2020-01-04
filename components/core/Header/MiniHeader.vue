@@ -14,12 +14,14 @@
       <el-col :span="6">
         <div class="header-login">
           <a v-if="userInfo" class="user-avatar">
-            <img
+            <el-image
               ref="avatar"
               :src="avatar"
               @error="setDefaultAvatar"
-              width="100%"
-            />
+              :style="{ height: '100%' }"
+            >
+              <AppLoading slot="placeholder" size="large"></AppLoading>
+            </el-image>
           </a>
           <a v-else @click="goToLoginPage" class="user-avatar"></a>
         </div>
@@ -31,9 +33,12 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import defaultAvatar from '~/assets/img/avatar.jpg';
+import AppLoading from '~/components/common/app-loading';
 
 export default {
-  components: {},
+  components: {
+    AppLoading
+  },
   computed: {
     ...mapState({
       userInfo: (state) => state.user.userInfo,

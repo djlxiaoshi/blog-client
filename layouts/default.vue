@@ -36,17 +36,16 @@ export default {
 
 <style scoped lang="less">
 @import '../assets/css/theme';
-
+@bodyMarginBottom: 20px;
 .djlxs-blog {
   .app-body {
-    margin-top: calc(@AppHeaderHeight + @marginToHeader);
-    min-height: calc(100vh - @AppHeaderHeight - @marginToHeader);
+    position: relative;
+    margin-top: calc(@AppHeaderHeight);
+    min-height: calc(100vh - @AppHeaderHeight - @bodyMarginBottom);
+    margin-bottom: 20px;
     /deep/ .el-row {
       min-height: inherit;
     }
-  }
-  .placeholder {
-    height: 20px;
   }
 }
 </style>

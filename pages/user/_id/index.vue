@@ -1,23 +1,25 @@
 <template>
   <div class="user-home-page">
-    <el-row type="flex" justify="space-around">
-      <el-col :xs="24" :sm="23" :md="17" :lg="18" :xl="19">
-        <div class="page-left">
-          <AppEmpty :isEmpty="articles.length === 0">
-            <ArticleList
-              :data="articles"
-              @onView="viewArticle"
-              v-infinite-scroll="loadMore"
-              infinite-scroll-disabled="busy"
-              infinite-scroll-distance="10"
-            ></ArticleList>
-          </AppEmpty>
-        </div>
-      </el-col>
-      <el-col :md="6" :lg="5" :xl="4" class="hidden-sm-and-down">
-        <div class="page-right"></div>
-      </el-col>
-    </el-row>
+    <AppPlaceholder>
+      <el-row type="flex" justify="space-around">
+        <el-col :xs="24" :sm="23" :md="17" :lg="18" :xl="19">
+          <div class="page-left">
+            <AppEmpty :isEmpty="articles.length === 0">
+              <ArticleList
+                :data="articles"
+                @onView="viewArticle"
+                v-infinite-scroll="loadMore"
+                infinite-scroll-disabled="busy"
+                infinite-scroll-distance="10"
+              ></ArticleList>
+            </AppEmpty>
+          </div>
+        </el-col>
+        <el-col :md="6" :lg="5" :xl="4" class="hidden-sm-and-down">
+          <div class="page-right"></div>
+        </el-col>
+      </el-row>
+    </AppPlaceholder>
   </div>
 </template>
 
@@ -25,6 +27,7 @@
 import { mapState, mapActions, mapMutations } from 'vuex';
 import ArticleList from '~/components/common/ArticleList/index';
 import AppEmpty from '~/components/common/Empty/Index';
+import AppPlaceholder from '~/components/common/app-placeholder/index';
 
 const PAGE_SIZE = 10;
 export default {
@@ -46,7 +49,8 @@ export default {
   },
   components: {
     ArticleList,
-    AppEmpty
+    AppEmpty,
+    AppPlaceholder
   },
   data() {
     return {

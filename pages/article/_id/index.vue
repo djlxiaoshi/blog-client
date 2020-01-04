@@ -124,7 +124,7 @@ export default {
   computed: {
     ...mapState({
       article: (state) => state.article.currentArticle,
-      userInfo: (state) => state.userInfo,
+      userInfo: (state) => state.user.userInfo,
       tags: (state) => state.tags
     }),
     author() {

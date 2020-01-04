@@ -157,11 +157,6 @@ export default {
   .header-right {
     display: flex;
     .avatar-wrap {
-      /deep/ .el-dropdown {
-        &:focus {
-          outline: none;
-        }
-      }
       .user-avatar {
         display: inline-block;
         box-sizing: border-box;
@@ -171,6 +166,9 @@ export default {
         height: 40px;
         border: 2px solid #e5e5e5;
         cursor: pointer;
+        &:focus {
+          outline: none;
+        }
         /deep/ .el-image {
           width: 100%;
           height: 100%;

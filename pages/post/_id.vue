@@ -103,7 +103,9 @@ export default {
     };
   },
   computed: {
-    ...mapState(['article']),
+    ...mapState({
+      article: (state) => state.article.currentArticle
+    }),
     articleId() {
       return this.$route.params.id;
     },
@@ -113,10 +115,6 @@ export default {
   },
   async asyncData({ store, route, error }) {
     if (route.params.id) {
-      // error({
-      //   statusCode: 500,
-      //   message: 'test'
-      // });
       const data = await store.dispatch(
         'article/getArticleByUser',
         route.params.id
