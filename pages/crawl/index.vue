@@ -33,9 +33,7 @@
         </el-row>
       </el-form>
 
-      <el-button ref="loadingTarget" @click="formValidate" type="primary"
-        >提取文章</el-button
-      >
+      <el-button @click="formValidate" type="primary">提取文章</el-button>
     </div>
   </div>
 </template>
@@ -99,7 +97,7 @@ export default {
           template: this.ruleForm.template,
           articleUrl: this.ruleForm.url
         },
-        loading: this.$refs.loadingTarget.$el,
+        loading: '.app-body',
         showSuccessMsg: false,
         showErrorMsg: true
       });
@@ -117,6 +115,7 @@ export default {
 
 <style lang="less" scoped>
 .crawl-article-page {
+  padding: 0 20px;
   .page-header {
     .desc {
       font-size: 14px;

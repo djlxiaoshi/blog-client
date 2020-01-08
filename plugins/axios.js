@@ -64,7 +64,8 @@ export default function({ $axios, redirect, app }, inject) {
     if (isClient && config.loading) {
       xhrInstance.loadingInstance = Loading.service({
         target: config.loading,
-        spinner: 'app-loading'
+        spinner: 'common-loading-spinner',
+        customClass: 'common-loading-wrap'
       });
     }
 

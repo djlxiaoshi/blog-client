@@ -16,7 +16,7 @@ export const actions = {
     const { response } = this.$http({
       url: '/timelines',
       data: {
-        pageSize: pageSize || 10,
+        pageSize: pageSize || 20,
         currentPage: currentPage || 1
       },
       method: 'get',

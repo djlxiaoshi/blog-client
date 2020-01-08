@@ -8,7 +8,7 @@
         </el-col>
       </el-row>
     </div>
-    <AppSideBar v-if="sidebarVisible"></AppSideBar>
+    <AppSideBar v-show="sidebarVisible"></AppSideBar>
   </div>
 </template>
 

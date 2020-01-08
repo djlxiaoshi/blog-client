@@ -26,7 +26,8 @@ import {
   Select,
   Option,
   Image,
-  Loading
+  Loading,
+  Drawer
 } from 'element-ui';
 
 Vue.use(Button);
@@ -54,5 +55,6 @@ Vue.use(Select);
 Vue.use(Option);
 Vue.use(Image);
 Vue.use(Loading.directive);
+Vue.use(Drawer);
 
 // Vue.use(Element, { locale });

@@ -31,7 +31,7 @@ module.exports = {
     'element-ui/lib/theme-chalk/index.css',
     'element-ui/lib/theme-chalk/display.css',
     'highlight.js/styles/monokai-sublime.css',
-    '@/assets/css/common.less'
+    '@/assets/css/global.less'
   ],
   /*
    ** Plugins to load before mounting the App

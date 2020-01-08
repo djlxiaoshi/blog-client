@@ -65,7 +65,7 @@ export default {
       userArticles: (state) => state.user.userArticles
     }),
     articles() {
-      return JSON.parse(JSON.stringify(this.$store.state.user.userArticles));
+      return JSON.parse(JSON.stringify(this.userArticles));
     }
   },
   asyncData({ store, router }) {

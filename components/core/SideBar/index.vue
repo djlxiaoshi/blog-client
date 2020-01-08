@@ -45,13 +45,15 @@ export default {
 </script>
 
 <style scoped lang="less">
-.page-move-enter,
+.page-move-enter {
+  transform: translate(-100%, 0);
+}
 .page-move-leave-active {
   transform: translate(-100%, 0);
 }
 .page-move-enter-active,
 .page-move-leave-active {
-  transition: transform 0.3s;
+  transition: transform 0.4s;
 }
 
 .side-menu-wrap {
@@ -61,5 +63,6 @@ export default {
   right: 0;
   bottom: 0;
   z-index: 1000;
+  box-sizing: border-box;
 }
 </style>
