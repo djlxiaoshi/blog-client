@@ -12,7 +12,7 @@
               <a @click="goToArticle(item)" class="article-link">
                 <span>{{ item.title }}</span>
                 <span>{{ formatTime(item.createTime) }}</span>
-                <span>{{ item.createUser.username }}</span>
+                <span> {{ item.createUser.username }} </span>
               </a>
             </p>
           </template>

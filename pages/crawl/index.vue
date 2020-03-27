@@ -24,10 +24,7 @@
           </el-col>
           <el-col :xs="24" :sm="24" :md="19" :lg="19" :xl="19">
             <el-form-item prop="url">
-              <el-input
-                v-model="ruleForm.url"
-                placeholder="请输入文章链接"
-              ></el-input>
+              <el-input v-model="ruleForm.url" placeholder="请输入文章链接" />
             </el-form-item>
           </el-col>
         </el-row>

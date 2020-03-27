@@ -3,5 +3,5 @@
   "arrowParens": "always",
   "singleQuote": true,
   "endOfLine": "auto",
-  "spaceBeforeFunctionParen": false
+  "spaceBeforeFunctionParen": 0
 }
