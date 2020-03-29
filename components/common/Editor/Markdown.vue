@@ -31,7 +31,6 @@
           <VueShowdown
             id="vue-showdown"
             :markdown="markdownContent"
-            :extensions="[showdownHighlight]"
             :options="options"
             class="markdown-preview"
             flavor="github"
@@ -75,6 +74,7 @@ export default {
   watch: {
     content(value) {
       this.markdownContent = value;
+      this.$refs.textarea.value = value;
     }
   },
   mounted() {

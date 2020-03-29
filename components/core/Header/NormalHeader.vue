@@ -79,7 +79,8 @@ export default {
       userInfo: (state) => state.user.userInfo
     }),
     avatar() {
-      if (!this.userInfo) return defaultAvatar;
+      // 没有用户信息，或者用户信息中不包含头像信息
+      if (!this.userInfo || !this.userInfo.avatarKey) return defaultAvatar;
       return `${this.$globalConfig.IMAGE_ADDRESS}/${
         this.userInfo.avatarKey
       }?v=${new Date().getTime()}`;

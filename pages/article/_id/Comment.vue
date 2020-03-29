@@ -9,8 +9,9 @@
       <Editor
         ref="reply-editor"
         :actions="actions"
+        :mode="3"
         @input="onInputChange"
-        type="richText"
+        type="markdown"
       ></Editor>
       <div class="operate-wrap">
         <el-button @click="postComment()" type="danger" round size="mini"

@@ -14,12 +14,7 @@
       <el-col :span="6">
         <div class="header-login">
           <a v-if="userInfo" class="user-avatar">
-            <el-image
-              ref="avatar"
-              :src="avatar"
-              @error="setDefaultAvatar"
-              :style="{ height: '100%' }"
-            >
+            <el-image ref="avatar" :src="avatar" :style="{ height: '100%' }">
               <AppLoading slot="placeholder" size="large"></AppLoading>
             </el-image>
           </a>
@@ -45,7 +40,8 @@ export default {
       sidebarVisible: (state) => state.sidebarVisible
     }),
     avatar() {
-      if (!this.userInfo) return defaultAvatar;
+      // 没有用户信息，或者用户信息中不包含头像信息
+      if (!this.userInfo || !this.userInfo.avatarKey) return defaultAvatar;
       return `${this.$globalConfig.IMAGE_ADDRESS}/${
         this.userInfo.avatarKey
       }?v=${new Date().getTime()}`;
@@ -58,11 +54,6 @@ export default {
     ...mapMutations({
       changeSidebarVisible: 'changeSidebarVisible'
     }),
-    setDefaultAvatar() {
-      if (this.$refs.avatar) {
-        this.$refs.avatar.src = defaultAvatar;
-      }
-    },
     toggleSideMenu() {
       this.changeSidebarVisible(!this.sidebarVisible);
     },

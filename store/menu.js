@@ -16,6 +16,10 @@ export const state = () => ({
     {
       path: '/about',
       label: '关于本站'
+    },
+    {
+      path: '/test/pell',
+      label: 'pell'
     }
   ]
 });

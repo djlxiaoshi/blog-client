@@ -2,13 +2,13 @@
   <div class="create-article-page">
     <div class="article-title">
       <el-input
-        :value="article.title"
-        @input="setTitle"
+        v-model="tempArticle.title"
         placeholder="请输入文章标题"
       ></el-input>
     </div>
 
-    <div class="operate-bar">
+    <OperateBar :config="operateConfig" @onClick="operateAction"></OperateBar>
+    <!-- <div class="operate-bar">
       <el-tooltip class="item" effect="dark" content="编辑模式" placement="top">
         <i
           @click="changeViewMode(3)"
@@ -58,24 +58,50 @@
           class="operate-icon iconfont icon-fabu"
         ></i>
       </el-tooltip>
-    </div>
+    </div> -->
 
     <div class="article-content">
-      <Editor
-        ref="editor"
-        :content="article.content || ''"
-        :mode="viewMode"
-      ></Editor>
+      <div
+        v-if="editMode || editPreivewMode"
+        :style="{ width: editMode ? '100%' : '50%' }"
+        class="editor-wrap"
+      >
+        <Editor
+          ref="editor"
+          :actions="[]"
+          @input="getTextareaValue"
+          output-type="markdown"
+          input-type="markdown"
+        ></Editor>
+      </div>
+      <div
+        ref="preview"
+        @scroll="previewerScroll"
+        v-if="previewMode || editPreivewMode"
+        :style="{ width: previewMode ? '100%' : '50%' }"
+        class="preivew-wrap"
+      >
+        <VueShowdown
+          :markdown="markdownContent"
+          :options="showdownOptions"
+          class="markdown-preview"
+          flavor="github"
+        ></VueShowdown>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex';
-import Editor from '@/components/common/Editor/Index';
+import { VueShowdown } from 'vue-showdown';
+import showdownHighlight from 'showdown-highlight';
+import OperateBar from './components/OperateBar';
+import Editor from '@/components/common/Editor/RichText';
 
-const CREATE_MODE = 1;
+const EDIT_PREVIEW_MODE = 1;
 const EDIT_MODE = 2;
+const PREVIEW_MODE = 3;
 
 export default {
   head: {
@@ -94,12 +120,33 @@ export default {
     ]
   },
   components: {
-    Editor
+    Editor,
+    OperateBar,
+    VueShowdown
   },
   data() {
     return {
-      viewMode: 1,
-      title: ''
+      viewMode: EDIT_PREVIEW_MODE,
+      operateConfig: [
+        { actionType: 'edit', icon: 'icon-bianji', tips: '编辑模式' },
+        { actionType: 'preview', icon: 'icon-yulan', tips: '预览模式' },
+        { actionType: 'edit-preview', icon: 'icon-fenlan', tips: '编辑/预览' },
+        { actionType: 'publish', icon: 'icon-fabu', tips: '发布' }
+      ],
+      showdownHighlight,
+      showdownOptions: {
+        omitExtraWLInCodeBlocks: true,
+        ghCodeBlocks: true
+      },
+      tempArticle: {
+        title: '',
+        content: ''
+      },
+      markdownContent: '',
+      // syncScroll options
+      enableSyncScroll: true, // 开启同步滚动
+      editorScrolling: false,
+      previewerScrolling: false
     };
   },
   computed: {
@@ -109,23 +156,34 @@ export default {
     articleId() {
       return this.$route.params.id;
     },
-    mode() {
-      return this.$route.params.id ? EDIT_MODE : CREATE_MODE;
+    editMode() {
+      return this.viewMode === EDIT_MODE;
+    },
+    previewMode() {
+      return this.viewMode === PREVIEW_MODE;
+    },
+    editPreivewMode() {
+      return this.viewMode === EDIT_PREVIEW_MODE;
+    },
+    isEditMode() {
+      return this.$route.params.id;
     }
   },
-  async asyncData({ store, route, error }) {
-    if (route.params.id) {
-      const data = await store.dispatch(
-        'article/getArticleByUser',
-        route.params.id
-      );
-      return data;
-    } else {
-      store.commit('article/setCurrentArticle', {});
+  watch: {
+    article(value) {
+      this.tempArticle = JSON.parse(JSON.stringify(value));
     }
   },
   mounted() {
-    this.title = this.article.title;
+    document
+      .querySelector('.pell-content')
+      .addEventListener('scroll', this.editorScroll);
+
+    if (this.articleId) {
+      this.getArticle(this.articleId);
+    } else {
+      this.setCurrentArticle({});
+    }
   },
   beforeRouteLeave(to, from, next) {
     // 导航离开该组件的对应路由时调用
@@ -146,15 +204,66 @@ export default {
     ...mapMutations({
       setCurrentArticle: 'article/setCurrentArticle'
     }),
+    operateAction(actionType) {
+      switch (actionType) {
+        case 'edit': {
+          this.viewMode = EDIT_MODE;
+          break;
+        }
+        case 'preview': {
+          this.viewMode = PREVIEW_MODE;
+          break;
+        }
+        case 'edit-preview': {
+          this.viewMode = EDIT_PREVIEW_MODE;
+          break;
+        }
+      }
+    },
     changeViewMode(mode) {
       this.viewMode = mode;
     },
-    setTitle(value) {
-      this.title = value;
+    getTextareaValue(content) {
+      this.markdownContent = content;
+    },
+    editorScroll(e) {
+      if (this.enableSyncScroll) {
+        if (this.editorScrolling) {
+          this.editorScrolling = false;
+          return;
+        }
+        this.previewerScrolling = true;
+        const scrollElement = e.target;
+        const clinetHeight = scrollElement.clientHeight; // 可视区域高度
+        const scrollTop = scrollElement.scrollTop; // 滚动条高度
+        const scrollHeight = scrollElement.scrollHeight; // 内容高度
+        const percent = scrollTop / (scrollHeight - clinetHeight);
+        if (this.$refs.preview) {
+          const previewer = this.$refs.preview;
+          previewer.scrollTop = percent * previewer.scrollHeight;
+        }
+      }
+    },
+    previewerScroll(e) {
+      if (this.enableSyncScroll) {
+        if (this.previewerScrolling) {
+          this.previewerScrolling = false;
+          return;
+        }
+        this.editorScrolling = true;
+        const scrollElement = e.target;
+        const clinetHeight = scrollElement.clientHeight; // 可视区域高度
+        const scrollTop = scrollElement.scrollTop; // 滚动条高度
+        const scrollHeight = scrollElement.scrollHeight; // 内容高度
+        const percent = scrollTop / (scrollHeight - clinetHeight);
+        const editorElement = document.querySelector('.pell-content');
+        if (editorElement) {
+          editorElement.scrollTop = percent * editorElement.scrollHeight;
+        }
+      }
     },
     handleParams(justSave) {
-      const title = this.title;
-
+      const title = this.tempArticle.title;
       if (!title.trim()) {
         this.$notify.warning('文章标题不能为空');
         return;
@@ -168,10 +277,10 @@ export default {
         status: justSave ? 0 : 1
       };
       const message = justSave ? '文章保存成功' : '文章发布成功';
-      if (this.mode === CREATE_MODE) {
-        this.createArticle(params);
-      } else {
+      if (this.isEditMode) {
         this.updateArticle(params, message);
+      } else {
+        this.createArticle(params);
       }
     },
     /**
@@ -294,6 +403,22 @@ export default {
   .article-content {
     flex: 1;
     height: calc(100vh - 100px);
+    display: flex;
+    align-content: stretch;
+    .editor-wrap {
+      height: 100%;
+      box-sizing: border-box;
+      border: 2px solid #e5e5e5;
+      border-top: none;
+    }
+    .preivew-wrap {
+      height: 100%;
+      box-sizing: border-box;
+      overflow-y: auto;
+      border: 2px solid #e5e5e5;
+      border-top: none;
+      background: #e5e5e5;
+    }
   }
   /deep/ .el-input {
     .el-input__inner {

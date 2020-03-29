@@ -14,7 +14,6 @@
 import RichTextEditor from './RichText';
 import MarkdownEditor from './Markdown';
 export default {
-  name: 'AppEditor',
   components: {
     RichTextEditor,
     MarkdownEditor

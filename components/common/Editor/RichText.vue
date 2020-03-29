@@ -1,17 +1,26 @@
 <template>
-  <div class="rich-text-editor">
-    <div id="pell" ref="pell" class="pell" />
-  </div>
+  <div ref="editor" class="pell-editor" />
 </template>
 
 <script>
 import pell from 'pell';
 import 'pell/dist/pell.min.css';
+import TurndownService from 'turndown';
+import _ from 'lodash';
+import dayjs from 'dayjs';
+
+const turndownService = new TurndownService();
 
 export default {
-  name: 'RichText',
-  placeholder: '请输入',
   props: {
+    outputType: {
+      type: String,
+      default: 'richText'
+    },
+    inputType: {
+      type: String,
+      default: 'richText'
+    },
     actions: {
       type: Array,
       default: () => [
@@ -50,17 +59,43 @@ export default {
     };
   },
   mounted() {
-    const element = this.$refs.pell;
-
-    this.editor = pell.init({
-      element,
-      onChange: (html) => {
-        this.$emit('input', html);
-      },
-      actions: this.actions
-    });
+    // 如果输入的是Markdown 则不进行字符转义
+    if (this.inputType === 'markdown') {
+      TurndownService.prototype.escape = function(string) {
+        return string;
+      };
+    }
+    this.init(this.$refs.editor);
   },
   methods: {
+    init(element) {
+      this.editor = pell.init({
+        element,
+        onChange: _.debounce(
+          (html) => {
+            if (this.outputType === 'markdown') {
+              const prev = Date.now();
+              turndownService.turndown(html);
+              console.log(dayjs().diff(prev, 'millisecond', true));
+              this.$emit('input', turndownService.turndown(html));
+            } else {
+              this.$emit('input', html);
+            }
+          },
+          300,
+          { leading: true }
+        ),
+        actions: this.actions,
+        // <string>, optional, default = 'div'
+        // Instructs the editor which element to inject via the return key
+        defaultParagraphSeparator: 'div',
+
+        // <boolean>, optional, default = false
+        // Outputs <span style="font-weight: bold;"></span> instead of <b></b>
+        styleWithCSS: false
+      });
+      this.editor.content.innerHTML = '<div>请输入</div>';
+    },
     ensureHTTP: (str) => (/^https?:\/\//.test(str) && str) || `http://${str}`,
     clear() {
       if (this.editor) {
@@ -72,13 +107,15 @@ export default {
 </script>
 
 <style scoped lang="less">
-.rich-text-editor {
+.pell-editor {
+  display: flex;
+  flex-direction: column;
   height: 100%;
-  .pell {
-    height: 100%;
-    border: 1px solid #e5e5e5;
-    border-radius: 0;
-    box-shadow: none;
+  /deep/ .pell-content {
+    flex: 1;
+  }
+  /deep/ .pell-actionbar {
+    border-bottom: none;
   }
 }
 </style>
