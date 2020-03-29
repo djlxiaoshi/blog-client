@@ -40,7 +40,8 @@ module.exports = {
     '@/plugins/element-ui',
     '@/plugins/vue-inject',
     { src: '@/plugins/infinite-scroll', ssr: false },
-    '@/plugins/axios'
+    '@/plugins/axios',
+    { src: '@/pages/test/codemirror/index.vue', ssr: false }
   ],
   /*
    ** Nuxt.js dev-modules

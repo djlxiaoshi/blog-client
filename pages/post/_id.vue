@@ -84,6 +84,7 @@
         <VueShowdown
           :markdown="markdownContent"
           :options="showdownOptions"
+          :extensions="[trim]"
           class="markdown-preview"
           flavor="github"
         ></VueShowdown>
@@ -146,7 +147,14 @@ export default {
       // syncScroll options
       enableSyncScroll: true, // 开启同步滚动
       editorScrolling: false,
-      previewerScrolling: false
+      previewerScrolling: false,
+      trim: () => [
+        {
+          type: 'lang',
+          regex: /&nbsp;/g,
+          replace: ' '
+        }
+      ]
     };
   },
   computed: {
