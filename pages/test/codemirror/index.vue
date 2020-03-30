@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Editor from '@/components/common/Editor/CodeMirrorEditor.vue';
+import Editor from '@/components/common/Editor/Markdown.vue';
 export default {
   components: {
     Editor

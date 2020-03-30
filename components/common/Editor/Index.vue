@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import RichTextEditor from './RichText';
-import MarkdownEditor from './Markdown';
+import RichTextEditor from './RichText.vue';
+import MarkdownEditor from './Markdown.vue';
 export default {
   components: {
     RichTextEditor,

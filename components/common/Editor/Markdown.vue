@@ -1,58 +1,50 @@
 <template>
   <div class="markdown-editor">
-    <el-row>
-      <el-col
-        v-if="mode !== 2"
-        :xs="24"
-        :sm="24"
-        :md="mode === 3 ? 24 : 12"
-        :lg="mode === 3 ? 24 : 12"
-        :xl="mode === 3 ? 24 : 12"
-      >
-        <div class="markdown-wrap">
-          <!-- 默认情况下 textarea的高度是不会随着内容增加的 -->
-          <!-- 这里使用v-model双向绑定，当传入的value值是vue模板时，会进行编译从而报错 -->
-          <textarea
-            ref="textarea"
-            @input="textareaChange"
-            class="common-scroll"
-          ></textarea>
-        </div>
-      </el-col>
+    <div
+      ref="editor"
+      @scroll="editorScroll"
+      v-show="editMode || editPreivewMode"
+      :style="{ width: editMode ? '100%' : '50%' }"
+      class="editor-wrap"
+    >
+      <textarea ref="textarea" v-model="content"></textarea>
+    </div>
 
-      <el-col
-        v-if="mode !== 3"
-        :md="mode === 2 ? 24 : 12"
-        :lg="mode === 2 ? 24 : 12"
-        :xl="mode === 2 ? 24 : 12"
-        class="hidden-sm-and-down"
-      >
-        <div class="html-wrap common-scroll">
-          <VueShowdown
-            id="vue-showdown"
-            :markdown="markdownContent"
-            :options="options"
-            class="markdown-preview"
-            flavor="github"
-          ></VueShowdown>
-        </div>
-      </el-col>
-    </el-row>
+    <div
+      ref="preview"
+      @scroll="previewerScroll"
+      v-show="previewMode || editPreivewMode"
+      :style="{ width: previewMode ? '100%' : '50%' }"
+      class="preivew-wrap hidden-sm-and-down"
+    >
+      <VueShowdown
+        :markdown="content"
+        :options="showdownOptions"
+        :extensions="[showdownHighlight]"
+        class="markdown-preview"
+        flavor="github"
+      ></VueShowdown>
+    </div>
   </div>
 </template>
 
 <script>
 import { VueShowdown } from 'vue-showdown';
 import showdownHighlight from 'showdown-highlight';
+import _ from 'lodash';
+
+const EDIT_PREVIEW_MODE = 1;
+const EDIT_MODE = 2;
+const PREVIEW_MODE = 3;
 
 export default {
   components: {
     VueShowdown
   },
   props: {
-    mode: {
+    viewMode: {
       type: Number,
-      default: 1
+      default: EDIT_PREVIEW_MODE
     },
     content: {
       type: String,
@@ -61,32 +53,112 @@ export default {
   },
   data() {
     return {
-      textValue: '',
       showdownHighlight,
-      options: {
+      showdownOptions: {
         omitExtraWLInCodeBlocks: true,
         ghCodeBlocks: true
       },
-      markdownContent: this.content
+      // syncScroll options
+      enableSyncScroll: true, // 开启同步滚动
+      editorScrolling: false,
+      previewerScrolling: false,
+      editor: null
     };
   },
-  computed: {},
+  computed: {
+    editMode() {
+      return this.viewMode === EDIT_MODE;
+    },
+    previewMode() {
+      return this.viewMode === PREVIEW_MODE;
+    },
+    editPreivewMode() {
+      return this.viewMode === EDIT_PREVIEW_MODE;
+    }
+  },
   watch: {
-    content(value) {
-      this.markdownContent = value;
-      this.$refs.textarea.value = value;
+    viewMode(value) {
+      if (value === EDIT_PREVIEW_MODE || value === EDIT_MODE) {
+        // this.editor.refresh();
+      }
     }
   },
   mounted() {
-    if (this.$refs.textarea) {
-      this.$refs.textarea.value = this.markdownContent;
+    if (process.browser) {
+      const CodeMirror = require('codemirror/lib/codemirror.js');
+      require('codemirror/addon/selection/active-line.js');
+      require('codemirror/addon/edit/closebrackets.js');
+      require('codemirror/addon/edit/matchbrackets.js');
+      require('codemirror/lib/codemirror.css');
+      require('codemirror/mode/markdown/markdown.js');
+      require('codemirror/lib/codemirror.css');
+
+      this.editor = CodeMirror.fromTextArea(this.$refs.textarea, {
+        mode: 'markdown',
+        lineNumbers: true,
+        lineWrapping: true,
+        foldGutter: true,
+        tabSize: 2,
+        autofocus: true,
+        theme: 'default',
+        showCursorWhenSelecting: true,
+        matchBrackets: true,
+        styleActiveLine: true,
+        autoCloseBrackets: true
+      });
+
+      this.editor.on('ready', () => {
+        console.log('初始化完成');
+      });
+
+      // 内容变化监听
+      this.editor.on(
+        'change',
+        _.debounce((cm) => {
+          const content = cm.getValue();
+          this.$emit('input', content);
+        }, 300)
+      );
+
+      //  同步滚动监听
+      //  编辑区滚动
+      this.editor.on('scroll', this.editorScroll);
     }
   },
   methods: {
-    textareaChange(e) {
-      const value = e.target.value;
-      this.markdownContent = value;
-      this.$emit('change', value);
+    init() {},
+    editorScroll(cm) {
+      if (this.enableSyncScroll) {
+        if (this.editorScrolling) {
+          this.editorScrolling = false;
+          return;
+        }
+        this.previewerScrolling = true;
+        const scrollObj = cm.getScrollInfo();
+        const percent =
+          scrollObj.top / (scrollObj.height - scrollObj.clientHeight);
+        const previewer = this.$refs.preview;
+        previewer.scrollTop =
+          percent * (previewer.scrollHeight - previewer.clientHeight);
+      }
+    },
+    previewerScroll(e) {
+      if (this.enableSyncScroll) {
+        if (this.previewerScrolling) {
+          this.previewerScrolling = false;
+          return;
+        }
+        this.editorScrolling = true;
+        const scrollElement = e.target;
+
+        const percent =
+          scrollElement.scrollTop /
+          (scrollElement.scrollHeight - scrollElement.clientHeight);
+        const scrollObj = this.editor.getScrollInfo();
+
+        const editorTop = percent * (scrollObj.height - scrollObj.clientHeight);
+        this.editor.scrollTo(null, editorTop);
+      }
     }
   }
 };
@@ -95,36 +167,35 @@ export default {
 <style scoped lang="less">
 .markdown-editor {
   height: 100%;
-  /deep/ .el-col,
-  /deep/ .el-row {
+  display: flex;
+  /deep/ .CodeMirror {
     height: 100%;
+    margin: 0 5px;
+    font-size: 18px;
+    background-color: rgb(249, 249, 245);
+    font-family: 'Consolas', '微软雅黑';
   }
-  .markdown-wrap {
-    border: 2px solid #dddddd;
-    height: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-    overflow: hidden;
-    textarea {
-      border: none;
-      width: 100%;
-      height: 100%;
-      line-height: 1.8;
-      font-size: 16px;
-      font-family: '微软雅黑', serif;
-      resize: none;
-      &:focus {
-        border: none;
-        outline: none;
-      }
+
+  /deep/ .CodeMirror-activeline-background {
+    background-color: rgb(241, 242, 239);
+  }
+  @media only screen and (max-width: 991px) {
+    .editor-wrap {
+      width: 100% !important;
     }
   }
-  .html-wrap {
-    box-sizing: border-box;
+  .editor-wrap {
     height: 100%;
-    padding: 10px;
-    overflow: auto;
-    border: 2px solid #dddddd;
+    box-sizing: border-box;
+  }
+  .preivew-wrap {
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 100%;
+    box-sizing: border-box;
+    border: 2px dashed #bbb;
+    overflow-y: auto;
+    overflow-x: hidden;
     background: #e5e5e5;
   }
 }

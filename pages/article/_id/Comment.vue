@@ -73,7 +73,7 @@
 
 <script>
 import dayjs from 'dayjs';
-import Editor from '~/components/common/Editor/Index.vue';
+import Editor from '~/components/common/Editor/index.vue';
 
 const PAGE_SIZE = 10;
 

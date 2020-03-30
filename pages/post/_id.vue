@@ -61,44 +61,21 @@
     </div> -->
 
     <div class="article-content">
-      <div
-        v-if="editMode || editPreivewMode"
-        :style="{ width: editMode ? '100%' : '50%' }"
-        class="editor-wrap"
-      >
-        <Editor
-          ref="editor"
-          :actions="[]"
-          @input="getTextareaValue"
-          output-type="markdown"
-          input-type="markdown"
-        ></Editor>
-      </div>
-      <div
-        ref="preview"
-        @scroll="previewerScroll"
-        v-if="previewMode || editPreivewMode"
-        :style="{ width: previewMode ? '100%' : '50%' }"
-        class="preivew-wrap"
-      >
-        <VueShowdown
-          :markdown="markdownContent"
-          :options="showdownOptions"
-          :extensions="[trim]"
-          class="markdown-preview"
-          flavor="github"
-        ></VueShowdown>
-      </div>
+      <Editor
+        ref="editor"
+        :content="tempArticle.content"
+        :actions="[]"
+        @input="getEditorValue"
+        :viewMode="viewMode"
+      ></Editor>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex';
-import { VueShowdown } from 'vue-showdown';
-import showdownHighlight from 'showdown-highlight';
 import OperateBar from './components/OperateBar';
-import Editor from '@/components/common/Editor/RichText';
+import Editor from '@/components/common/Editor/Markdown';
 
 const EDIT_PREVIEW_MODE = 1;
 const EDIT_MODE = 2;
@@ -122,8 +99,7 @@ export default {
   },
   components: {
     Editor,
-    OperateBar,
-    VueShowdown
+    OperateBar
   },
   data() {
     return {
@@ -134,27 +110,10 @@ export default {
         { actionType: 'edit-preview', icon: 'icon-fenlan', tips: '编辑/预览' },
         { actionType: 'publish', icon: 'icon-fabu', tips: '发布' }
       ],
-      showdownHighlight,
-      showdownOptions: {
-        omitExtraWLInCodeBlocks: true,
-        ghCodeBlocks: true
-      },
       tempArticle: {
         title: '',
         content: ''
-      },
-      markdownContent: '',
-      // syncScroll options
-      enableSyncScroll: true, // 开启同步滚动
-      editorScrolling: false,
-      previewerScrolling: false,
-      trim: () => [
-        {
-          type: 'lang',
-          regex: /&nbsp;/g,
-          replace: ' '
-        }
-      ]
+      }
     };
   },
   computed: {
@@ -163,15 +122,6 @@ export default {
     }),
     articleId() {
       return this.$route.params.id;
-    },
-    editMode() {
-      return this.viewMode === EDIT_MODE;
-    },
-    previewMode() {
-      return this.viewMode === PREVIEW_MODE;
-    },
-    editPreivewMode() {
-      return this.viewMode === EDIT_PREVIEW_MODE;
     },
     isEditMode() {
       return this.$route.params.id;
@@ -183,10 +133,6 @@ export default {
     }
   },
   mounted() {
-    document
-      .querySelector('.pell-content')
-      .addEventListener('scroll', this.editorScroll);
-
     if (this.articleId) {
       this.getArticle(this.articleId);
     } else {
@@ -228,47 +174,8 @@ export default {
         }
       }
     },
-    changeViewMode(mode) {
-      this.viewMode = mode;
-    },
-    getTextareaValue(content) {
-      this.markdownContent = content;
-    },
-    editorScroll(e) {
-      if (this.enableSyncScroll) {
-        if (this.editorScrolling) {
-          this.editorScrolling = false;
-          return;
-        }
-        this.previewerScrolling = true;
-        const scrollElement = e.target;
-        const clinetHeight = scrollElement.clientHeight; // 可视区域高度
-        const scrollTop = scrollElement.scrollTop; // 滚动条高度
-        const scrollHeight = scrollElement.scrollHeight; // 内容高度
-        const percent = scrollTop / (scrollHeight - clinetHeight);
-        if (this.$refs.preview) {
-          const previewer = this.$refs.preview;
-          previewer.scrollTop = percent * previewer.scrollHeight;
-        }
-      }
-    },
-    previewerScroll(e) {
-      if (this.enableSyncScroll) {
-        if (this.previewerScrolling) {
-          this.previewerScrolling = false;
-          return;
-        }
-        this.editorScrolling = true;
-        const scrollElement = e.target;
-        const clinetHeight = scrollElement.clientHeight; // 可视区域高度
-        const scrollTop = scrollElement.scrollTop; // 滚动条高度
-        const scrollHeight = scrollElement.scrollHeight; // 内容高度
-        const percent = scrollTop / (scrollHeight - clinetHeight);
-        const editorElement = document.querySelector('.pell-content');
-        if (editorElement) {
-          editorElement.scrollTop = percent * editorElement.scrollHeight;
-        }
-      }
+    getEditorValue(content) {
+      this.$set(this.tempArticle, 'content', content);
     },
     handleParams(justSave) {
       const title = this.tempArticle.title;
@@ -411,22 +318,6 @@ export default {
   .article-content {
     flex: 1;
     height: calc(100vh - 100px);
-    display: flex;
-    align-content: stretch;
-    .editor-wrap {
-      height: 100%;
-      box-sizing: border-box;
-      border: 2px solid #e5e5e5;
-      border-top: none;
-    }
-    .preivew-wrap {
-      height: 100%;
-      box-sizing: border-box;
-      overflow-y: auto;
-      border: 2px solid #e5e5e5;
-      border-top: none;
-      background: #e5e5e5;
-    }
   }
   /deep/ .el-input {
     .el-input__inner {
