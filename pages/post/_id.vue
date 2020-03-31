@@ -1,10 +1,7 @@
 <template>
   <div class="create-article-page">
     <div class="article-title">
-      <el-input
-        v-model="tempArticle.title"
-        placeholder="请输入文章标题"
-      ></el-input>
+      <el-input v-model="title" placeholder="请输入文章标题"></el-input>
     </div>
 
     <OperateBar :config="operateConfig" @onClick="operateAction"></OperateBar>
@@ -63,7 +60,7 @@
     <div class="article-content">
       <Editor
         ref="editor"
-        :content="tempArticle.content"
+        :defaultValue="defaultValue"
         :actions="[]"
         @input="getEditorValue"
         :viewMode="viewMode"
@@ -110,10 +107,9 @@ export default {
         { actionType: 'edit-preview', icon: 'icon-fenlan', tips: '编辑/预览' },
         { actionType: 'publish', icon: 'icon-fabu', tips: '发布' }
       ],
-      tempArticle: {
-        title: '',
-        content: ''
-      }
+      title: '',
+      defaultValue: '',
+      content: ''
     };
   },
   computed: {
@@ -129,7 +125,8 @@ export default {
   },
   watch: {
     article(value) {
-      this.tempArticle = JSON.parse(JSON.stringify(value));
+      this.title = value.title || '';
+      this.defaultValue = value.content || '';
     }
   },
   mounted() {
@@ -172,13 +169,16 @@ export default {
           this.viewMode = EDIT_PREVIEW_MODE;
           break;
         }
+        case 'publish': {
+          this.handleParams(false);
+        }
       }
     },
     getEditorValue(content) {
-      this.$set(this.tempArticle, 'content', content);
+      this.content = content;
     },
     handleParams(justSave) {
-      const title = this.tempArticle.title;
+      const title = this.title;
       if (!title.trim()) {
         this.$notify.warning('文章标题不能为空');
         return;
@@ -203,11 +203,7 @@ export default {
      * @returns {*|string}
      */
     getContent() {
-      const editorDom = this.$refs.editor.$el;
-      const textAreaDom = editorDom.querySelector('textarea');
-      if (textAreaDom) {
-        return textAreaDom.value;
-      }
+      return this.content;
     },
     /**
      * 获取文章缩略图
@@ -216,7 +212,7 @@ export default {
     getThumbnail() {
       let imgSrc = '';
       const editorDom = this.$refs.editor.$el;
-      const contentDom = editorDom.querySelector('#vue-showdown');
+      const contentDom = editorDom.querySelector('.markdown-preview');
       if (contentDom) {
         const firstImageDom = contentDom.getElementsByTagName('img')[0];
         if (firstImageDom) {
@@ -231,7 +227,7 @@ export default {
      */
     getAbstract() {
       const editorDom = this.$refs.editor.$el;
-      const contentDom = editorDom.querySelector('#vue-showdown');
+      const contentDom = editorDom.querySelector('.markdown-preview');
       if (contentDom) {
         let abstract = '';
         const paragraphList = contentDom.getElementsByTagName('p');

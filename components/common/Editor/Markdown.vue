@@ -2,23 +2,22 @@
   <div class="markdown-editor">
     <div
       ref="editor"
-      @scroll="editorScroll"
       v-show="editMode || editPreivewMode"
       :style="{ width: editMode ? '100%' : '50%' }"
       class="editor-wrap"
     >
-      <textarea ref="textarea" v-model="content"></textarea>
+      <textarea ref="textarea" class="textarea"></textarea>
     </div>
 
     <div
       ref="preview"
-      @scroll="previewerScroll"
+      @scroll="syncEditorScroll"
       v-show="previewMode || editPreivewMode"
       :style="{ width: previewMode ? '100%' : '50%' }"
       class="preivew-wrap hidden-sm-and-down"
     >
       <VueShowdown
-        :markdown="content"
+        :markdown="markdwonText"
         :options="showdownOptions"
         :extensions="[showdownHighlight]"
         class="markdown-preview"
@@ -46,13 +45,14 @@ export default {
       type: Number,
       default: EDIT_PREVIEW_MODE
     },
-    content: {
+    defaultValue: {
       type: String,
       default: ''
     }
   },
   data() {
     return {
+      markdwonText: this.defaultValue,
       showdownHighlight,
       showdownOptions: {
         omitExtraWLInCodeBlocks: true,
@@ -77,10 +77,9 @@ export default {
     }
   },
   watch: {
-    viewMode(value) {
-      if (value === EDIT_PREVIEW_MODE || value === EDIT_MODE) {
-        // this.editor.refresh();
-      }
+    defaultValue(value) {
+      this.markdwonText = value;
+      this.editor.setValue(value);
     }
   },
   mounted() {
@@ -94,12 +93,13 @@ export default {
       require('codemirror/lib/codemirror.css');
 
       this.editor = CodeMirror.fromTextArea(this.$refs.textarea, {
+        value: this.defaultValue,
         mode: 'markdown',
         lineNumbers: true,
         lineWrapping: true,
         foldGutter: true,
         tabSize: 2,
-        autofocus: true,
+        // autofocus: true,
         theme: 'default',
         showCursorWhenSelecting: true,
         matchBrackets: true,
@@ -107,49 +107,48 @@ export default {
         autoCloseBrackets: true
       });
 
-      this.editor.on('ready', () => {
-        console.log('初始化完成');
-      });
-
       // 内容变化监听
       this.editor.on(
         'change',
         _.debounce((cm) => {
           const content = cm.getValue();
+          this.markdwonText = content;
           this.$emit('input', content);
         }, 300)
       );
 
       //  同步滚动监听
       //  编辑区滚动
-      this.editor.on('scroll', this.editorScroll);
+      this.editor.on('scroll', this.syncPreviewerScroll);
     }
   },
   methods: {
     init() {},
-    editorScroll(cm) {
+    syncPreviewerScroll() {
       if (this.enableSyncScroll) {
         if (this.editorScrolling) {
           this.editorScrolling = false;
           return;
         }
         this.previewerScrolling = true;
-        const scrollObj = cm.getScrollInfo();
+        const scrollObj = this.editor.getScrollInfo();
         const percent =
           scrollObj.top / (scrollObj.height - scrollObj.clientHeight);
         const previewer = this.$refs.preview;
-        previewer.scrollTop =
-          percent * (previewer.scrollHeight - previewer.clientHeight);
+        if (previewer) {
+          previewer.scrollTop =
+            percent * (previewer.scrollHeight - previewer.clientHeight);
+        }
       }
     },
-    previewerScroll(e) {
+    syncEditorScroll() {
       if (this.enableSyncScroll) {
         if (this.previewerScrolling) {
           this.previewerScrolling = false;
           return;
         }
         this.editorScrolling = true;
-        const scrollElement = e.target;
+        const scrollElement = this.$refs.preview;
 
         const percent =
           scrollElement.scrollTop /
@@ -157,6 +156,7 @@ export default {
         const scrollObj = this.editor.getScrollInfo();
 
         const editorTop = percent * (scrollObj.height - scrollObj.clientHeight);
+
         this.editor.scrollTo(null, editorTop);
       }
     }
@@ -183,6 +183,9 @@ export default {
     .editor-wrap {
       width: 100% !important;
     }
+  }
+  .textarea {
+    display: none;
   }
   .editor-wrap {
     height: 100%;
