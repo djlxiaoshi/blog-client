@@ -48,6 +48,14 @@ export default {
     defaultValue: {
       type: String,
       default: ''
+    },
+    editorConfig: {
+      type: Object,
+      default: () => ({
+        lineNumbers: true,
+        height: 100,
+        width: '100%'
+      })
     }
   },
   data() {
@@ -95,7 +103,7 @@ export default {
       this.editor = CodeMirror.fromTextArea(this.$refs.textarea, {
         value: this.defaultValue,
         mode: 'markdown',
-        lineNumbers: true,
+        lineNumbers: this.editorConfig.lineNumbers,
         lineWrapping: true,
         foldGutter: true,
         tabSize: 2,
@@ -106,6 +114,11 @@ export default {
         styleActiveLine: true,
         autoCloseBrackets: true
       });
+
+      this.editor.setSize(
+        this.editorConfig.width || '100%',
+        this.editorConfig.height || 100
+      );
 
       // 内容变化监听
       this.editor.on(

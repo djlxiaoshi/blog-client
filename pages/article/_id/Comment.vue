@@ -8,10 +8,14 @@
     <div class="edit-wrap">
       <Editor
         ref="reply-editor"
-        :actions="actions"
-        :mode="3"
+        :viewMode="2"
+        :editorConfig="{
+          height: 100,
+          lineNumbers: false
+        }"
+        :defaultValue="defaultValue"
         @input="onInputChange"
-        type="markdown"
+        class="editor"
       ></Editor>
       <div class="operate-wrap">
         <el-button @click="postComment()" type="danger" round size="mini"
@@ -46,8 +50,12 @@
         <div v-if="comment._visible" class="reply-wrap">
           <Editor
             @input="onInputChange($event, true, index)"
-            :actions="actions"
-            type="richText"
+            :viewMode="2"
+            :editorConfig="{
+              height: 100,
+              lineNumbers: false
+            }"
+            class="editor"
           ></Editor>
           <div class="btn-wrap">
             <el-button
@@ -73,7 +81,7 @@
 
 <script>
 import dayjs from 'dayjs';
-import Editor from '~/components/common/Editor/index.vue';
+import Editor from '~/components/common/Editor/Markdown.vue';
 
 const PAGE_SIZE = 10;
 
@@ -91,7 +99,8 @@ export default {
       commentsTotal: Infinity,
       currentPage: 1,
       pageSize: PAGE_SIZE,
-      busy: false
+      busy: false,
+      defaultValue: ''
     };
   },
   methods: {
@@ -169,9 +178,7 @@ export default {
       }
     },
     clear() {
-      // TODO 有无更加优雅的方式 获取孙子节点  或者实现清空功能
-      this.content = '';
-      this.$refs['reply-editor'].$refs['rich-text-editor'].clear();
+      this.defaultValue = '';
     },
     sendRequest(params) {
       const articleId = this.$route.params.id;
@@ -199,10 +206,13 @@ export default {
 
 <style scoped lang="less">
 .comment-wrap {
-  /deep/ .pell-content {
-    max-height: 300px;
-    min-height: 100px;
-    height: auto;
+  .editor {
+    /deep/ .CodeMirror-wrap {
+      background: rgb(241, 242, 239);
+      border: 1px solid #dddddd;
+      .CodeMirror-line {
+      }
+    }
   }
   .edit-wrap {
     .operate-wrap {

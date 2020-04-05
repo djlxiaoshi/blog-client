@@ -5,63 +5,11 @@
     </div>
 
     <OperateBar :config="operateConfig" @onClick="operateAction"></OperateBar>
-    <!-- <div class="operate-bar">
-      <el-tooltip class="item" effect="dark" content="编辑模式" placement="top">
-        <i
-          @click="changeViewMode(3)"
-          class="operate-icon iconfont icon-bianji"
-        ></i>
-      </el-tooltip>
-
-      <el-tooltip class="item" effect="dark" content="预览模式" placement="top">
-        <i
-          @click="changeViewMode(2)"
-          class="operate-icon iconfont icon-yulan"
-        ></i>
-      </el-tooltip>
-
-      <el-tooltip
-        class="item"
-        effect="dark"
-        content="预览编辑模式"
-        placement="top"
-      >
-        <i
-          @click="changeViewMode(1)"
-          class="operate-icon iconfont icon-fenlan"
-        ></i>
-      </el-tooltip>
-
-      <el-tooltip
-        class="item"
-        effect="dark"
-        content="保存为草稿"
-        placement="top"
-      >
-        <i
-          @click="handleParams(true)"
-          class="operate-icon iconfont icon-baocun"
-        ></i>
-      </el-tooltip>
-
-      <el-tooltip
-        :content="mode === 1 ? '发布' : '重新发布'"
-        class="item"
-        effect="dark"
-        placement="top"
-      >
-        <i
-          @click="handleParams(false)"
-          class="operate-icon iconfont icon-fabu"
-        ></i>
-      </el-tooltip>
-    </div> -->
 
     <div class="article-content">
       <Editor
         ref="editor"
         :defaultValue="defaultValue"
-        :actions="[]"
         @input="getEditorValue"
         :viewMode="viewMode"
       ></Editor>
