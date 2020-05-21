@@ -78,7 +78,6 @@ export default {
 <style scoped lang="less">
 .explore-sidebar {
   padding: 10px;
-  border: 1px solid #dddddd;
   .module {
     margin: 20px auto;
     padding-bottom: 5px;

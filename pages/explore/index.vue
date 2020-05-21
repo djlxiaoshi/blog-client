@@ -2,8 +2,15 @@
   <div class="explore-page">
     <AppPlaceholder>
       <el-row type="flex" justify="space-around">
-        <el-col :xs="24" :sm="23" :md="17" :lg="18" :xl="19">
-          <div ref="loadingTarget" class="page-left">
+        <el-col
+          :style="{ border: '1px solid #dddddd' }"
+          :xs="24"
+          :sm="23"
+          :md="17"
+          :lg="18"
+          :xl="19"
+        >
+          <div class="page-left">
             <AppEmpty :isEmpty="articles.length === 0">
               <ArticleList
                 :data="articles"
@@ -15,7 +22,13 @@
             </AppEmpty>
           </div>
         </el-col>
-        <el-col :md="6" :lg="5" :xl="4" class="hidden-sm-and-down">
+        <el-col
+          :style="{ border: '1px solid #dddddd' }"
+          :md="6"
+          :lg="5"
+          :xl="4"
+          class="hidden-sm-and-down"
+        >
           <div class="page-right">
             <SideBar></SideBar>
           </div>
@@ -141,7 +154,6 @@ export default {
 .explore-page {
   margin-bottom: 20px;
   .page-left {
-    border: 1px solid #dddddd;
   }
 }
 </style>
