@@ -24,12 +24,14 @@ export default {
 
 <style scoped lang="less">
 .app-empty {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   .empty-content {
     padding: 20px;
-    height: 100%;
     min-height: 200px;
-    display: flex;
-    flex-direction: column;
     .empty-img {
       text-align: center;
     }

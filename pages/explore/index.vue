@@ -1,34 +1,27 @@
 <template>
   <div class="explore-page">
     <AppPlaceholder>
-      <el-row type="flex" justify="space-around">
-        <el-col
-          :style="{ border: '1px solid #dddddd' }"
-          :xs="24"
-          :sm="23"
-          :md="17"
-          :lg="18"
-          :xl="19"
-        >
+      <el-row type="flex" justify="space-around" align="top">
+        <el-col :style="{}" :xs="24" :sm="23" :md="17" :lg="18" :xl="19">
           <div class="page-left">
             <AppEmpty :isEmpty="articles.length === 0">
               <ArticleList
                 :data="articles"
                 @onView="viewArticle"
                 v-infinite-scroll="loadMore"
+                class="article-list"
                 infinite-scroll-disabled="busy"
                 infinite-scroll-distance="10"
               ></ArticleList>
+              <AppLoading
+                v-if="busy"
+                size="mini"
+                class="loading-more"
+              ></AppLoading>
             </AppEmpty>
           </div>
         </el-col>
-        <el-col
-          :style="{ border: '1px solid #dddddd' }"
-          :md="6"
-          :lg="5"
-          :xl="4"
-          class="hidden-sm-and-down"
-        >
+        <el-col :md="6" :lg="5" :xl="4" class="hidden-sm-and-down">
           <div class="page-right">
             <SideBar></SideBar>
           </div>
@@ -44,6 +37,7 @@ import SideBar from './SideBar';
 import ArticleList from '~/components/common/ArticleList/index';
 import AppEmpty from '~/components/common/Empty/Index';
 import AppPlaceholder from '~/components/common/app-placeholder/index';
+import AppLoading from '~/components/common/app-loading';
 
 const PAGE_SIZE = 10;
 
@@ -68,7 +62,8 @@ export default {
     ArticleList,
     AppEmpty,
     SideBar,
-    AppPlaceholder
+    AppPlaceholder,
+    AppLoading
   },
   data() {
     return {
@@ -154,6 +149,18 @@ export default {
 .explore-page {
   margin-bottom: 20px;
   .page-left {
+    height: 100%;
+    border: 1px solid #dddddd;
+    .article-list {
+      padding-bottom: 0;
+    }
+  }
+  .page-right {
+    border: 1px solid #dddddd;
+  }
+  .loading-more {
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
 }
 </style>
