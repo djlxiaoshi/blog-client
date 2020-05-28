@@ -96,7 +96,6 @@ export default {
       require('codemirror/addon/selection/active-line.js');
       require('codemirror/addon/edit/closebrackets.js');
       require('codemirror/addon/edit/matchbrackets.js');
-      require('codemirror/lib/codemirror.css');
       require('codemirror/mode/markdown/markdown.js');
       require('codemirror/lib/codemirror.css');
 
@@ -182,7 +181,7 @@ export default {
   height: 100%;
   display: flex;
   /deep/ .CodeMirror {
-    height: 100%;
+    height: 100% !important;
     margin: 0 5px;
     font-size: 18px;
     background-color: rgb(249, 249, 245);
