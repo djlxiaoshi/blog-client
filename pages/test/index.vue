@@ -8,7 +8,7 @@ export default {
     return {};
   },
   mounted() {
-    console.log('just a test');
+    console.log('just a test dcdc');
   },
   methods: {}
 };
