@@ -181,7 +181,6 @@ export default {
   height: 100%;
   display: flex;
   /deep/ .CodeMirror {
-    height: 100% !important;
     margin: 0 5px;
     font-size: 18px;
     background-color: rgb(249, 249, 245);

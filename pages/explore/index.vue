@@ -35,7 +35,7 @@
 import { mapActions, mapMutations } from 'vuex';
 import SideBar from './SideBar';
 import ArticleList from '~/components/common/ArticleList/index';
-import AppEmpty from '~/components/common/Empty/Index';
+import AppEmpty from '~/components/common/Empty';
 import AppPlaceholder from '~/components/common/app-placeholder/index';
 import AppLoading from '~/components/common/app-loading';
 

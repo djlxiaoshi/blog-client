@@ -7,9 +7,7 @@ export default {
   data() {
     return {};
   },
-  mounted() {
-    console.log('just a test');
-  },
+  mounted() {},
   methods: {}
 };
 </script>
