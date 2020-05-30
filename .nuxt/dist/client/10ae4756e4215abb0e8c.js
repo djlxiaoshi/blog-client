@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[16],{639:function(t,n,e){"use strict";e.r(n);var o={data:function(){return{}},mounted:function(){console.log("just a test dcdc")},methods:{}},c=e(5),component=Object(c.a)(o,(function(){var t=this.$createElement;return(this._self._c||t)("div",[this._v("test页面")])}),[],!1,null,null,null);n.default=component.exports}}]);

@@ -69,7 +69,7 @@ typings/
 # .nuxt  // 由于我买的服务器配置比较低（内存不足），线上打包容易因为内存不足，进程被杀死，所以改为本地打包
 
 # Nuxt generate
-dist
+# dist
 
 # vuepress build output
 .vuepress/dist
