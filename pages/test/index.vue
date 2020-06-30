@@ -1,9 +1,15 @@
 <template>
-  <div>test页面</div>
+  <div>
+    <JsErrorTest></JsErrorTest>
+  </div>
 </template>
 
 <script>
+import JsErrorTest from './monitor';
 export default {
+  components: {
+    JsErrorTest
+  },
   data() {
     return {};
   },
