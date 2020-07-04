@@ -1,1 +1,0 @@
-exports.ids=[14],exports.modules={198:function(t,e,o){"use strict";o.r(e);var r={data:()=>({}),mounted(){console.log("just a test dcdc")},methods:{}},n=o(2);var component=Object(n.a)(r,(function(){var t=this.$createElement;return(this._self._c||t)("div",[this._ssrNode("test页面")])}),[],!1,(function(t){}),null,"56ef77ee");e.default=component.exports}};

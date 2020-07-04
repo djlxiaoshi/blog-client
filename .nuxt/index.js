@@ -12,10 +12,12 @@ import { createStore } from './store.js'
 
 /* Plugins */
 
-import nuxt_plugin_workbox_b48bd0d8 from 'nuxt_plugin_workbox_b48bd0d8' // Source: ./workbox.js (mode: 'client')
 import nuxt_plugin_nuxticons_ade65860 from 'nuxt_plugin_nuxticons_ade65860' // Source: ./nuxt-icons.js (mode: 'all')
 import nuxt_plugin_cookieuniversalnuxt_05399020 from 'nuxt_plugin_cookieuniversalnuxt_05399020' // Source: ./cookie-universal-nuxt.js (mode: 'all')
 import nuxt_plugin_axios_87403f10 from 'nuxt_plugin_axios_87403f10' // Source: ./axios.js (mode: 'all')
+import nuxt_plugin_sentryserver_4105a83c from 'nuxt_plugin_sentryserver_4105a83c' // Source: ./sentry.server.js (mode: 'server')
+import nuxt_plugin_sentryclient_49679298 from 'nuxt_plugin_sentryclient_49679298' // Source: ./sentry.client.js (mode: 'client')
+import nuxt_plugin_errormonitor_46408121 from 'nuxt_plugin_errormonitor_46408121' // Source: ../plugins/error-monitor (mode: 'client')
 import nuxt_plugin_elementui_d905880e from 'nuxt_plugin_elementui_d905880e' // Source: ../plugins/element-ui (mode: 'all')
 import nuxt_plugin_vueinject_5ff306a8 from 'nuxt_plugin_vueinject_5ff306a8' // Source: ../plugins/vue-inject (mode: 'all')
 import nuxt_plugin_infinitescroll_6b9d679c from 'nuxt_plugin_infinitescroll_6b9d679c' // Source: ../plugins/infinite-scroll (mode: 'client')
@@ -176,10 +178,6 @@ async function createApp (ssrContext) {
 
   // Plugin execution
 
-  if (process.client && typeof nuxt_plugin_workbox_b48bd0d8 === 'function') {
-    await nuxt_plugin_workbox_b48bd0d8(app.context, inject)
-  }
-
   if (typeof nuxt_plugin_nuxticons_ade65860 === 'function') {
     await nuxt_plugin_nuxticons_ade65860(app.context, inject)
   }
@@ -190,6 +188,18 @@ async function createApp (ssrContext) {
 
   if (typeof nuxt_plugin_axios_87403f10 === 'function') {
     await nuxt_plugin_axios_87403f10(app.context, inject)
+  }
+
+  if (process.server && typeof nuxt_plugin_sentryserver_4105a83c === 'function') {
+    await nuxt_plugin_sentryserver_4105a83c(app.context, inject)
+  }
+
+  if (process.client && typeof nuxt_plugin_sentryclient_49679298 === 'function') {
+    await nuxt_plugin_sentryclient_49679298(app.context, inject)
+  }
+
+  if (process.client && typeof nuxt_plugin_errormonitor_46408121 === 'function') {
+    await nuxt_plugin_errormonitor_46408121(app.context, inject)
   }
 
   if (typeof nuxt_plugin_elementui_d905880e === 'function') {

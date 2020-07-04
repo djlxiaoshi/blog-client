@@ -263,6 +263,9 @@ export default {
     flex: 1;
     height: calc(100vh - 100px);
   }
+  /deep/ .CodeMirror {
+    height: 100% !important;
+  }
   /deep/ .el-input {
     .el-input__inner {
       height: 60px;

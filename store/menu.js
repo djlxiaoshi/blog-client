@@ -1,6 +1,5 @@
-export const state = () => ({
-  activeMenu: '',
-  list: [
+function getMenuList() {
+  const commonMenu = [
     {
       path: '/',
       label: '发现'
@@ -16,12 +15,21 @@ export const state = () => ({
     {
       path: '/about',
       label: '关于本站'
-    },
-    {
-      path: '/test/pell',
-      label: 'pell'
     }
-  ]
+  ];
+  if (process.env.NODE_ENV === 'production') {
+    commonMenu.push({
+      path: '/test/',
+      label: 'test'
+    });
+  }
+
+  return commonMenu;
+}
+
+export const state = () => ({
+  activeMenu: '',
+  list: getMenuList()
 });
 
 export const mutations = {

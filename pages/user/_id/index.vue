@@ -26,7 +26,7 @@
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex';
 import ArticleList from '~/components/common/ArticleList/index';
-import AppEmpty from '~/components/common/Empty/Index';
+import AppEmpty from '~/components/common/Empty';
 import AppPlaceholder from '~/components/common/app-placeholder/index';
 
 const PAGE_SIZE = 10;

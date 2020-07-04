@@ -13,6 +13,7 @@ const _67489eb1 = () => interopDefault(import('../pages/test/index.vue' /* webpa
 const _4a163da0 = () => interopDefault(import('../pages/timeline/index.vue' /* webpackChunkName: "pages/timeline/index" */))
 const _906e5998 = () => interopDefault(import('../pages/explore/SideBar.vue' /* webpackChunkName: "pages/explore/SideBar" */))
 const _06d90560 = () => interopDefault(import('../pages/test/codemirror/index.vue' /* webpackChunkName: "pages/test/codemirror/index" */))
+const _0edafd88 = () => interopDefault(import('../pages/test/monitor/index.vue' /* webpackChunkName: "pages/test/monitor/index" */))
 const _5cc822da = () => interopDefault(import('../pages/test/turndown/index.vue' /* webpackChunkName: "pages/test/turndown/index" */))
 const _8ba07bee = () => interopDefault(import('../pages/user/info/index.vue' /* webpackChunkName: "pages/user/info/index" */))
 const _2609aad8 = () => interopDefault(import('../pages/post/components/OperateBar/index.vue' /* webpackChunkName: "pages/post/components/OperateBar/index" */))
@@ -78,6 +79,10 @@ export const routerOptions = {
     path: "/test/codemirror",
     component: _06d90560,
     name: "test-codemirror"
+  }, {
+    path: "/test/monitor",
+    component: _0edafd88,
+    name: "test-monitor"
   }, {
     path: "/test/turndown",
     component: _5cc822da,
