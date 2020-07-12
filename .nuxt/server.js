@@ -122,7 +122,7 @@ export default async (ssrContext) => {
   /*
   ** Call global middleware (nuxt.config.js)
   */
-  let midd = ["router"]
+  let midd = ["auth"]
   midd = midd.map((name) => {
     if (typeof name === 'function') {
       return name
