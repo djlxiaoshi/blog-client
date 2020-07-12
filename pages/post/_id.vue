@@ -42,6 +42,9 @@ export default {
       }
     ]
   },
+  meta: {
+    needLogin: true
+  },
   components: {
     Editor,
     OperateBar

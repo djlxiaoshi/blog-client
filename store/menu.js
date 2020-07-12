@@ -15,9 +15,13 @@ function getMenuList() {
     {
       path: '/about',
       label: '关于本站'
+    },
+    {
+      path: '/post',
+      label: 'post'
     }
   ];
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'development') {
     commonMenu.push({
       path: '/test/',
       label: 'test'

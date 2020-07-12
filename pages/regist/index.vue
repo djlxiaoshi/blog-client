@@ -57,6 +57,9 @@
 <script>
 export default {
   name: 'Register',
+  meta: {
+    isClosed: true
+  },
   head: {
     title: '注册',
     titleTemplate: '%s - DJL箫氏的博客!',

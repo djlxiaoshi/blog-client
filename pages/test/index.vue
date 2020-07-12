@@ -7,6 +7,10 @@
 <script>
 import JsErrorTest from './monitor';
 export default {
+  meta: {
+    needLogin: true,
+    permission: []
+  },
   components: {
     JsErrorTest
   },
