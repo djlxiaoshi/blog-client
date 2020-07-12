@@ -2,7 +2,9 @@ import { Notification, Loading } from 'element-ui';
 import NProgress from 'nprogress';
 import envConfig from '~/assets/js/global/env';
 
-export default function({ $axios, redirect, app }, inject) {
+export default function({ $axios, redirect, app, req }, inject) {
+  // const cookies = app.$cookies.getAll();
+  // console.log('cookies', req.headers.cookie);
   const SUCCESS_CODE = 0;
   const CancelToken = $axios.CancelToken;
   const defaultHeader = {
@@ -35,7 +37,7 @@ export default function({ $axios, redirect, app }, inject) {
     const axiosConfig = {
       method: config.method || 'get',
       url: getFinalUrl('/api', config.url),
-      withCredentials: config.withCredentials || true,
+      withCredentials: true,
       headers: Object.assign({}, defaultHeader, config.headers),
       cancelToken: new CancelToken(function executor(cancel) {
         xhrInstance.cancel = function() {
@@ -47,6 +49,7 @@ export default function({ $axios, redirect, app }, inject) {
     };
     // 服务端设置cookie 貌似cookie-universal-nuxt会自动把cookie都添加上
     if (isServer) {
+      console.log('--------cookies----------', app.$cookies.getAll());
       // axiosConfig.headers.Authorization = app.$cookies.get('login');
     }
 

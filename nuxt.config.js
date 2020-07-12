@@ -82,7 +82,7 @@ module.exports = {
     }
   },
   router: {
-    middleware: ['router'],
+    middleware: ['auth'],
     extendRoutes(routes, resolve) {
       routes.push({
         path: '/',

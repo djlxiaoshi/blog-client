@@ -1,5 +1,5 @@
-import Vue from 'vue';
+// import Vue from 'vue';
 
-Vue.config.errorHandler = (error, vm, info) => {
-  this.$sentry.captureException(error);
-};
+// Vue.config.errorHandler = (error, vm, info) => {
+//   // this.$sentry.captureException(error);
+// };
