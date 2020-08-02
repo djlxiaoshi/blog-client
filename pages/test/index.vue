@@ -1,18 +1,17 @@
 <template>
   <div>
-    <JsErrorTest></JsErrorTest>
+    <AppContainer :showLoading="true" :showEmpty="true">
+      <h1>dfdsvsdv</h1>
+    </AppContainer>
   </div>
 </template>
 
 <script>
-import JsErrorTest from './monitor';
+import AppContainer from '@/components/common/app-container';
 export default {
-  meta: {
-    needLogin: true,
-    permission: []
-  },
+  meta: {},
   components: {
-    JsErrorTest
+    AppContainer
   },
   data() {
     return {};

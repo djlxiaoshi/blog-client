@@ -55,7 +55,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import AppLoading from '~/components/common/app-loading';
-
+import { ADMIN_ROLE } from '@/assets/js/global/const';
 export default {
   name: 'TagPage',
   head: {
@@ -87,7 +87,7 @@ export default {
       userInfo: (state) => state.user.userInfo
     }),
     isAdmin() {
-      return this.userInfo && this.userInfo.role === 0;
+      return this.userInfo && this.userInfo.role === ADMIN_ROLE;
     }
   },
   asyncData({ store }) {

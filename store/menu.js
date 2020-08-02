@@ -19,6 +19,10 @@ function getMenuList() {
     {
       path: '/post',
       label: 'post'
+    },
+    {
+      path: '/regist',
+      label: 'regist'
     }
   ];
   if (process.env.NODE_ENV === 'development') {

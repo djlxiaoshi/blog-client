@@ -1,5 +1,5 @@
 export const state = () => ({
-  list: [],
+  allTags: [],
   currentTag: {}
 });
 
@@ -11,7 +11,7 @@ export const getters = {
 
 export const mutations = {
   setAllTags(state, tags) {
-    state.list = tags;
+    state.allTags = tags;
   },
   setTag(state, tag) {
     state.currentTag = tag;
@@ -24,8 +24,7 @@ export const actions = {
       url: `/tags`,
       method: 'get',
       showSuccessMsg: false,
-      showErrorMsg: true,
-      loading: loadingTarget
+      showErrorMsg: true
     });
 
     return response.then(
