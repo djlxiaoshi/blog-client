@@ -3,6 +3,9 @@ import NProgress from 'nprogress';
 import { Notification, Loading } from 'element-ui';
 import envConfig from '../global/env';
 
+console.log('envConfig', envConfig);
+debugger;
+
 let xhrCacheList = [];
 const CancelToken = axios.CancelToken;
 const prefix = '/api';

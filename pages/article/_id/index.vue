@@ -16,6 +16,16 @@
                 <span @click="editArticle" class="edit">编辑文章</span>
 
                 <span @click="userConfirm" class="delete">删除文章</span>
+
+                <el-switch
+                  v-model="isPublished"
+                  @change="changePublishStatus"
+                  :active-value="1"
+                  :inactive-value="0"
+                  active-color="#13ce66"
+                  active-text="发布状态"
+                >
+                </el-switch>
               </span>
             </div>
             <div class="article-tags">
@@ -118,14 +128,18 @@ export default {
       },
       openTags: false,
       selectTags: [],
-      articleTags: []
+      articleTags: [],
+      published: false
     };
   },
   computed: {
     ...mapState({
       article: (state) => state.article.currentArticle,
       userInfo: (state) => state.user.userInfo,
-      tags: (state) => state.tags
+      tags: (state) => state.tags,
+      isPublished() {
+        return this.article.status === 1;
+      }
     }),
     author() {
       return this.article.createUser;
@@ -198,6 +212,25 @@ export default {
           tags
         },
         showSuccessMsg: '标签设置成功',
+        showErrorMsg: true
+      });
+
+      response.then(
+        () => {
+          this.getArticle(this.$route.params.id);
+          this.openTags = false;
+        },
+        () => {}
+      );
+    },
+    changePublishStatus(status) {
+      const { response } = this.$http({
+        url: `/article/${this.$route.params.id}`,
+        method: 'put',
+        data: {
+          publishStatus: this.article.status
+        },
+        showSuccessMsg: '操作成功',
         showErrorMsg: true
       });
 

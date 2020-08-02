@@ -21,7 +21,7 @@ const production = {
 
 switch (process.env.NODE_ENV) {
   case 'development':
-    Object.assign(env, production);
+    Object.assign(env, development);
     break;
   case 'test':
     Object.assign(env, test);

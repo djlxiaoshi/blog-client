@@ -3,8 +3,6 @@ import NProgress from 'nprogress';
 import envConfig from '~/assets/js/global/env';
 
 export default function({ $axios, redirect, app, req }, inject) {
-  // const cookies = app.$cookies.getAll();
-  // console.log('cookies', req.headers.cookie);
   const SUCCESS_CODE = 0;
   const CancelToken = $axios.CancelToken;
   const defaultHeader = {
@@ -50,7 +48,6 @@ export default function({ $axios, redirect, app, req }, inject) {
     // 服务端设置cookie 貌似cookie-universal-nuxt会自动把cookie都添加上
     if (isServer) {
       console.log('--------cookies----------', app.$cookies.getAll());
-      // axiosConfig.headers.Authorization = app.$cookies.get('login');
     }
 
     // 设置请求参数
