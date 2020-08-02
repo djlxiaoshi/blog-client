@@ -19,7 +19,7 @@ export const mutations = {
 };
 
 export const actions = {
-  getAllTags({ commit }, { loadingTarget } = {}) {
+  getAllTags({ commit }) {
     const { response } = this.$http({
       url: `/tags`,
       method: 'get',

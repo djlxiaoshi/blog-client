@@ -15,7 +15,11 @@
  *
  * */
 import qs from 'qs';
-// const env = process.env.NODE_ENV;
+
+function isLoginPage(path) {
+  return path === '/login' || path === '/login/';
+}
+
 export default async function({ store, route, redirect, error }) {
   const { path, query } = route;
   // 如果store中没有用户信息，先获取用户信息，不论该页面是不是需要登录，
@@ -28,6 +32,12 @@ export default async function({ store, route, redirect, error }) {
     } catch (error) {
       console.log('error', error);
     }
+  }
+
+  // 如果是登录页且用户已经登录则直接重定向到首页
+  if (isLoginPage(path) && store.state.user.userInfo) {
+    redirect('/explore');
+    return;
   }
 
   if (route.meta[0]) {
