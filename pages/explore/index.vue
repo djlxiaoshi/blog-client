@@ -4,7 +4,10 @@
       <el-row type="flex" justify="space-around" align="top">
         <el-col :style="{}" :xs="24" :sm="23" :md="17" :lg="18" :xl="19">
           <div class="page-left">
-            <AppContainer :showEmpty="articles.length === 0">
+            <AppContainer
+              :showEmpty="articles.length === 0"
+              style="height: 100%"
+            >
               <ArticleList
                 :data="articles"
                 @onView="viewArticle"
