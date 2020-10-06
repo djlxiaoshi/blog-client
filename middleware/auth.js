@@ -36,7 +36,7 @@ export default async function({ store, route, redirect, error }) {
 
   // 如果是登录页且用户已经登录则直接重定向到首页
   if (isLoginPage(path) && store.state.user.userInfo) {
-    redirect('/explore');
+    redirect('/');
     return;
   }
 
