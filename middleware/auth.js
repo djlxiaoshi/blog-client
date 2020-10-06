@@ -42,7 +42,8 @@ export default async function({ store, route, redirect, error }) {
 
   if (route.meta[0]) {
     const { needLogin, isClosed, permission } = route.meta[0];
-    // 如果这个页面处于关闭状态
+    // todo admin 配置
+    // 如果这个页面处于关闭状态 例如注册页
     if (isClosed) {
       error({ statusCode: 404, message: '页面不存在Page not found' });
       return;

@@ -1,3 +1,5 @@
+import { COLORS } from '../global/const';
+
 export function formatData(params) {
   const queryStrArr = [];
   Object.keys(params).forEach((key) => {
@@ -73,4 +75,16 @@ export function groupBy(xs, key, result = {}) {
     (rv[x[key]] = rv[x[key]] || []).push(x);
     return rv;
   }, result);
+}
+
+/* 
+随机获取颜色
+*/
+export function getRandomColor() {
+  const colors = [];
+  Object.keys(COLORS).forEach((key) => {
+    colors.push(COLORS[key]);
+  });
+
+  return colors[randomNum(colors.length - 1)];
 }
