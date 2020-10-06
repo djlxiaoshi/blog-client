@@ -64,7 +64,7 @@ export default {
   },
   computed: {
     ...mapState({
-      tags: (state) => state.tag.list
+      tags: (state) => state.tag.allTags
     })
   },
   methods: {

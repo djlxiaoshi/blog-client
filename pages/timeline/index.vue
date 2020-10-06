@@ -1,30 +1,26 @@
 <template>
   <div class="timeline-page">
-    <div class="page-header">
-      <h1 class="page-title">时光轴</h1>
-    </div>
-    <div class="page-body">
-      <el-steps direction="vertical" space="100px">
-        <el-step :title="key" v-for="(value, key) in timelines" :key="key">
-          <template slot="description">
-            <p v-for="(item, index) in value" :key="index">
-              <span class="dot"></span>
-              <a @click="goToArticle(item)" class="article-link">
-                <span>{{ item.title }}</span>
-                <span>{{ formatTime(item.createTime) }}</span>
-                <span> {{ item.createUser.username }} </span>
-              </a>
-            </p>
-          </template>
-        </el-step>
-      </el-steps>
-    </div>
+    <AppPlaceholder>
+      <div class="page-body">
+        <el-timeline>
+          <el-timeline-item v-for="(item, key) in timelines" :key="key">
+            <div @click="goToArticle(item)" class="article-link">
+              <span>{{ item.title }}</span>
+              <span>{{ formatTime(item.createTime) }}</span>
+              <span> {{ item.createUser.username }} </span>
+            </div>
+          </el-timeline-item>
+        </el-timeline>
+      </div>
+    </AppPlaceholder>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import dayjs from 'dayjs';
+import AppPlaceholder from '~/components/common/app-placeholder/index';
+
 export default {
   name: 'Timeline',
   head: {
@@ -41,6 +37,9 @@ export default {
         content: '这是DJL箫氏的博客的时光轴页面，用来记录我的往事时光轴'
       }
     ]
+  },
+  components: {
+    AppPlaceholder
   },
   data() {
     return {
@@ -84,16 +83,8 @@ export default {
       font-size: 16px;
     }
   }
-  .dot {
-    display: inline-block;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: #999;
-    margin-left: 10px;
-    vertical-align: middle;
-  }
   .article-link {
+    display: inline-block;
     cursor: pointer;
     color: lightcoral;
     font-size: 14px;

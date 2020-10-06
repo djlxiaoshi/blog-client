@@ -1,60 +1,35 @@
 <template>
   <div class="tags-page">
-    <div class="page-header">
-      <div class="add-btn">
+    <AppPlaceholder>
+      <div class="tag-list">
+        <div v-for="(tag, index) in tags" :key="index" class="tag-item">
+          <i class="tag-icon el-icon-discount"></i>
+          <span @click="goToTagDetails(tag)" class="tag-name">{{
+            tag.label
+          }}</span>
+          <span v-if="isAdmin" class="operate-wrap">
+            <i @click="openOperateTagDialog(tag)" class="el-icon-edit"></i>
+            <i @click="openDeleteTagDialog(tag)" class="el-icon-delete"></i>
+          </span>
+        </div>
         <el-button
           @click="openOperateTagDialog()"
           v-if="isAdmin"
           type="success"
           plain
+          icon="el-icon-plus"
           size="small"
-          >添加</el-button
-        >
+          circle
+        ></el-button>
       </div>
-    </div>
-
-    <el-row :gutter="20" class="tag-list">
-      <el-col
-        v-for="(tag, index) in tags"
-        :key="index"
-        :xs="24"
-        :sm="12"
-        :md="8"
-        :lg="6"
-        :xl="6"
-        class="list-item"
-      >
-        <el-card :body-style="{ padding: '0px' }">
-          <div @click="goToTagDetails(tag)" class="img-wrap">
-            <el-image
-              style="width: 100%; height: 100%"
-              fit="cover"
-              lazy
-              src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-            >
-              <AppLoading
-                slot="placeholder"
-                size="large"
-                class="image-slot"
-              ></AppLoading>
-            </el-image>
-          </div>
-          <div class="card-bottom">
-            <span class="tag-name">{{ tag.label }}</span>
-            <span v-if="isAdmin" class="operate-wrap">
-              <i @click="openOperateTagDialog(tag)" class="el-icon-edit"></i>
-              <i @click="openDeleteTagDialog(tag)" class="el-icon-delete"></i>
-            </span>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
+    </AppPlaceholder>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import AppLoading from '~/components/common/app-loading';
+import { ADMIN_ROLE } from '@/assets/js/global/const';
+import AppPlaceholder from '~/components/common/app-placeholder/index';
 
 export default {
   name: 'TagPage',
@@ -74,7 +49,7 @@ export default {
     ]
   },
   components: {
-    AppLoading
+    AppPlaceholder
   },
   data() {
     return {
@@ -83,11 +58,11 @@ export default {
   },
   computed: {
     ...mapState({
-      tags: (state) => state.tag.list,
+      tags: (state) => state.tag.allTags,
       userInfo: (state) => state.user.userInfo
     }),
     isAdmin() {
-      return this.userInfo && this.userInfo.role === 0;
+      return this.userInfo && this.userInfo.role === ADMIN_ROLE;
     }
   },
   asyncData({ store }) {
@@ -205,6 +180,7 @@ export default {
 </script>
 
 <style scoped lang="less">
+@import '../../assets/css/theme.less';
 .tags-page {
   .page-header {
     display: flex;
@@ -213,32 +189,32 @@ export default {
     margin-bottom: 20px;
   }
   .tag-list {
-    min-height: calc(100vh - 120px);
-    .list-item {
-      margin-bottom: 20px;
-      .img-wrap {
-        height: 150px;
-        overflow: hidden;
-        cursor: pointer;
-        /deep/ .el-image {
-          width: 100%;
-          transition: 0.4s;
-          &:hover {
-            transform: scale(1.1);
-            transition: 0.4s;
-          }
-        }
+    display: flex;
+    align-items: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    .tag-item {
+      display: inline-block;
+      padding: 5px 10px;
+      margin: 5px;
+      border: 1px solid @DefaultColor;
+      border-radius: 5px;
+      color: @DefaultColor;
+      .tag-icon {
+        color: @SuccessColor;
       }
-      .card-bottom {
-        padding: 15px;
-        display: flex;
-        border-top: 1px solid #e5e5e5;
-        .operate-wrap {
-          margin-left: auto;
-          i {
-            margin-left: 5px;
-            cursor: pointer;
-          }
+      .tag-name {
+        margin-right: 10px;
+        cursor: pointer;
+        color: @WarningColor;
+      }
+      .operate-wrap {
+        cursor: pointer;
+        .el-icon-edit {
+          color: @InfoColor;
+        }
+        .el-icon-delete {
+          color: @FailedColor;
         }
       }
     }

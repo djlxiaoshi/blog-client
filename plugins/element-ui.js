@@ -28,7 +28,9 @@ import {
   Image,
   Loading,
   Drawer,
-  Switch
+  Switch,
+  Timeline,
+  TimelineItem
 } from 'element-ui';
 
 Vue.use(Button);
@@ -58,5 +60,7 @@ Vue.use(Image);
 Vue.use(Loading.directive);
 Vue.use(Drawer);
 Vue.use(Switch);
+Vue.use(Timeline);
+Vue.use(TimelineItem);
 
 // Vue.use(Element, { locale });

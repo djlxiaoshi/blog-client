@@ -18,12 +18,12 @@
                 <span @click="userConfirm" class="delete">删除文章</span>
 
                 <el-switch
-                  v-model="isPublished"
-                  @change="changePublishStatus"
+                  :value="article.status"
+                  @change="togglePublish"
                   :active-value="1"
                   :inactive-value="0"
                   active-color="#13ce66"
-                  active-text="发布状态"
+                  active-text="公开"
                 >
                 </el-switch>
               </span>
@@ -136,10 +136,7 @@ export default {
     ...mapState({
       article: (state) => state.article.currentArticle,
       userInfo: (state) => state.user.userInfo,
-      tags: (state) => state.tags,
-      isPublished() {
-        return this.article.status === 1;
-      }
+      tags: (state) => state.tag.allTags
     }),
     author() {
       return this.article.createUser;
@@ -164,7 +161,7 @@ export default {
   methods: {
     ...mapActions({
       getArticle: 'article/getArticle',
-      getAllTags: 'tag/getAllTag'
+      getAllTags: 'tag/getAllTags'
     }),
     ...mapMutations({
       setCurrentArticle: 'article/setCurrentArticle'
@@ -223,25 +220,6 @@ export default {
         () => {}
       );
     },
-    changePublishStatus(status) {
-      const { response } = this.$http({
-        url: `/article/${this.$route.params.id}`,
-        method: 'put',
-        data: {
-          publishStatus: this.article.status
-        },
-        showSuccessMsg: '操作成功',
-        showErrorMsg: true
-      });
-
-      response.then(
-        () => {
-          this.getArticle(this.$route.params.id);
-          this.openTags = false;
-        },
-        () => {}
-      );
-    },
     deleteArticle() {
       const { response } = this.$http({
         url: `/article/${this.$route.params.id}`,
@@ -254,6 +232,25 @@ export default {
         () => {
           //  返回用户文章列表页
           this.$router.push('/');
+        },
+        () => {}
+      );
+    },
+    togglePublish(status) {
+      const { response } = this.$http({
+        url: `/article/${this.$route.params.id}`,
+        method: 'put',
+        data: {
+          status
+        },
+        showSuccessMsg: '操作成功',
+        showErrorMsg: true
+      });
+
+      response.then(
+        () => {
+          this.getArticle(this.$route.params.id);
+          this.openTags = false;
         },
         () => {}
       );

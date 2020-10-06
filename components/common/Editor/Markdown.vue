@@ -209,8 +209,6 @@ export default {
     box-sizing: border-box;
     border: 2px dashed #bbb;
     overflow-y: auto;
-    overflow-x: hidden;
-    background: #e5e5e5;
   }
 }
 </style>

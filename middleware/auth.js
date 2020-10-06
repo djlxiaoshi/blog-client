@@ -15,10 +15,13 @@
  *
  * */
 import qs from 'qs';
-// const env = process.env.NODE_ENV;
+
+function isLoginPage(path) {
+  return path === '/login' || path === '/login/';
+}
+
 export default async function({ store, route, redirect, error }) {
   const { path, query } = route;
-
   // 如果store中没有用户信息，先获取用户信息，不论该页面是不是需要登录，
   // 都先提前获取，因为有些页面（例如首页）即使不需要登录，但是需要展示用户信息
   if (!store.state.user.userInfo) {
@@ -29,6 +32,12 @@ export default async function({ store, route, redirect, error }) {
     } catch (error) {
       console.log('error', error);
     }
+  }
+
+  // 如果是登录页且用户已经登录则直接重定向到首页
+  if (isLoginPage(path) && store.state.user.userInfo) {
+    redirect('/');
+    return;
   }
 
   if (route.meta[0]) {
@@ -49,6 +58,7 @@ export default async function({ store, route, redirect, error }) {
         );
       } else if (
         permission &&
+        permission.length > 0 &&
         !permission.includes(store.state.user.userInfo.role)
       ) {
         error({ statusCode: 403, message: '没有页面权限' });

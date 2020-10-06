@@ -4,7 +4,10 @@
       <el-row type="flex" justify="space-around" align="top">
         <el-col :style="{}" :xs="24" :sm="23" :md="17" :lg="18" :xl="19">
           <div class="page-left">
-            <AppEmpty :isEmpty="articles.length === 0">
+            <AppContainer
+              :showEmpty="articles.length === 0"
+              style="height: 100%"
+            >
               <ArticleList
                 :data="articles"
                 @onView="viewArticle"
@@ -18,7 +21,7 @@
                 size="mini"
                 class="loading-more"
               ></AppLoading>
-            </AppEmpty>
+            </AppContainer>
           </div>
         </el-col>
         <el-col :md="6" :lg="5" :xl="4" class="hidden-sm-and-down">
@@ -35,7 +38,7 @@
 import { mapActions, mapMutations } from 'vuex';
 import SideBar from './SideBar';
 import ArticleList from '~/components/common/ArticleList/index';
-import AppEmpty from '~/components/common/Empty';
+import AppContainer from '~/components/common/app-container';
 import AppPlaceholder from '~/components/common/app-placeholder/index';
 import AppLoading from '~/components/common/app-loading';
 
@@ -60,7 +63,7 @@ export default {
   },
   components: {
     ArticleList,
-    AppEmpty,
+    AppContainer,
     SideBar,
     AppPlaceholder,
     AppLoading
