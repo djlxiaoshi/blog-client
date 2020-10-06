@@ -14,7 +14,11 @@ function getMenuList() {
     },
     {
       path: '/about',
-      label: '关于本站'
+      label: '关于我'
+    },
+    {
+      path: '/crawl',
+      label: '快速发布'
     },
     {
       path: '/post',

@@ -26,6 +26,9 @@
                   size="large"
                   class="image-slot"
                 ></AppLoading>
+                <div slot="error" class="error-slot">
+                  <span>点击上传</span>
+                </div>
               </el-image>
             </el-upload>
           </el-form-item>
@@ -230,6 +233,12 @@ export default {
     width: 100px;
     height: 100px;
     border: 1px solid #e5e5e5;
+  }
+  .error-slot {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   /deep/ .el-form-item {
     margin-bottom: 15px;

@@ -1,23 +1,26 @@
 <template>
   <div class="timeline-page">
-    <div class="page-header"></div>
-    <div class="page-body">
-      <el-timeline>
-        <el-timeline-item v-for="(item, key) in timelines" :key="key">
-          <div @click="goToArticle(item)" class="article-link">
-            <span>{{ item.title }}</span>
-            <span>{{ formatTime(item.createTime) }}</span>
-            <span> {{ item.createUser.username }} </span>
-          </div>
-        </el-timeline-item>
-      </el-timeline>
-    </div>
+    <AppPlaceholder>
+      <div class="page-body">
+        <el-timeline>
+          <el-timeline-item v-for="(item, key) in timelines" :key="key">
+            <div @click="goToArticle(item)" class="article-link">
+              <span>{{ item.title }}</span>
+              <span>{{ formatTime(item.createTime) }}</span>
+              <span> {{ item.createUser.username }} </span>
+            </div>
+          </el-timeline-item>
+        </el-timeline>
+      </div>
+    </AppPlaceholder>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import dayjs from 'dayjs';
+import AppPlaceholder from '~/components/common/app-placeholder/index';
+
 export default {
   name: 'Timeline',
   head: {
@@ -34,6 +37,9 @@ export default {
         content: '这是DJL箫氏的博客的时光轴页面，用来记录我的往事时光轴'
       }
     ]
+  },
+  components: {
+    AppPlaceholder
   },
   data() {
     return {
