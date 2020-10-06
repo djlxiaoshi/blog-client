@@ -3,11 +3,29 @@
     <AppPlaceholder>
       <div class="page-body">
         <el-timeline>
-          <el-timeline-item v-for="(item, key) in timelines" :key="key">
-            <div @click="goToArticle(item)" class="article-link">
-              <span>{{ item.title }}</span>
-              <span>{{ formatTime(item.createTime) }}</span>
-              <span> {{ item.createUser.username }} </span>
+          <el-timeline-item
+            v-for="(item, key) in timelines"
+            :key="key"
+            :timestamp="formatTime(item.createTime)"
+            color="#E6A23C"
+            placement="top"
+          >
+            <div>
+              <span @click="goToArticle(item)" class="article-title">{{
+                item.title
+              }}</span>
+              <span class="article-author">
+                {{ item.createUser.username }}
+              </span>
+              <el-tag
+                :type="getRandomColor()"
+                @click="viewTag(tag)"
+                v-for="tag in item.tags"
+                :key="tag._id"
+                class="article-tag"
+                size="small"
+                >{{ tag.label }}</el-tag
+              >
             </div>
           </el-timeline-item>
         </el-timeline>
@@ -20,6 +38,7 @@
 import { mapState, mapActions } from 'vuex';
 import dayjs from 'dayjs';
 import AppPlaceholder from '~/components/common/app-placeholder/index';
+import { randomNum } from '@/assets/js/utils/tools';
 
 export default {
   name: 'Timeline',
@@ -69,12 +88,20 @@ export default {
         item._group = dayjs(item.createTime).format('YYYY-MM-DD');
         return item;
       });
+    },
+    viewTag(tag) {
+      this.$router.push(`/tag/${tag._id}`);
+    },
+    getRandomColor() {
+      const types = ['success', 'info', 'warning', 'danger'];
+      return types[randomNum(types.length - 1)];
     }
   }
 };
 </script>
 
 <style scoped lang="less">
+@import '../../assets/css/theme.less';
 .timeline-page {
   padding: 10px 20px;
   .page-header {
@@ -83,18 +110,20 @@ export default {
       font-size: 16px;
     }
   }
-  .article-link {
-    display: inline-block;
+  .article-title {
     cursor: pointer;
-    color: lightcoral;
+    color: @InfoColor;
     font-size: 14px;
-    vertical-align: middle;
-    span {
-      padding-right: 10px;
-    }
-    &:hover {
-      border-bottom: 1px solid lightcoral;
-    }
+  }
+  .article-author {
+    cursor: pointer;
+    color: @FailedColor;
+    font-size: 14px;
+    padding-right: 20px;
+  }
+  .article-tag {
+    cursor: pointer;
+    margin-right: 10px;
   }
 }
 </style>

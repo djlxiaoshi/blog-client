@@ -58,7 +58,7 @@
 export default {
   name: 'Register',
   meta: {
-    // isClosed: true
+    isClosed: true
   },
   head: {
     title: '注册',
