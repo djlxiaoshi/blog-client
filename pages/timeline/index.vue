@@ -14,7 +14,10 @@
               <span @click="goToArticle(item)" class="article-title">{{
                 item.title
               }}</span>
-              <span class="article-author">
+              <span
+                @click="goAuthorHomePage(item.createUser)"
+                class="article-author"
+              >
                 {{ item.createUser.username }}
               </span>
               <el-tag
@@ -82,6 +85,11 @@ export default {
     },
     goToArticle(article) {
       this.$router.push(`/article/${article._id}`);
+    },
+    goAuthorHomePage(author) {
+      if (author) {
+        this.$router.push(`/user/${author._id}`);
+      }
     },
     resolveData(data) {
       return data.map((item) => {

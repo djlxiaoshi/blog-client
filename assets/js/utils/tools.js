@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { COLORS } from '../global/const';
 
 export function formatData(params) {
@@ -87,4 +88,8 @@ export function getRandomColor() {
   });
 
   return colors[randomNum(colors.length - 1)];
+}
+
+export function formatTime(timestamp) {
+  return dayjs(timestamp).format('YYYY-MM-DD');
 }

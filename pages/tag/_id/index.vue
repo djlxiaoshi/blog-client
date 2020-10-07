@@ -1,11 +1,27 @@
 <template>
   <div class="tag-details-page">
     <h2 class="tag-name">{{ tag.label }}</h2>
+    <ul class="article-list">
+      <li v-for="article in articles" :key="article._id" class="article-item">
+        <span @click="goToArticleDetailsPage(article)" class="article-name">{{
+          article.title
+        }}</span>
+        <span
+          @click="goAuthorHomePage(article.createUser)"
+          class="article-author"
+          >{{ article.createUser.username }}</span
+        >
+        <span class="article-create-time">{{
+          formatTime(article.createTime)
+        }}</span>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
+import { formatTime } from '@/assets/js/utils/tools';
 
 export default {
   head() {
@@ -27,18 +43,56 @@ export default {
   },
   computed: {
     ...mapState({
+      articles: (state) => state.article.tagArticles,
       tag: (state) => state.tag.currentTag
     })
   },
   asyncData({ store, route }) {
-    return store.dispatch('tag/getTag', route.params.id);
+    return Promise.all([
+      store.dispatch('tag/getTag', route.params.id),
+      store.dispatch('article/getArticlesByTagId', route.params.id)
+    ]);
   },
   methods: {
-    ...mapActions({
-      getTag: 'tag/getTag'
-    })
+    formatTime(time) {
+      return formatTime(time);
+    },
+    goAuthorHomePage(author) {
+      if (author) {
+        this.$router.push(`/user/${author._id}`);
+      }
+    },
+    goToArticleDetailsPage(article) {
+      if (article._id) {
+        this.$router.push(`/article/${article._id}`);
+      }
+    }
   }
 };
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+@import '../../../assets/css/theme.less';
+.tag-details-page {
+  padding: 0 10px;
+  .article-item {
+    padding-left: 5px;
+    list-style: none;
+    padding: 10px 0;
+  }
+  .article-name {
+    margin: 0 5px;
+    cursor: pointer;
+    color: @InfoColor;
+  }
+  .article-author {
+    margin: 0 5px;
+    cursor: pointer;
+    color: @FailedColor;
+  }
+  .article-create-time {
+    margin: 0 5px;
+    color: @DefaultColor;
+  }
+}
+</style>

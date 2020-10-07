@@ -31,8 +31,10 @@
             <div class="article-tags">
               <div class="selected-tags">
                 <el-tag
+                  @click="goToTagDetails(tag)"
                   :key="tag._id"
                   v-for="tag in article.tags"
+                  style="cursor:pointer"
                   size="mini"
                   >{{ tag.label }}</el-tag
                 >
@@ -236,7 +238,6 @@ export default {
       );
     },
     togglePublish(status) {
-      console.log('status', status);
       const { response } = this.$http({
         url: `/article/${this.$route.params.id}`,
         method: 'put',
@@ -254,13 +255,20 @@ export default {
         },
         () => {}
       );
+    },
+    goToTagDetails(tag) {
+      if (tag) {
+        this.$router.push(`/tag/${tag._id}`);
+      }
     }
   }
 };
 </script>
 
 <style scoped lang="less">
+@import '../../../assets/css/theme.less';
 .view-article-page {
+  padding: 0 10px;
   .page-left {
     padding: 10px;
     .article-title {
@@ -285,7 +293,7 @@ export default {
         }
         .delete {
           cursor: pointer;
-          color: red;
+          color: @FailedColor;
         }
       }
     }
