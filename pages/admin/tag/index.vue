@@ -7,7 +7,7 @@
       style="width: 100%"
     >
       <el-table-column
-        :key="column.prop"
+        :key="column.field"
         v-for="column in columns"
         :prop="column.field"
         :label="column.label"
@@ -21,10 +21,19 @@
               :key="article._id"
               class="article-item"
             >
-              {{ article.title }}
+              <span class="article-title">{{ article.title }}</span>
+              <!-- <el-button
+                :style="{ color: $color.failedColor }"
+                type="text"
+                size="mini"
+                >删除</el-button
+              > -->
             </li>
           </ul>
 
+          <div v-else-if="column['slot'] === 'createUser'">
+            {{ scope.row[column['field']].username }}
+          </div>
           <div v-else-if="column['slot'] === 'operate'">
             <el-button
               @click="openOperateTagDialog(scope.row)"
@@ -91,7 +100,7 @@ export default {
           field: 'createTime',
           slot: 'createTime'
         },
-        { label: '创建者', field: 'createUser' },
+        { label: '创建者', field: 'createUser', slot: 'createUser' },
         { label: '操作', width: 200, slot: 'operate' }
       ],
       tagList: []
@@ -243,7 +252,12 @@ export default {
   .articles-wrap {
     list-style: none;
     .article-item {
+      display: flex;
+      align-items: center;
       padding: 10px 0;
+      .article-title {
+        margin-right: 20px;
+      }
     }
   }
 }
