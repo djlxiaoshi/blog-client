@@ -31,7 +31,8 @@ module.exports = {
     'element-ui/lib/theme-chalk/index.css',
     'element-ui/lib/theme-chalk/display.css',
     'highlight.js/styles/monokai-sublime.css',
-    '@/assets/css/global.less'
+    '@/assets/css/global.less',
+    'gitalk/dist/gitalk.css'
   ],
   /*
    ** Plugins to load before mounting the App

@@ -34,7 +34,7 @@
                   @click="goToTagDetails(tag)"
                   :key="tag._id"
                   v-for="tag in article.tags"
-                  style="cursor:pointer"
+                  :style="{ cursor: 'pointer' }"
                   size="mini"
                   >{{ tag.label }}</el-tag
                 >

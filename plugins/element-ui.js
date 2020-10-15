@@ -30,7 +30,9 @@ import {
   Drawer,
   Switch,
   Timeline,
-  TimelineItem
+  TimelineItem,
+  Table,
+  TableColumn
 } from 'element-ui';
 
 Vue.use(Button);
@@ -62,5 +64,7 @@ Vue.use(Drawer);
 Vue.use(Switch);
 Vue.use(Timeline);
 Vue.use(TimelineItem);
+Vue.use(Table);
+Vue.use(TableColumn);
 
 // Vue.use(Element, { locale });

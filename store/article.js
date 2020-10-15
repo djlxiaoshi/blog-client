@@ -77,6 +77,7 @@ export const actions = {
     return response.then(
       ({ list }) => {
         commit('setTagArticles', list);
+        return list;
       },
       (e) => {
         return e;
