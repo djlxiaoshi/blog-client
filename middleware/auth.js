@@ -27,10 +27,9 @@ export default async function({ store, route, redirect, error }) {
   if (!store.state.user.userInfo) {
     try {
       const user = await store.dispatch('user/getUserInfo');
-      console.log('user', user);
       store.commit('user/setUserInfo', user);
     } catch (error) {
-      console.log('error', error);
+      // console.log('error---', error);
     }
   }
 

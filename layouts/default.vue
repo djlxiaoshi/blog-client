@@ -1,51 +1,48 @@
 <template>
-  <div class="djlxs-blog">
-    <AppHeader></AppHeader>
-    <div class="app-body">
-      <el-row type="flex" justify="center">
-        <el-col :xs="24" :sm="20" :md="20" :lg="20" :xl="20">
-          <nuxt />
-        </el-col>
-      </el-row>
-    </div>
-    <AppSideBar v-show="sidebarVisible"></AppSideBar>
+  <div class="djlxs-blog-portal">
+    <el-row>
+      <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
+        <SideBar></SideBar>
+      </el-col>
+      <el-col :xs="24" :sm="24" :md="18" :lg="18" :xl="18">
+        <div class="app-main-container">
+          <nuxt-child />
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import AppHeader from '~/components/core/Header';
-import AppSideBar from '~/components/core/SideBar';
-
+import SideBar from '@/components/core/portal/SideBar';
 export default {
   components: {
-    AppHeader,
-    AppSideBar
+    SideBar
   },
   data() {
-    return {};
+    return {
+      tags: []
+    };
   },
-  computed: {
-    ...mapState({
-      sidebarVisible: (state) => state.sidebarVisible
-    })
+  fetch() {
+    // eslint-disable-next-line nuxt/no-this-in-fetch-data
+    return this.$store.dispatch('tag/getAllTags');
   },
-  methods: {}
+  methods: {
+    refresh() {
+      this.$fetch();
+    }
+  }
 };
 </script>
 
-<style scoped lang="less">
-@import '../assets/css/theme';
-@bodyMarginBottom: 20px;
-.djlxs-blog {
-  .app-body {
-    position: relative;
-    margin-top: calc(@AppHeaderHeight);
-    min-height: calc(100vh - @AppHeaderHeight - @bodyMarginBottom);
-    margin-bottom: 20px;
-    /deep/ .el-row {
-      min-height: inherit;
-    }
+<style lang="less" scoped>
+.djlxs-blog-portal {
+  .app-main-container {
+    box-sizing: border-box;
+    height: 100vh;
+    padding: 20px;
+    overflow: auto;
   }
 }
 </style>

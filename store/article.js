@@ -1,5 +1,8 @@
+import { ARTICLE_MODULE_URL } from '@/assets/js/global/url';
+
 export const state = () => ({
   allArticles: [], // 所有文章
+  tagArticles: [],
   // 当前文章
   currentArticle: {
     title: '',
@@ -19,6 +22,9 @@ export const mutations = {
   },
   setCurrentArticle(state, currentArticle) {
     state.currentArticle = currentArticle;
+  },
+  setTagArticles(state, articles) {
+    state.tagArticles = articles;
   }
 };
 
@@ -36,7 +42,7 @@ export const actions = {
         commit('setCurrentArticle', article);
       },
       (e) => {
-        return e;
+        throw e;
       }
     );
   },
@@ -51,6 +57,27 @@ export const actions = {
     return response.then(
       (article) => {
         commit('setCurrentArticle', article);
+      },
+      (e) => {
+        return e;
+      }
+    );
+  },
+  getArticlesByTagId({ commit }, tagId) {
+    const { response } = this.$http({
+      url: ARTICLE_MODULE_URL.getArticlesByTagId,
+      method: 'get',
+      data: {
+        tagId
+      },
+      showSuccessMsg: false,
+      showErrorMsg: false
+    });
+
+    return response.then(
+      ({ list }) => {
+        commit('setTagArticles', list);
+        return list;
       },
       (e) => {
         return e;

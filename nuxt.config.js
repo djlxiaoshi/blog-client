@@ -31,7 +31,8 @@ module.exports = {
     'element-ui/lib/theme-chalk/index.css',
     'element-ui/lib/theme-chalk/display.css',
     'highlight.js/styles/monokai-sublime.css',
-    '@/assets/css/global.less'
+    '@/assets/css/global.less',
+    'gitalk/dist/gitalk.css'
   ],
   /*
    ** Plugins to load before mounting the App
@@ -39,6 +40,7 @@ module.exports = {
   plugins: [
     { src: '@/plugins/error-monitor', ssr: false },
     '@/plugins/element-ui',
+    '@/plugins/directives',
     '@/plugins/vue-inject',
     { src: '@/plugins/infinite-scroll', ssr: false },
     '@/plugins/axios'
@@ -82,13 +84,7 @@ module.exports = {
     }
   },
   router: {
-    middleware: ['auth'],
-    extendRoutes(routes, resolve) {
-      routes.push({
-        path: '/',
-        component: resolve(__dirname, 'pages/explore/index.vue')
-      });
-    }
+    middleware: ['auth']
   },
   sentry: {
     dsn:

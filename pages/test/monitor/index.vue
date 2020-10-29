@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-06-23 22:10:26
- * @LastEditTime: 2020-06-23 22:45:10
+ * @LastEditTime: 2020-10-29 20:05:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /blog-client/pages/test/monitor/index.vue
@@ -19,9 +19,7 @@ export default {
   },
   mounted() {},
   methods: {
-    test() {
-      console.log(this.user.id);
-    }
+    test() {}
   }
 };
 </script>

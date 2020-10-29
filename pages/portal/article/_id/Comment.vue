@@ -25,61 +25,58 @@
       </div>
     </div>
     <div class="separator">精彩评论</div>
-    <Empty :isEmpty="comments.length === 0">
-      <ul class="comment-list-wrap">
-        <li
-          v-for="(comment, index) in comments"
-          :key="comment._id"
-          :id="`comment_id_${comment._id}`"
-          class="comment-item"
-        >
-          <div class="comment-desc">
-            <span class="comment-floor">{{ index + 1 }}楼</span>
-            <span class="comment-user">{{ comment.createUser.username }}</span>
-            <span v-if="comment.replyUser">
-              <span>回复</span>
-              <span>{{ comment.replyUser.username }}</span>
-            </span>
-            <span class="comment-time">{{
-              formatTime(comment.createTime)
-            }}</span>
-          </div>
-          <p v-html="comment.content" class="comment-content"></p>
-          <div class="operate-wrap">
-            <a @click="toggleReplyVisible(true, true, index)" class="reply-btn"
-              >回复</a
+    <Empty v-if="comments.length === 0"></Empty>
+    <ul v-else class="comment-list-wrap">
+      <li
+        v-for="(comment, index) in comments"
+        :key="comment._id"
+        :id="`comment_id_${comment._id}`"
+        class="comment-item"
+      >
+        <div class="comment-desc">
+          <span class="comment-floor">{{ index + 1 }}楼</span>
+          <span class="comment-user">{{ comment.createUser.username }}</span>
+          <span v-if="comment.replyUser">
+            <span>回复</span>
+            <span>{{ comment.replyUser.username }}</span>
+          </span>
+          <span class="comment-time">{{ formatTime(comment.createTime) }}</span>
+        </div>
+        <p v-html="comment.content" class="comment-content"></p>
+        <div class="operate-wrap">
+          <a @click="toggleReplyVisible(true, true, index)" class="reply-btn"
+            >回复</a
+          >
+        </div>
+        <div v-if="comment._visible" class="reply-wrap">
+          <Editor
+            @input="onInputChange($event, true, index)"
+            :viewMode="2"
+            :editorConfig="{
+              height: 100,
+              lineNumbers: false
+            }"
+            class="editor"
+          ></Editor>
+          <div class="btn-wrap">
+            <el-button
+              ref="loadingTarget"
+              @click="postComment(true, index)"
+              type="danger"
+              round
+              size="mini"
+              >回复</el-button
+            >
+            <el-button
+              @click="toggleReplyVisible(false, true, index)"
+              round
+              size="mini"
+              >取消</el-button
             >
           </div>
-          <div v-if="comment._visible" class="reply-wrap">
-            <Editor
-              @input="onInputChange($event, true, index)"
-              :viewMode="2"
-              :editorConfig="{
-                height: 100,
-                lineNumbers: false
-              }"
-              class="editor"
-            ></Editor>
-            <div class="btn-wrap">
-              <el-button
-                ref="loadingTarget"
-                @click="postComment(true, index)"
-                type="danger"
-                round
-                size="mini"
-                >回复</el-button
-              >
-              <el-button
-                @click="toggleReplyVisible(false, true, index)"
-                round
-                size="mini"
-                >取消</el-button
-              >
-            </div>
-          </div>
-        </li>
-      </ul>
-    </Empty>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 

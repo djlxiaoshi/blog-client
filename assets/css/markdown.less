@@ -1,50 +1,75 @@
+@import './theme.less';
+
 .markdown-preview {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    margin: 15px auto;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  h4 {
+    font-size: 16px;
+  }
+
+  h5 {
+    font-size: 14px;
+  }
+
   a {
     text-decoration: underline;
-    color: lightcoral;
-    &:hover {
-      color: red;
-    }
+    color: @ActiveColor;
   }
 
   img {
     display: block;
-    margin: 0 auto;
+    box-sizing: border-box;
+    margin: 10px auto;
     max-width: 100%;
-    border: 1px solid #e5e5e5;
-    border-radius: 5px;
+    border: 2px solid @BorderColor;
+    border-radius: 10px;
   }
 
   p {
     font-size: 14px;
-    margin-bottom: 20px;
+    margin: 10px 0;
     word-break: break-word;
     line-height: 1.8;
-    color: #404040;
   }
 
+  // 行内代码
   p code, li code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, Courier New,
-      monospace;
-    font-size: 1em;
-    color: #c7254e;
-    background-color: #f2f2f2;
+    color: @FailedColor;
+    background-color: @BorderColor;
   }
 
+  // 代码块
   pre {
-    border-radius: 15px;
+    border-radius: 5px;
     word-wrap: normal;
     word-break: break-all;
     white-space: pre;
     overflow: auto;
-    margin: 20px 0;
-    padding: 1em;
+    margin: 10px 0;
+    padding: 15px;
     background: #282c34;
     code {
-      font-family: source-code-pro, Menlo, Monaco, Consolas, Courier New,
-        monospace;
-      font-size: 13px;
-      line-height: 1.5;
+      padding: 0;
+      font-size: 14px;
+      line-height: 1.8;
       background: inherit;
       &::-webkit-scrollbar {
         width: 8px;
@@ -60,71 +85,48 @@
   }
 
   blockquote {
-    padding: 3px 8px;
+    padding: 3px 10px;
     font-size: 14px;
-    margin: 20px 0;
-    background: #fafafa;
-    border-left: 6px solid #e6e6e6;
+    margin: 10px 0;
+    background: @BorderColor;
+    border-left: 6px solid @ActiveColor;
     p {
       margin-bottom: 0;
       margin-top: 0;
-      padding: 3px 0;
     }
   }
 
   ul {
-    margin: 15px 0;
-    padding-left: 2em;
+    margin: 10px 0;
+    padding-left: 0px;
     li {
-      margin: 3px 0;
+      margin: 5px 0;
       line-height: 1.5;
-      list-style-type: disc;
+      list-style: disc inside;
+      font-size: 14px;
     }
   }
 
-  h2,
-  h3,
-  h4,
-  h5 {
-    margin: 20px auto;
-  }
-
-  h1 {
-    font-size: 30px;
-  }
-
-  h2 {
-    font-size: 24px;
-  }
-
-  h3 {
-    font-size: 22px;
-  }
-
-  h4 {
-    font-size: 20px;
-  }
-
-  h5 {
-    font-size: 18px;
-  }
+  
 
   table {
+    margin: 10px 0;
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
-    overflow-x: hidden;
+    overflow-x: auto;
+    font-size: 14px;
     thead {
       th {
-        padding: 10px 20px;
+        padding: 10px;
         text-align: left;
-        border: 1px solid #e5e5e5;
+        border: 1px solid @BorderColor;
       }
     }
-
+    tr {}
     td{
-      padding: 10px 20px;
-      border: 1px solid #e5e5e5;
+      padding: 10px;
+      border: 1px solid @BorderColor;
+      
     }
   }
 }
