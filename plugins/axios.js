@@ -2,9 +2,10 @@ import { Notification, Loading } from 'element-ui';
 import NProgress from 'nprogress';
 import envConfig from '~/assets/js/global/env';
 
-export default function({ $axios, redirect, app, req }, inject) {
-  // const cookies = app.$cookies.getAll();
-  // console.log('cookies', req.headers.cookie);
+const isClient = process.client;
+const isServer = process.server;
+
+export default function({ $axios, redirect, app, req, error }, inject) {
   const SUCCESS_CODE = 0;
   const CancelToken = $axios.CancelToken;
   const defaultHeader = {
@@ -16,21 +17,8 @@ export default function({ $axios, redirect, app, req }, inject) {
     return Promise.resolve(response.data);
   });
 
-  // 全局失败请求处理
-  $axios.onError((error) => {
-    // eslint-disable-next-line prefer-promise-reject-errors
-    return Promise.reject({
-      code: error.status || 500,
-      message: error.message,
-      stack: error.stack,
-      config: error.status
-    });
-  });
-
   // Create a custom axios instance
   const http = function(config) {
-    const isClient = process.client;
-    const isServer = process.server;
     const xhrInstance = {
       moduleName: config.moduleName || ''
     };
@@ -49,8 +37,7 @@ export default function({ $axios, redirect, app, req }, inject) {
     };
     // 服务端设置cookie 貌似cookie-universal-nuxt会自动把cookie都添加上
     if (isServer) {
-      console.log('--------cookies----------', app.$cookies.getAll());
-      // axiosConfig.headers.Authorization = app.$cookies.get('login');
+      // console.log('--------cookies----------', app.$cookies.getAll());
     }
 
     // 设置请求参数
@@ -59,7 +46,7 @@ export default function({ $axios, redirect, app, req }, inject) {
       : (axiosConfig.data = config.data);
 
     // 客户端开启滚动条
-    if (isClient && config.progress) {
+    if (isClient && config.showProgress) {
       NProgress.start();
     }
 
@@ -76,26 +63,15 @@ export default function({ $axios, redirect, app, req }, inject) {
       try {
         const response = await $axios(axiosConfig);
         if (response.code !== SUCCESS_CODE) {
-          if (isClient && config.showErrorMsg) {
-            // 错误信息提示
-            Notification.error(response.message);
-          }
-          handleError(response, config, redirect);
-          // eslint-disable-next-line prefer-promise-reject-errors
-          reject({ ...response, isAxiosError: false });
+          handleError(response, config, { redirect, error });
+          reject(response.data);
         } else {
-          if (isClient && config.showSuccessMsg) {
-            // 成功信息提示
-            // 如果前端设置了提示信息则采用前端设置的提示信息，否则使用服务端返回的提示信息
-            Notification.success(
-              typeof config.showSuccessMsg === 'string'
-                ? config.showSuccessMsg
-                : response.message
-            );
-          }
+          handleSuccess(response, config);
           resolve(response.data);
         }
       } catch (error) {
+        const _error = { code: error.status, message: error.message };
+        handleError(_error, config, { redirect, error });
         reject(error);
       } finally {
         // 关闭loading
@@ -107,6 +83,7 @@ export default function({ $axios, redirect, app, req }, inject) {
         const xhrIndex = xhrCacheList.indexOf(xhrInstance);
         xhrCacheList.splice(xhrIndex, 1);
 
+        // 关闭进度条
         if (isClient && xhrCacheList.length === 0) {
           NProgress.done();
         }
@@ -144,8 +121,26 @@ export default function({ $axios, redirect, app, req }, inject) {
   inject('http', http);
 }
 
-function handleError(error, config, redirect) {
-  switch (error.code) {
+function handleSuccess(response, config) {
+  if (isClient && config.showSuccessMsg) {
+    // 成功信息提示
+    // 如果前端设置了提示信息则采用前端设置的提示信息，否则使用服务端返回的提示信息
+    Notification.success(
+      typeof config.showSuccessMsg === 'string'
+        ? config.showSuccessMsg
+        : response.message
+    );
+  }
+}
+
+function handleError(errorMsg, config, { redirect, error }) {
+  if (isClient && config.showErrorMsg) {
+    // 错误信息提示
+    Notification.error(errorMsg.message);
+  }
+
+  // 以下为针对特定错误码的特殊处理
+  switch (errorMsg.code) {
     case -1000: {
       // 用户未登录
       if (config.jumpLogin) {
@@ -159,6 +154,10 @@ function handleError(error, config, redirect) {
         }
       }
       break;
+    }
+    case -1003: {
+      // 文章不存在
+      redirect('/error', errorMsg);
     }
   }
 }

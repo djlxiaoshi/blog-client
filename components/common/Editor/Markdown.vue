@@ -6,7 +6,11 @@
       :style="{ width: editMode ? '100%' : '50%' }"
       class="editor-wrap"
     >
-      <textarea ref="textarea" class="textarea"></textarea>
+      <textarea
+        ref="textarea"
+        v-model="defaultValue"
+        class="textarea"
+      ></textarea>
     </div>
 
     <div
@@ -100,7 +104,7 @@ export default {
       require('codemirror/lib/codemirror.css');
 
       this.editor = CodeMirror.fromTextArea(this.$refs.textarea, {
-        value: this.defaultValue,
+        value: 'fdsfsd',
         mode: 'markdown',
         lineNumbers: this.editorConfig.lineNumbers,
         lineWrapping: true,
@@ -207,7 +211,6 @@ export default {
     padding-right: 10px;
     height: 100%;
     box-sizing: border-box;
-    border: 2px dashed #bbb;
     overflow-y: auto;
   }
 }

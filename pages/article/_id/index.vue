@@ -1,72 +1,29 @@
 <template>
-  <div class="view-article-page">
+  <div :style="{ color: $color.defaultColor }" class="view-article-page">
     <el-row type="flex" justify="space-around">
       <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
         <div class="page-left">
           <div class="article-wrap">
             <h1 class="article-title">{{ article.title }}</h1>
+
             <div class="article-details">
               <span class="details-item">
                 {{ formatTime(article.createTime) }}
               </span>
               <span class="details-item">字数 {{ article.wordCount }}</span>
               <span class="details-item">阅读 {{ article.views }}</span>
-
-              <span v-if="hasOperateAuth" class="operate-wrap">
-                <span @click="editArticle" class="edit">编辑文章</span>
-
-                <span @click="userConfirm" class="delete">删除文章</span>
-
-                <el-switch
-                  :value="article.status"
-                  @change="togglePublish"
-                  :active-value="1"
-                  :inactive-value="0"
-                  active-color="#13ce66"
-                  active-text="公开"
-                >
-                </el-switch>
-              </span>
             </div>
-            <div class="article-tags">
-              <div class="selected-tags">
-                <el-tag
-                  @click="goToTagDetails(tag)"
-                  :key="tag._id"
-                  v-for="tag in article.tags"
-                  :style="{ cursor: 'pointer' }"
-                  size="mini"
-                  >{{ tag.label }}</el-tag
-                >
-                <span
-                  v-if="hasOperateAuth"
-                  @click="toggleTags"
-                  class="tags-setting"
-                  >标签设置</span
-                >
-              </div>
-              <div v-if="openTags" class="all-tags">
-                <div class="selector-body">
-                  <el-checkbox-group v-model="articleTags">
-                    <el-checkbox-button
-                      :key="tag._id"
-                      :label="tag._id"
-                      v-for="tag in tags"
-                      >{{ tag.label }}</el-checkbox-button
-                    >
-                  </el-checkbox-group>
-                </div>
 
-                <div class="selector-footer">
-                  <el-button @click="toggleTags" size="mini" round
-                    >取消</el-button
-                  >
-                  <el-button @click="handleTagsParams" size="mini" round
-                    >保存</el-button
-                  >
-                </div>
-              </div>
+            <div class="tags-wrap">
+              <Tag
+                :style="{ 'margin-right': '10px' }"
+                :key="tag._id"
+                v-for="tag in article.tags"
+                @click="goToTagDetails(tag)"
+                >{{ tag.label }}</Tag
+              >
             </div>
+
             <div class="article-content">
               <VueShowdown
                 :vueTemplate="false"
@@ -79,15 +36,9 @@
             </div>
           </div>
 
-          <div style="margin-top: 20px">
-            <Comment></Comment>
-          </div>
+          <div id="comments" style="margin-top: 20px"></div>
         </div>
       </el-col>
-
-      <!--<el-col class="hidden-sm-and-down" :md="6" :lg="5" :xl="4">-->
-      <!--<div class="page-right"></div>-->
-      <!--</el-col>-->
     </el-row>
   </div>
 </template>
@@ -97,7 +48,8 @@ import { VueShowdown } from 'vue-showdown';
 import showdownHighlight from 'showdown-highlight';
 import { mapState, mapActions, mapMutations } from 'vuex';
 import dayjs from 'dayjs';
-import Comment from './Comment';
+import Gitalk from 'gitalk';
+import Tag from '@/components/common/Tag';
 
 export default {
   head() {
@@ -119,7 +71,7 @@ export default {
   },
   components: {
     VueShowdown,
-    Comment
+    Tag
   },
   data() {
     return {
@@ -136,25 +88,32 @@ export default {
   computed: {
     ...mapState({
       article: (state) => state.article.currentArticle,
-      userInfo: (state) => state.user.userInfo,
       tags: (state) => state.tag.allTags
     }),
     author() {
       return this.article.createUser;
-    },
-    hasOperateAuth() {
-      return (
-        this.userInfo &&
-        this.article &&
-        this.article.createUser &&
-        this.userInfo._id === this.article.createUser._id
-      );
     }
   },
   asyncData({ store, route }) {
-    return store.dispatch('article/getArticle', route.params.id);
+    return store
+      .dispatch('article/getArticle', route.params.id)
+      .catch(() => {});
   },
   mounted() {
+    const gitalk = new Gitalk({
+      title: this.article.title,
+      clientID: this.$globalConfig.gitalk.clientID,
+      clientSecret: this.$globalConfig.gitalk.secretId,
+      repo: this.$globalConfig.gitalk.repo, // The repository of store comments,
+      owner: 'djlxiaoshi',
+      admin: ['djlxiaoshi'],
+      id: location.pathname, // Ensure uniqueness and length less than 50
+      distractionFreeMode: false // Facebook-like distraction free mode
+      // For more available options, check out the documentation below
+    });
+
+    gitalk.render('comments');
+
     this.articleTags = Array.isArray(this.article.tags)
       ? this.article.tags.map((tag) => tag._id)
       : [];
@@ -176,85 +135,8 @@ export default {
       );
       return flag;
     },
-    toggleTags() {
-      this.openTags = !this.openTags;
-      if (!this.tags || this.tags.length === 0) {
-        this.getAllTags();
-      }
-    },
-    editArticle() {
-      this.$router.push(`/post/${this.$route.params.id}`);
-    },
-    userConfirm() {
-      this.$alert({
-        title: '警告',
-        text: '您确定要删除这篇文章吗？',
-        icon: 'warning',
-        buttons: true,
-        dangerMode: true
-      }).then((willDelete) => {
-        if (willDelete) {
-          this.deleteArticle();
-        } else {
-        }
-      });
-    },
     handleTagsParams() {
       this.saveArticleTags(this.articleTags);
-    },
-    saveArticleTags(tags) {
-      const { response } = this.$http({
-        url: `/article/${this.$route.params.id}`,
-        method: 'put',
-        data: {
-          tags
-        },
-        showSuccessMsg: '标签设置成功',
-        showErrorMsg: true
-      });
-
-      response.then(
-        () => {
-          this.getArticle(this.$route.params.id);
-          this.openTags = false;
-        },
-        () => {}
-      );
-    },
-    deleteArticle() {
-      const { response } = this.$http({
-        url: `/article/${this.$route.params.id}`,
-        method: 'delete',
-        showSuccessMsg: true,
-        showErrorMsg: true
-      });
-
-      response.then(
-        () => {
-          //  返回用户文章列表页
-          this.$router.push('/');
-        },
-        () => {}
-      );
-    },
-    togglePublish(status) {
-      const { response } = this.$http({
-        url: `/article/${this.$route.params.id}`,
-        method: 'put',
-        data: {
-          status
-        },
-        showSuccessMsg: '操作成功',
-        showErrorMsg: true
-      });
-
-      response.then(
-        () => {
-          this.getArticle(this.$route.params.id);
-          this.openTags = false;
-        },
-        () => {}
-      );
     },
     goToTagDetails(tag) {
       if (tag) {
@@ -266,7 +148,6 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import '../../../assets/css/theme.less';
 .view-article-page {
   padding: 0 10px;
   .page-left {
@@ -280,74 +161,23 @@ export default {
       display: flex;
       align-items: center;
       margin-bottom: 15px;
-      color: #969696;
       font-size: 13px;
       .details-item {
         margin-right: 8px;
       }
-      .operate-wrap {
-        margin-left: auto;
-        .edit {
-          cursor: pointer;
-          margin-right: 8px;
-        }
-        .delete {
-          cursor: pointer;
-          color: @FailedColor;
-        }
-      }
     }
-    .selected-tags {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-      .tags-setting {
-        margin-left: auto;
-        font-size: 12px;
-        cursor: pointer;
-        text-decoration: underline;
-      }
+
+    .tags-wrap {
       /deep/ .el-tag {
-        margin: 2px;
+        cursor: pointer;
+        margin-right: 10px;
       }
     }
-    .all-tags {
-      padding: 10px;
-      border: 1px solid #e5e5e5;
-      border-radius: 8px;
-      .selector-body {
-        margin-bottom: 5px;
-        /deep/ .el-checkbox-button {
-          margin: 2px 4px;
-          .el-checkbox-button__inner {
-            border: 1px solid #dcdfe6;
-            border-radius: 4px;
-            padding: 5px 8px;
-            font-size: 12px;
-          }
-          &.is-checked {
-            .el-checkbox-button__inner {
-              box-shadow: none !important;
-            }
-          }
-        }
-      }
-      .selector-footer {
-        text-align: right;
-        /deep/ .el-button {
-          padding: 3px 8px;
-        }
-      }
-    }
+
     .article-content {
       margin-top: 30px;
       height: 100%;
     }
-  }
-
-  .page-right {
-    height: 100px;
-    border: 1px solid #dddddd;
   }
 }
 </style>

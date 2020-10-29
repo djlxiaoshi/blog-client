@@ -1,18 +1,35 @@
 <template>
   <div class="operate-bar">
-    <el-tooltip
-      v-for="(item, index) in config"
-      :key="index"
-      :content="item.tips"
-      effect="dark"
-      placement="top"
+    <el-button
+      :style="{ color: $color.defaultColor }"
+      @click="emitEvent('edit')"
+      type="text"
+      >编辑</el-button
     >
-      <i
-        @click="() => emitEvent(item)"
-        :class="item.icon"
-        class="operate-icon iconfont"
-      ></i>
-    </el-tooltip>
+    <el-button
+      :style="{ color: $color.defaultColor }"
+      @click="emitEvent('preview')"
+      type="text"
+      >预览</el-button
+    >
+    <el-button
+      :style="{ color: $color.defaultColor }"
+      @click="emitEvent('edit-preview')"
+      type="text"
+      >分栏</el-button
+    >
+    <el-button
+      :style="{ color: $color.failedColor }"
+      @click="emitEvent('save')"
+      type="text"
+      >保存</el-button
+    >
+    <el-button
+      :style="{ color: $color.successColor }"
+      @click="emitEvent('publish')"
+      type="text"
+      >发布</el-button
+    >
   </div>
 </template>
 
@@ -25,8 +42,8 @@ export default {
     }
   },
   methods: {
-    emitEvent(item) {
-      this.$emit('onClick', item.actionType);
+    emitEvent(actionType) {
+      this.$emit('onClick', actionType);
     }
   }
 };
@@ -37,6 +54,7 @@ export default {
   display: flex;
   align-items: center;
   flex: 0 0 40px;
+  padding-left: 40px;
   background: #dddddd;
   .operate-icon {
     padding: 0 15px;

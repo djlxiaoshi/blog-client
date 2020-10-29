@@ -1,14 +1,16 @@
 <template>
-  <div class="tag-details-page">
+  <div :style="{ color: $color.defaultColor }" class="tag-details-page">
     <h2 class="tag-name">{{ tag.label }}</h2>
     <ul class="article-list">
       <li v-for="article in articles" :key="article._id" class="article-item">
-        <span @click="goToArticleDetailsPage(article)" class="article-name">{{
-          article.title
-        }}</span>
+        <span
+          @click="goToArticleDetailsPage(article)"
+          class="article-name hvr-underline-from-center"
+          >{{ article.title }}</span
+        >
         <span
           @click="goAuthorHomePage(article.createUser)"
-          class="article-author"
+          class="article-author hvr-underline-from-center"
           >{{ article.createUser.username }}</span
         >
         <span class="article-create-time">{{
@@ -24,6 +26,7 @@ import { mapState } from 'vuex';
 import { formatTime } from '@/assets/js/utils/tools';
 
 export default {
+  layout: 'portal',
   head() {
     return {
       title: `${this.tag.label || '标签详情'}`,
@@ -59,7 +62,7 @@ export default {
     },
     goAuthorHomePage(author) {
       if (author) {
-        this.$router.push(`/user/${author._id}`);
+        this.$router.push(`/portal/about`);
       }
     },
     goToArticleDetailsPage(article) {
@@ -72,7 +75,6 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import '../../../assets/css/theme.less';
 .tag-details-page {
   padding: 0 10px;
   .article-item {
@@ -83,16 +85,13 @@ export default {
   .article-name {
     margin: 0 5px;
     cursor: pointer;
-    color: @InfoColor;
   }
   .article-author {
     margin: 0 5px;
     cursor: pointer;
-    color: @FailedColor;
   }
   .article-create-time {
     margin: 0 5px;
-    color: @DefaultColor;
   }
 }
 </style>

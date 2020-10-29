@@ -1,5 +1,8 @@
 <template>
   <div class="tags-admin-page">
+    <el-button @click="openOperateTagDialog()" size="mini" type="primary"
+      >添加</el-button
+    >
     <el-table
       :data="tagList"
       @expand-change="expandChange"
@@ -34,6 +37,9 @@
           <div v-else-if="column['slot'] === 'createUser'">
             {{ scope.row[column['field']].username }}
           </div>
+          <div v-else-if="column['slot'] === 'createTime'">
+            <span v-time="scope.row[column['field']]"></span>
+          </div>
           <div v-else-if="column['slot'] === 'operate'">
             <el-button
               @click="openOperateTagDialog(scope.row)"
@@ -54,15 +60,6 @@
         </template>
       </el-table-column>
     </el-table>
-
-    <el-button
-      @click="openOperateTagDialog()"
-      type="success"
-      plain
-      icon="el-icon-plus"
-      size="small"
-      circle
-    ></el-button>
   </div>
 </template>
 

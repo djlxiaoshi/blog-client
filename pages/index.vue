@@ -1,45 +1,23 @@
 <template>
-  <div class="explore-page">
-    <AppPlaceholder>
-      <el-row type="flex" justify="space-around" align="top">
-        <el-col :style="{}" :xs="24" :sm="23" :md="17" :lg="18" :xl="19">
-          <div class="page-left">
-            <AppContainer
-              :showEmpty="articles.length === 0"
-              style="height: 100%"
-            >
-              <ArticleList
-                :data="articles"
-                @onView="viewArticle"
-                v-infinite-scroll="loadMore"
-                class="article-list"
-                infinite-scroll-disabled="busy"
-                infinite-scroll-distance="10"
-              ></ArticleList>
-              <AppLoading
-                v-if="busy"
-                size="mini"
-                class="loading-more"
-              ></AppLoading>
-            </AppContainer>
-          </div>
-        </el-col>
-        <el-col :md="6" :lg="5" :xl="4" class="hidden-sm-and-down">
-          <div class="page-right">
-            <SideBar></SideBar>
-          </div>
-        </el-col>
-      </el-row>
-    </AppPlaceholder>
+  <div :style="{ color: $color.defaultColor }" class="portal-home-page">
+    <AppContainer :showEmpty="articles.length === 0" style="height: 100%">
+      <ArticleList
+        :data="articles"
+        @onView="viewArticle"
+        v-infinite-scroll="loadMore"
+        class="article-list"
+        infinite-scroll-disabled="busy"
+        infinite-scroll-distance="10"
+      ></ArticleList>
+      <AppLoading v-if="busy" size="mini" class="loading-more"></AppLoading>
+    </AppContainer>
   </div>
 </template>
 
 <script>
 import { mapActions, mapMutations } from 'vuex';
-import SideBar from './SideBar';
-import ArticleList from '~/components/common/ArticleList/index';
+import ArticleList from '@/components/common/ArticleList';
 import AppContainer from '~/components/common/app-container';
-import AppPlaceholder from '~/components/common/app-placeholder/index';
 import AppLoading from '~/components/common/app-loading';
 
 const PAGE_SIZE = 10;
@@ -64,8 +42,6 @@ export default {
   components: {
     ArticleList,
     AppContainer,
-    SideBar,
-    AppPlaceholder,
     AppLoading
   },
   data() {
@@ -86,8 +62,7 @@ export default {
       store.dispatch('article/getAllArticles', {
         currentPage: 1,
         pageSize: PAGE_SIZE
-      }),
-      store.dispatch('tag/getAllTags')
+      })
     ]);
   },
   mounted() {},
@@ -123,26 +98,22 @@ export default {
       );
     },
     async loadMore() {
-      if (this.articles.length < this.artilceTotals) {
-        this.busy = true;
-        const data = await this.getMoreArtilces({
-          currentPage: this.currentPage,
-          pageSize: this.pageSize
-        });
-
-        this.artilceTotals = data.total;
-
-        this.articles.splice((this.currentPage - 1) * this.pageSize);
-        this.articles.push(...data.list);
-
-        this.setAllArticle(this.articles);
-
-        // 如果到了下一页，则增加
-        if (this.articles.length % this.pageSize === 0) {
-          this.currentPage++;
-        }
-        this.busy = false;
-      }
+      // if (this.articles.length < this.artilceTotals) {
+      //   this.busy = true;
+      //   const data = await this.getMoreArtilces({
+      //     currentPage: this.currentPage,
+      //     pageSize: this.pageSize
+      //   });
+      //   this.artilceTotals = data.total;
+      //   this.articles.splice((this.currentPage - 1) * this.pageSize);
+      //   this.articles.push(...data.list);
+      //   this.setAllArticle(this.articles);
+      //   // 如果到了下一页，则增加
+      //   if (this.articles.length % this.pageSize === 0) {
+      //     this.currentPage++;
+      //   }
+      //   this.busy = false;
+      // }
     }
   }
 };

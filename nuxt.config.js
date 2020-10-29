@@ -40,6 +40,7 @@ module.exports = {
   plugins: [
     { src: '@/plugins/error-monitor', ssr: false },
     '@/plugins/element-ui',
+    '@/plugins/directives',
     '@/plugins/vue-inject',
     { src: '@/plugins/infinite-scroll', ssr: false },
     '@/plugins/axios'
@@ -83,13 +84,7 @@ module.exports = {
     }
   },
   router: {
-    middleware: ['auth'],
-    extendRoutes(routes, resolve) {
-      routes.push({
-        path: '/',
-        component: resolve(__dirname, 'pages/explore/index.vue')
-      });
-    }
+    middleware: ['auth']
   },
   sentry: {
     dsn:

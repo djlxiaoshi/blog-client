@@ -53,10 +53,6 @@ export default {
       }
     ]
   },
-  meta: {
-    needLogin: true
-  },
-  middleware: ['auth'],
   components: {},
   data() {
     return {

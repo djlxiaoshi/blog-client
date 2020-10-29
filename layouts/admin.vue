@@ -14,10 +14,9 @@
 </template>
 
 <script>
-import SideBar from '@/pages/admin/components/SideBar';
+import SideBar from '@/components/core/admin/SideBar';
 
 export default {
-  layout: 'portal',
   components: {
     SideBar
   }

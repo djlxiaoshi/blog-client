@@ -1,46 +1,43 @@
 <template>
-  <div class="timeline-page">
-    <AppPlaceholder>
-      <div class="page-body">
-        <el-timeline>
-          <el-timeline-item
-            v-for="(item, key) in timelines"
-            :key="key"
-            :timestamp="formatTime(item.createTime)"
-            color="#E6A23C"
-            placement="top"
-          >
-            <div>
-              <span @click="goToArticle(item)" class="article-title">{{
-                item.title
-              }}</span>
-              <span
-                @click="goAuthorHomePage(item.createUser)"
-                class="article-author"
-              >
-                {{ item.createUser.username }}
-              </span>
-              <el-tag
-                :type="getRandomColor()"
-                @click="viewTag(tag)"
-                v-for="tag in item.tags"
-                :key="tag._id"
-                class="article-tag"
-                size="small"
-                >{{ tag.label }}</el-tag
-              >
-            </div>
-          </el-timeline-item>
-        </el-timeline>
-      </div>
-    </AppPlaceholder>
+  <div :style="{ color: $color.defaultColor }" class="timeline-page">
+    <div class="page-body">
+      <el-timeline>
+        <el-timeline-item
+          v-for="(item, key) in timelines"
+          :key="key"
+          :timestamp="formatTime(item.createTime)"
+          :color="$color.activeColor"
+          placement="top"
+        >
+          <div>
+            <span @click="goToArticle(item)" class="article-title">{{
+              item.title
+            }}</span>
+            <span
+              :style="{ color: $color.activeColor }"
+              @click="goAuthorHomePage(item.createUser)"
+              class="article-author"
+            >
+              {{ item.createUser.username }}
+            </span>
+            <Tag
+              :style="{ 'margin-right': '10px' }"
+              :key="tag._id"
+              v-for="tag in item.tags"
+              @click="viewTag(tag)"
+              >{{ tag.label }}</Tag
+            >
+          </div>
+        </el-timeline-item>
+      </el-timeline>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import dayjs from 'dayjs';
-import AppPlaceholder from '~/components/common/app-placeholder/index';
+import Tag from '@/components/common/Tag';
 import { randomNum } from '@/assets/js/utils/tools';
 
 export default {
@@ -61,7 +58,7 @@ export default {
     ]
   },
   components: {
-    AppPlaceholder
+    Tag
   },
   data() {
     return {
@@ -109,7 +106,6 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import '../../assets/css/theme.less';
 .timeline-page {
   padding: 10px 20px;
   .page-header {
@@ -120,17 +116,12 @@ export default {
   }
   .article-title {
     cursor: pointer;
-    color: @InfoColor;
     font-size: 14px;
+    margin-right: 10px;
   }
   .article-author {
     cursor: pointer;
-    color: @FailedColor;
     font-size: 14px;
-    padding-right: 20px;
-  }
-  .article-tag {
-    cursor: pointer;
     margin-right: 10px;
   }
 }

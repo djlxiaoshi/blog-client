@@ -42,7 +42,7 @@ export const actions = {
         commit('setCurrentArticle', article);
       },
       (e) => {
-        return e;
+        throw e;
       }
     );
   },

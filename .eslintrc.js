@@ -21,6 +21,7 @@ module.exports = {
     rules: {
         'nuxt/no-cjs-in-config': 'off',
         'vue/require-default-prop': 'off',
-       'spaceBeforeFunctionParen': 0
+        'spaceBeforeFunctionParen': 0,
+        'import/order': 0
     }
 }

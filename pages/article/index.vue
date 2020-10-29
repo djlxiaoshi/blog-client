@@ -1,10 +1,5 @@
 <template>
   <div class="article-management-page">
-    <div class="operation-wrap">
-      <el-button @click="addArticle" type="primary" size="mini"
-        >写文章</el-button
-      >
-    </div>
     <el-table :data="userArticles" style="width: 100%">
       <el-table-column
         :key="column.prop"
@@ -34,9 +29,7 @@
             </div>
           </div>
           <div v-else-if="column['slot'] === 'title'">
-            <el-button @click="viewArticle(scope.row)" type="text">{{
-              scope.row[column['field']]
-            }}</el-button>
+            <el-button type="text">{{ scope.row[column['field']] }}</el-button>
           </div>
           <div v-else-if="column['slot'] === 'author'">
             {{ scope.row[column['field']]['username'] }}
@@ -50,12 +43,6 @@
               active-color="#13ce66"
             >
             </el-switch>
-          </div>
-          <div v-else-if="column['slot'] === 'createTime'">
-            <span v-time="scope.row[column['field']]"></span>
-          </div>
-          <div v-else-if="column['slot'] === 'updateTime'">
-            <span v-time="scope.row[column['field']]"></span>
           </div>
           <div v-else-if="column['slot'] === 'operate'">
             <el-button
@@ -106,18 +93,8 @@ export default {
         { label: '标题', width: 180, field: 'title', slot: 'title' },
         { label: '作者', width: 100, field: 'createUser', slot: 'author' },
         { label: '简介', field: 'abstract' },
-        {
-          label: '创建时间',
-          width: 180,
-          field: 'createTime',
-          slot: 'createTime'
-        },
-        {
-          label: '更新时间',
-          width: 180,
-          field: 'updateTime',
-          slot: 'updateTime'
-        },
+        { label: '创建时间', width: 180, field: 'createTime' },
+        { label: '更新时间', width: 180, field: 'updateTime' },
         { label: '公开', width: 80, field: 'status', slot: 'visible' },
         { label: '操作', width: 200, slot: 'operate' }
       ]
@@ -141,12 +118,6 @@ export default {
     ...mapActions({
       getUserArticles: 'user/getUserArticles'
     }),
-    addArticle() {
-      this.$router.push('/admin/post');
-    },
-    viewArticle(article) {
-      this.$router.push(`/article/${article._id}`);
-    },
     togglePublish(status, id) {
       const { response } = this.$http({
         url: `/article/${id}`,
@@ -183,7 +154,7 @@ export default {
       });
     },
     config(article) {
-      this.$router.push(`/admin/article/${article._id}`);
+      this.$router.push(`/admin/article/config/${article._id}`);
     },
     deleteArticle(id) {
       const { response } = this.$http({

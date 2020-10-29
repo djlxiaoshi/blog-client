@@ -9,7 +9,7 @@
     <div class="article-content">
       <Editor
         ref="editor"
-        :defaultValue="defaultValue"
+        :defaultValue="initContent"
         @input="getEditorValue"
         :viewMode="viewMode"
       ></Editor>
@@ -42,9 +42,6 @@ export default {
       }
     ]
   },
-  meta: {
-    needLogin: true
-  },
   components: {
     Editor,
     OperateBar
@@ -59,7 +56,7 @@ export default {
         { actionType: 'publish', icon: 'icon-fabu', tips: '发布' }
       ],
       title: '',
-      defaultValue: '',
+      initContent: '',
       content: ''
     };
   },
@@ -77,7 +74,7 @@ export default {
   watch: {
     article(value) {
       this.title = value.title || '';
-      this.defaultValue = value.content || '';
+      this.initContent = value.content || '';
     }
   },
   mounted() {
@@ -90,14 +87,8 @@ export default {
   beforeRouteLeave(to, from, next) {
     // 导航离开该组件的对应路由时调用
     // 可以访问组件实例 `this`
-    const result = confirm(
-      '该操作不会对您的更改进行保存，请在离开之前进行保存操作！'
-    );
-    if (result) {
-      next();
-    } else {
-      next(false);
-    }
+    // TODO 直接保存
+    next();
   },
   methods: {
     ...mapActions({
@@ -120,6 +111,10 @@ export default {
           this.viewMode = EDIT_PREVIEW_MODE;
           break;
         }
+        case 'save': {
+          this.handleParams(true);
+          break;
+        }
         case 'publish': {
           this.handleParams(false);
         }
@@ -128,7 +123,7 @@ export default {
     getEditorValue(content) {
       this.content = content;
     },
-    handleParams(justSave) {
+    handleParams(isPublish) {
       const title = this.title;
       if (!title.trim()) {
         this.$notify.warning('文章标题不能为空');
@@ -140,13 +135,13 @@ export default {
         thumbnail: this.getThumbnail(),
         abstract: this.getAbstract(),
         content: this.getContent(),
-        status: justSave ? 0 : 1
+        status: isPublish ? 1 : 0
       };
-      const message = justSave ? '文章保存成功' : '文章发布成功';
+      const message = isPublish ? '文章发布成功' : '文章保存成功';
       if (this.isEditMode) {
-        this.updateArticle(params, message);
+        this.updateArticle(params, message, isPublish);
       } else {
-        this.createArticle(params);
+        this.createArticle(params, isPublish);
       }
     },
     /**
@@ -196,7 +191,7 @@ export default {
      * 新增文章
      * @param params
      */
-    createArticle(params) {
+    createArticle(params, isPublish) {
       const { response } = this.$http({
         url: '/article',
         data: params,
@@ -207,7 +202,11 @@ export default {
 
       response.then(
         (article) => {
-          this.$router.push(`/post/${article._id}`);
+          if (isPublish) {
+            this.$router.push('/admin/article');
+          } else {
+            this.$router.replace(`/post/${article._id}`);
+          }
         },
         () => {}
       );
@@ -216,7 +215,7 @@ export default {
      * 更新文章
      * @param params
      */
-    updateArticle(params, message) {
+    updateArticle(params, message, isPublish) {
       const { response } = this.$http({
         url: `/article/${this.articleId}`,
         data: params,
@@ -226,7 +225,11 @@ export default {
       });
 
       response.then(
-        () => {},
+        () => {
+          if (isPublish) {
+            this.$router.push('/admin/article');
+          }
+        },
         () => {}
       );
     }

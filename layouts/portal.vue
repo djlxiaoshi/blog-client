@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import SideBar from '@/pages/portal/components/SideBar';
+import SideBar from '@/components/core/portal/SideBar';
 export default {
   layout: 'portal',
   components: {

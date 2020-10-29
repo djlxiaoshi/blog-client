@@ -35,7 +35,7 @@ export const actions = {
       }
     );
   },
-  getUserArticles({ commit }, { loadingTarget, pageSize, currentPage } = {}) {
+  getUserArticles({ commit }, { pageSize, currentPage } = {}) {
     const { response } = this.$http({
       url: `/user/articles/`,
       data: {
@@ -43,7 +43,8 @@ export const actions = {
         currentPage: currentPage || 1
       },
       showSuccessMsg: false,
-      showErrorMsg: false
+      showErrorMsg: false,
+      jumpLogin: true
     });
 
     return response.then(
@@ -53,6 +54,21 @@ export const actions = {
       (e) => {
         return e;
       }
+    );
+  },
+  logout({ commit }) {
+    const { response } = this.$http({
+      url: '/logout',
+      method: 'get',
+      showSuccessMsg: true,
+      showErrorMsg: true
+    });
+
+    response.then(
+      (user) => {
+        commit('setUserInfo', null);
+      },
+      () => {}
     );
   }
 };
