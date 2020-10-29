@@ -3,8 +3,7 @@
     "name": "about",
     "path": "/about",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/about/index.vue",
-    "chunkName": "pages/about/index",
-    "_name": "_1fa46d64"
+    "chunkName": "pages/about/index"
   },
   {
     "path": "/admin",
@@ -15,248 +14,212 @@
         "name": "admin",
         "path": "",
         "component": "/Users/xiaolongli/my-project/blog-client/pages/admin/index.vue",
-        "chunkName": "pages/admin/index",
-        "_name": "_2caa02a6"
+        "chunkName": "pages/admin/index"
       },
       {
         "name": "admin-article",
         "path": "article",
         "component": "/Users/xiaolongli/my-project/blog-client/pages/admin/article/index.vue",
-        "chunkName": "pages/admin/article/index",
-        "_name": "_b8454666"
+        "chunkName": "pages/admin/article/index"
       },
       {
         "name": "admin-crawl",
         "path": "crawl",
         "component": "/Users/xiaolongli/my-project/blog-client/pages/admin/crawl/index.vue",
-        "chunkName": "pages/admin/crawl/index",
-        "_name": "_39736c84"
+        "chunkName": "pages/admin/crawl/index"
       },
       {
         "name": "admin-tag",
         "path": "tag",
         "component": "/Users/xiaolongli/my-project/blog-client/pages/admin/tag/index.vue",
-        "chunkName": "pages/admin/tag/index",
-        "_name": "_75b5d071"
+        "chunkName": "pages/admin/tag/index"
       },
       {
         "name": "admin-user",
         "path": "user",
         "component": "/Users/xiaolongli/my-project/blog-client/pages/admin/user/index.vue",
-        "chunkName": "pages/admin/user/index",
-        "_name": "_5001b66a"
+        "chunkName": "pages/admin/user/index"
       },
       {
         "name": "admin-components-SideBar",
         "path": "components/SideBar",
         "component": "/Users/xiaolongli/my-project/blog-client/pages/admin/components/SideBar/index.vue",
-        "chunkName": "pages/admin/components/SideBar/index",
-        "_name": "_3040eac2"
+        "chunkName": "pages/admin/components/SideBar/index"
       },
       {
         "name": "admin-post-components-OperateBar",
         "path": "post/components/OperateBar",
         "component": "/Users/xiaolongli/my-project/blog-client/pages/admin/post/components/OperateBar/index.vue",
-        "chunkName": "pages/admin/post/components/OperateBar/index",
-        "_name": "_1ff1be98"
+        "chunkName": "pages/admin/post/components/OperateBar/index"
       },
       {
         "name": "admin-article-id",
         "path": "article/:id",
         "component": "/Users/xiaolongli/my-project/blog-client/pages/admin/article/_id/index.vue",
-        "chunkName": "pages/admin/article/_id/index",
-        "_name": "_001d6d90"
+        "chunkName": "pages/admin/article/_id/index"
       },
       {
         "name": "admin-post-id",
         "path": "post/:id?",
         "component": "/Users/xiaolongli/my-project/blog-client/pages/admin/post/_id.vue",
-        "chunkName": "pages/admin/post/_id",
-        "_name": "_5dff59b2"
+        "chunkName": "pages/admin/post/_id"
       }
-    ],
-    "_name": "_09abdb3a"
+    ]
   },
   {
     "name": "article",
     "path": "/article",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/article/index.vue",
-    "chunkName": "pages/article/index",
-    "_name": "_6156588d"
+    "chunkName": "pages/article/index"
   },
   {
     "name": "login",
     "path": "/login",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/login/index.vue",
-    "chunkName": "pages/login/index",
-    "_name": "_268d1640"
+    "chunkName": "pages/login/index"
   },
   {
     "name": "portal",
     "path": "/portal",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/portal/index.vue",
-    "chunkName": "pages/portal/index",
-    "_name": "_891dedea"
+    "chunkName": "pages/portal/index"
   },
   {
     "name": "regist",
     "path": "/regist",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/regist/index.vue",
-    "chunkName": "pages/regist/index",
-    "_name": "_397ce395"
+    "chunkName": "pages/regist/index"
   },
   {
     "name": "tag",
     "path": "/tag",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/tag/index.vue",
-    "chunkName": "pages/tag/index",
-    "_name": "_6082ac31"
+    "chunkName": "pages/tag/index"
   },
   {
     "name": "test",
     "path": "/test",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/test/index.vue",
-    "chunkName": "pages/test/index",
-    "_name": "_67489eb1"
+    "chunkName": "pages/test/index"
   },
   {
     "name": "timeline",
     "path": "/timeline",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/timeline/index.vue",
-    "chunkName": "pages/timeline/index",
-    "_name": "_4a163da0"
+    "chunkName": "pages/timeline/index"
   },
   {
     "name": "portal-about",
     "path": "/portal/about",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/portal/about/index.vue",
-    "chunkName": "pages/portal/about/index",
-    "_name": "_165f6849"
+    "chunkName": "pages/portal/about/index"
   },
   {
     "name": "portal-tag",
     "path": "/portal/tag",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/portal/tag/index.vue",
-    "chunkName": "pages/portal/tag/index",
-    "_name": "_b9cdc754"
+    "chunkName": "pages/portal/tag/index"
   },
   {
     "name": "portal-timeline",
     "path": "/portal/timeline",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/portal/timeline/index.vue",
-    "chunkName": "pages/portal/timeline/index",
-    "_name": "_d9adc6ca"
+    "chunkName": "pages/portal/timeline/index"
   },
   {
     "name": "test-codemirror",
     "path": "/test/codemirror",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/test/codemirror/index.vue",
-    "chunkName": "pages/test/codemirror/index",
-    "_name": "_06d90560"
+    "chunkName": "pages/test/codemirror/index"
   },
   {
     "name": "test-monitor",
     "path": "/test/monitor",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/test/monitor/index.vue",
-    "chunkName": "pages/test/monitor/index",
-    "_name": "_0edafd88"
+    "chunkName": "pages/test/monitor/index"
   },
   {
     "name": "test-turndown",
     "path": "/test/turndown",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/test/turndown/index.vue",
-    "chunkName": "pages/test/turndown/index",
-    "_name": "_5cc822da"
+    "chunkName": "pages/test/turndown/index"
   },
   {
     "name": "article-components-ArticleList",
     "path": "/article/components/ArticleList",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/article/components/ArticleList/index.vue",
-    "chunkName": "pages/article/components/ArticleList/index",
-    "_name": "_41699e1a"
+    "chunkName": "pages/article/components/ArticleList/index"
   },
   {
     "name": "portal-components-ArticleList",
     "path": "/portal/components/ArticleList",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/portal/components/ArticleList/index.vue",
-    "chunkName": "pages/portal/components/ArticleList/index",
-    "_name": "_3a225a96"
+    "chunkName": "pages/portal/components/ArticleList/index"
   },
   {
     "name": "portal-components-Header",
     "path": "/portal/components/Header",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/portal/components/Header/index.vue",
-    "chunkName": "pages/portal/components/Header/index",
-    "_name": "_7d02207c"
+    "chunkName": "pages/portal/components/Header/index"
   },
   {
     "name": "portal-components-SideBar",
     "path": "/portal/components/SideBar",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/portal/components/SideBar/index.vue",
-    "chunkName": "pages/portal/components/SideBar/index",
-    "_name": "_980c8f86"
+    "chunkName": "pages/portal/components/SideBar/index"
   },
   {
     "name": "post-components-OperateBar",
     "path": "/post/components/OperateBar",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/post/components/OperateBar/index.vue",
-    "chunkName": "pages/post/components/OperateBar/index",
-    "_name": "_2609aad8"
+    "chunkName": "pages/post/components/OperateBar/index"
   },
   {
     "name": "portal-article-id",
     "path": "/portal/article/:id",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/portal/article/_id/index.vue",
-    "chunkName": "pages/portal/article/_id/index",
-    "_name": "_6fde3fc6"
+    "chunkName": "pages/portal/article/_id/index"
   },
   {
     "name": "portal-tag-id",
     "path": "/portal/tag/:id",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/portal/tag/_id/index.vue",
-    "chunkName": "pages/portal/tag/_id/index",
-    "_name": "_74c01c41"
+    "chunkName": "pages/portal/tag/_id/index"
   },
   {
     "name": "portal-article-id-Comment",
     "path": "/portal/article/:id?/Comment",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/portal/article/_id/Comment.vue",
-    "chunkName": "pages/portal/article/_id/Comment",
-    "_name": "_51f5c36c"
+    "chunkName": "pages/portal/article/_id/Comment"
   },
   {
     "name": "article-id",
     "path": "/article/:id",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/article/_id/index.vue",
-    "chunkName": "pages/article/_id/index",
-    "_name": "_1d0664f8"
+    "chunkName": "pages/article/_id/index"
   },
   {
     "name": "post-id",
     "path": "/post/:id?",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/post/_id.vue",
-    "chunkName": "pages/post/_id",
-    "_name": "_a16e0132"
+    "chunkName": "pages/post/_id"
   },
   {
     "name": "tag-id",
     "path": "/tag/:id",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/tag/_id/index.vue",
-    "chunkName": "pages/tag/_id/index",
-    "_name": "_40d8469c"
+    "chunkName": "pages/tag/_id/index"
   },
   {
     "name": "index",
     "path": "/",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/index.vue",
-    "chunkName": "pages/index",
-    "_name": "_6c8a8334"
+    "chunkName": "pages/index"
   },
   {
     "name": "all",
     "path": "/*",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/_.vue",
-    "chunkName": "pages/_",
-    "_name": "_b4f7351a"
+    "chunkName": "pages/_"
   }
 ]
