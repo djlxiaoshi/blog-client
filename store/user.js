@@ -1,6 +1,11 @@
 export const state = () => ({
   userInfo: null,
-  userArticles: []
+  userArticles: {
+    list: [],
+    total: 0,
+    current: 1,
+    pageSize: 1
+  }
 });
 
 export const getters = {
@@ -13,8 +18,11 @@ export const mutations = {
   setUserInfo(state, userInfo) {
     state.userInfo = userInfo;
   },
-  setUserArticles(state, articles) {
-    state.userArticles = articles;
+  setUserArticles(state, data) {
+    state.userArticles.list = data.list;
+    state.userArticles.total = data.total;
+    state.userArticles.current = data.current;
+    state.userArticles.pageSize = data.pageSize;
   }
 };
 
@@ -35,12 +43,15 @@ export const actions = {
       }
     );
   },
-  getUserArticles({ commit }, { pageSize, currentPage } = {}) {
+  getUserArticles({ commit }, { pageSize, current } = {}) {
+    const initState = state().userArticles;
+    const _pageSize = pageSize || initState.pageSize;
+    const _current = current || initState.current;
     const { response } = this.$http({
       url: `/user/articles/`,
       data: {
-        pageSize: pageSize || 10,
-        currentPage: currentPage || 1
+        pageSize: _pageSize,
+        currentPage: _current
       },
       showSuccessMsg: false,
       showErrorMsg: false,
@@ -48,8 +59,13 @@ export const actions = {
     });
 
     return response.then(
-      (articles) => {
-        commit('setUserArticles', articles.list);
+      (data) => {
+        commit('setUserArticles', {
+          ...data,
+          current: _current,
+          pageSize: _pageSize
+        });
+        return data;
       },
       (e) => {
         return e;

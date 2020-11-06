@@ -35,9 +35,12 @@ export default function({ $axios, redirect, app, req, error }, inject) {
         };
       })
     };
-    // 服务端设置cookie 貌似cookie-universal-nuxt会自动把cookie都添加上
+    // 服务端设置cookie
     if (isServer) {
-      // console.log('--------cookies----------', app.$cookies.getAll());
+      const login = app.$cookies.get('login');
+      const login2 = app.$cookies.get('login.sig');
+      const cookie = `login=${login}; login.sig=${login2}`;
+      axiosConfig.headers.Cookie = cookie;
     }
 
     // 设置请求参数
@@ -139,25 +142,27 @@ function handleError(errorMsg, config, { redirect, error }) {
     Notification.error(errorMsg.message);
   }
 
-  // 以下为针对特定错误码的特殊处理
+  // 以下为针对特定错误码的特殊处理;
   switch (errorMsg.code) {
     case -1000: {
       // 用户未登录
       if (config.jumpLogin) {
-        if (process.client) {
-          const { pathname, search } = window.location;
-          redirect(
-            `/login?_redirectUrl=${encodeURIComponent(pathname + search)}`
-          );
-        } else {
-          redirect('/login');
-        }
+        const { pathname, search } = window.location;
+        redirect(
+          `/login?_redirectUrl=${encodeURIComponent(pathname + search)}`
+        );
       }
       break;
     }
     case -1003: {
-      // 文章不存在
-      redirect('/error', errorMsg);
+      // portal 文章不存在
+      redirect('/404');
+      break;
+    }
+    case -1004: {
+      // admin 文章不存在
+      redirect('/admin/404');
+      break;
     }
   }
 }

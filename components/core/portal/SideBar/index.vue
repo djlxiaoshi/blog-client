@@ -5,7 +5,7 @@
   >
     <div class="avatar-wrap">
       <img
-        :src="avatarImage"
+        :src="user.avatar || avatarImage"
         :style="{ border: `2px solid ${$color.borderColor}` }"
         class="author-avatar"
       />
@@ -74,26 +74,29 @@
       <div class="module-content">
         <a
           :style="{ color: $color.defaultColor }"
+          :href="user.github"
           class="hvr-underline-from-center"
-          href="https://github.com/djlxiaoshi/blog/issues"
           target="_blank"
           >Github</a
         >
         <a
           :style="{ color: $color.defaultColor }"
+          :href="user.jianshu"
           class="hvr-underline-from-center"
-          href="https://www.jianshu.com/u/d8657fcf1678"
           target="_blank"
           >简书</a
         >
         <a
           :style="{ color: $color.defaultColor }"
+          :href="user.juejin"
           class="hvr-underline-from-center"
-          href="https://juejin.im/user/57183fcac4c9710054bc2fcf"
           target="_blank"
           >掘金</a
         >
-        <span :style="{ color: $color.defaultColor }">微信：DJLXS0307</span>
+
+        <span :style="{ color: $color.defaultColor }"
+          >微信：{{ user.wechat }}</span
+        >
       </div>
     </div>
   </div>
@@ -109,7 +112,8 @@ export default {
   },
   computed: {
     ...mapState({
-      tags: (state) => state.tag.allTags
+      tags: (state) => state.tag.allTags,
+      user: (state) => state.user.userInfo
     })
   },
   methods: {

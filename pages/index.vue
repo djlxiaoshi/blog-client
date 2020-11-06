@@ -1,26 +1,27 @@
 <template>
   <div :style="{ color: $color.defaultColor }" class="portal-home-page">
-    <AppContainer :showEmpty="articles.length === 0" style="height: 100%">
-      <ArticleList
-        :data="articles"
-        @onView="viewArticle"
-        v-infinite-scroll="loadMore"
-        class="article-list"
-        infinite-scroll-disabled="busy"
-        infinite-scroll-distance="10"
-      ></ArticleList>
-      <AppLoading v-if="busy" size="mini" class="loading-more"></AppLoading>
-    </AppContainer>
+    <ArticleList
+      :data="articles"
+      @onView="viewArticle"
+      class="article-list"
+    ></ArticleList>
+
+    <div class="paginator">
+      <el-pagination
+        :total="total"
+        :page-size="pageSize"
+        :current-page="current"
+        @current-change="getArtilces"
+        layout="prev, next"
+      >
+      </el-pagination>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapActions, mapMutations } from 'vuex';
 import ArticleList from '@/components/common/ArticleList';
-import AppContainer from '~/components/common/app-container';
-import AppLoading from '~/components/common/app-loading';
-
-const PAGE_SIZE = 10;
 
 export default {
   name: 'Explore',
@@ -40,30 +41,29 @@ export default {
     ]
   },
   components: {
-    ArticleList,
-    AppContainer,
-    AppLoading
+    ArticleList
   },
   data() {
-    return {
-      currentPage: 2, // asyncData中已经加载过一夜，所以当前页为2
-      pageSize: PAGE_SIZE,
-      artilceTotals: Infinity,
-      busy: false
-    };
+    return {};
   },
   computed: {
     articles() {
-      return JSON.parse(JSON.stringify(this.$store.state.article.allArticles));
+      return JSON.parse(
+        JSON.stringify(this.$store.state.article.allArticles.list)
+      );
+    },
+    total() {
+      return this.$store.state.article.allArticles.total;
+    },
+    pageSize() {
+      return this.$store.state.article.allArticles.pageSize;
+    },
+    current() {
+      return this.$store.state.article.allArticles.current;
     }
   },
   asyncData({ store, route }) {
-    return Promise.all([
-      store.dispatch('article/getAllArticles', {
-        currentPage: 1,
-        pageSize: PAGE_SIZE
-      })
-    ]);
+    return Promise.all([store.dispatch('article/getAllArticles')]);
   },
   mounted() {},
   methods: {
@@ -76,65 +76,24 @@ export default {
     viewArticle(article) {
       this.$router.push(`/article/${article._id}`);
     },
-    getMoreArtilces() {
-      const { response } = this.$http({
-        url: '/articles',
-        data: {
-          pageSize: this.pageSize,
-          currentPage: this.currentPage
-        },
-        method: 'get',
-        showSuccessMsg: false,
-        showErrorMsg: false
+    getArtilces(current) {
+      this.getAllArticles({
+        pageSize: this.pageSize,
+        current
       });
-
-      return response.then(
-        (articles) => {
-          return articles;
-        },
-        (e) => {
-          return e;
-        }
-      );
-    },
-    async loadMore() {
-      // if (this.articles.length < this.artilceTotals) {
-      //   this.busy = true;
-      //   const data = await this.getMoreArtilces({
-      //     currentPage: this.currentPage,
-      //     pageSize: this.pageSize
-      //   });
-      //   this.artilceTotals = data.total;
-      //   this.articles.splice((this.currentPage - 1) * this.pageSize);
-      //   this.articles.push(...data.list);
-      //   this.setAllArticle(this.articles);
-      //   // 如果到了下一页，则增加
-      //   if (this.articles.length % this.pageSize === 0) {
-      //     this.currentPage++;
-      //   }
-      //   this.busy = false;
-      // }
     }
   }
 };
 </script>
 
 <style scoped lang="less">
-.explore-page {
+.portal-home-page {
   margin-bottom: 20px;
-  .page-left {
-    height: 100%;
-    border: 1px solid #dddddd;
-    .article-list {
-      padding-bottom: 0;
-    }
-  }
-  .page-right {
-    border: 1px solid #dddddd;
-  }
-  .loading-more {
-    padding-top: 5px;
-    padding-bottom: 5px;
+  .paginator {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 </style>

@@ -28,9 +28,7 @@ export default async function({ store, route, redirect, error }) {
     try {
       const user = await store.dispatch('user/getUserInfo');
       store.commit('user/setUserInfo', user);
-    } catch (error) {
-      // console.log('error---', error);
-    }
+    } catch (error) {}
   }
 
   // 如果是登录页且用户已经登录则直接重定向到首页
@@ -44,7 +42,7 @@ export default async function({ store, route, redirect, error }) {
     // todo admin 配置
     // 如果这个页面处于关闭状态 例如注册页
     if (isClosed) {
-      error({ statusCode: 404, message: '页面不存在Page not found' });
+      redirect('/404');
       return;
     }
 

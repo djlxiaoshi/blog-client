@@ -1,5 +1,5 @@
 <template>
-  <div class="djlxs-blog-admin">
+  <div class="djlxs-blog-admin-view">
     <el-row>
       <el-col :xs="24" :sm="24" :md="4" :lg="4" :xl="4">
         <SideBar></SideBar>
@@ -24,7 +24,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.djlxs-blog-admin {
+.djlxs-blog-admin-view {
   .app-main-container {
     box-sizing: border-box;
     height: 100vh;

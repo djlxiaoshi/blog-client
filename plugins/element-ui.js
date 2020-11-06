@@ -32,7 +32,8 @@ import {
   Timeline,
   TimelineItem,
   Table,
-  TableColumn
+  TableColumn,
+  Pagination
 } from 'element-ui';
 
 Vue.use(Button);
@@ -66,5 +67,6 @@ Vue.use(Timeline);
 Vue.use(TimelineItem);
 Vue.use(Table);
 Vue.use(TableColumn);
+Vue.use(Pagination);
 
 // Vue.use(Element, { locale });

@@ -5,7 +5,7 @@
         >写文章</el-button
       >
     </div>
-    <el-table :data="userArticles" style="width: 100%">
+    <el-table :data="articles" style="width: 100%">
       <el-table-column
         :key="column.prop"
         v-for="column in columns"
@@ -86,14 +86,21 @@
         </template>
       </el-table-column>
     </el-table>
+    <div class="paginator">
+      <el-pagination
+        :total="total"
+        :page-size="pageSize"
+        :current-page="current"
+        @current-change="changeCurrentPage"
+        layout="prev, pager, next"
+      >
+      </el-pagination>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex';
 import AppLoading from '@/components/common/app-loading';
-
-const PAGE_SIZE = 10;
 
 export default {
   components: {
@@ -120,32 +127,46 @@ export default {
         },
         { label: '公开', width: 80, field: 'status', slot: 'visible' },
         { label: '操作', width: 200, slot: 'operate' }
-      ]
+      ],
+      total: 0,
+      pageSize: 2,
+      articles: [],
+      current: 1
     };
   },
-  computed: {
-    ...mapState({
-      userArticles: (state) => state.user.userArticles
-    })
-  },
-  asyncData({ store, router }) {
-    return store.dispatch('user/getUserArticles', {
-      currentPage: 1,
-      pageSize: PAGE_SIZE
-    });
+  mounted() {
+    this.getUserArticles(this.current);
   },
   methods: {
-    ...mapMutations({
-      setUserArticle: 'user/setUserArticles'
-    }),
-    ...mapActions({
-      getUserArticles: 'user/getUserArticles'
-    }),
+    changeCurrentPage(current) {
+      this.current = current;
+      this.getUserArticles(current);
+    },
+    getUserArticles(current) {
+      const { response } = this.$http({
+        url: `/user/articles/`,
+        data: {
+          pageSize: this.pageSize,
+          currentPage: current
+        },
+        showSuccessMsg: false,
+        showErrorMsg: false,
+        jumpLogin: true
+      });
+
+      return response.then(
+        (data) => {
+          this.articles = data.list;
+          this.total = data.total;
+        },
+        (e) => {}
+      );
+    },
     addArticle() {
       this.$router.push('/admin/post');
     },
     viewArticle(article) {
-      this.$router.push(`/article/${article._id}`);
+      this.$router.push(`/admin/article/${article._id}`);
     },
     togglePublish(status, id) {
       const { response } = this.$http({
@@ -160,7 +181,7 @@ export default {
 
       response.then(
         () => {
-          this.getUserArticles(id);
+          this.getUserArticles(this.current);
         },
         () => {}
       );
@@ -183,7 +204,7 @@ export default {
       });
     },
     config(article) {
-      this.$router.push(`/admin/article/${article._id}`);
+      this.$router.push(`/admin/article/config/${article._id}`);
     },
     deleteArticle(id) {
       const { response } = this.$http({
@@ -195,10 +216,7 @@ export default {
 
       response.then(
         () => {
-          this.getUserArticles({
-            currentPage: 1,
-            pageSize: PAGE_SIZE
-          });
+          this.getUserArticles(this.current);
         },
         () => {}
       );
@@ -211,6 +229,12 @@ export default {
 .article-management-page {
   .item-thumbnail {
     padding: 5px;
+  }
+  .paginator {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 </style>

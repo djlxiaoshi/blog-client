@@ -46,7 +46,7 @@
 <script>
 import { VueShowdown } from 'vue-showdown';
 import showdownHighlight from 'showdown-highlight';
-import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import dayjs from 'dayjs';
 import Gitalk from 'gitalk';
 import Tag from '@/components/common/Tag';
@@ -79,20 +79,13 @@ export default {
       options: {
         omitExtraWLInCodeBlocks: true,
         ghCodeBlocks: true
-      },
-      openTags: false,
-      selectTags: [],
-      articleTags: []
+      }
     };
   },
   computed: {
     ...mapState({
-      article: (state) => state.article.currentArticle,
-      tags: (state) => state.tag.allTags
-    }),
-    author() {
-      return this.article.createUser;
-    }
+      article: (state) => state.article.currentArticle
+    })
   },
   asyncData({ store, route }) {
     return store
@@ -113,30 +106,13 @@ export default {
     });
 
     gitalk.render('comments');
-
-    this.articleTags = Array.isArray(this.article.tags)
-      ? this.article.tags.map((tag) => tag._id)
-      : [];
   },
   methods: {
     ...mapActions({
-      getArticle: 'article/getArticle',
-      getAllTags: 'tag/getAllTags'
-    }),
-    ...mapMutations({
-      setCurrentArticle: 'article/setCurrentArticle'
+      getArticle: 'article/getArticle'
     }),
     formatTime(time) {
       return time ? dayjs(time).format('YYYY-MM-DD') : '';
-    },
-    isChecked(tag) {
-      const flag = !!this.article.tags.find(
-        (articleTag) => articleTag._id === tag._id
-      );
-      return flag;
-    },
-    handleTagsParams() {
-      this.saveArticleTags(this.articleTags);
     },
     goToTagDetails(tag) {
       if (tag) {

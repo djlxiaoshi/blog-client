@@ -26,7 +26,6 @@ import { mapState } from 'vuex';
 import { formatTime } from '@/assets/js/utils/tools';
 
 export default {
-  layout: 'portal',
   head() {
     return {
       title: `${this.tag.label || '标签详情'}`,

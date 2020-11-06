@@ -1,7 +1,13 @@
 import { ARTICLE_MODULE_URL } from '@/assets/js/global/url';
 
 export const state = () => ({
-  allArticles: [], // 所有文章
+  allArticles: {
+    list: [],
+    current: 1,
+    pageSize: 2,
+    total: 0
+  }, // 所有文章
+  currentPage: 1,
   tagArticles: [],
   // 当前文章
   currentArticle: {
@@ -17,11 +23,17 @@ export const getters = {
 };
 
 export const mutations = {
-  setAllArticle(state, list) {
-    state.allArticles = list;
+  setAllArticle(state, data) {
+    state.allArticles = {
+      ...state.allArticles,
+      ...data
+    };
   },
   setCurrentArticle(state, currentArticle) {
-    state.currentArticle = currentArticle;
+    state.currentArticle = {
+      ...state.currentArticle,
+      ...currentArticle
+    };
   },
   setTagArticles(state, articles) {
     state.tagArticles = articles;
@@ -40,8 +52,10 @@ export const actions = {
     return response.then(
       (article) => {
         commit('setCurrentArticle', article);
+        return article;
       },
       (e) => {
+        console.log('error----', e);
         throw e;
       }
     );
@@ -84,23 +98,29 @@ export const actions = {
       }
     );
   },
-  getAllArticles({ commit }, { loadingTarget, pageSize, currentPage } = {}) {
+  getAllArticles({ commit }, { pageSize, current } = {}) {
+    const initState = state().allArticles;
+    const _pageSize = pageSize || initState.pageSize;
+    const _current = current || initState.current;
     const { response } = this.$http({
       url: '/articles',
       data: {
-        pageSize: pageSize || 10,
-        currentPage: currentPage || 1
+        pageSize: _pageSize,
+        currentPage: _current
       },
       method: 'get',
       showSuccessMsg: false,
-      showErrorMsg: false,
-      loading: loadingTarget
+      showErrorMsg: false
     });
 
     return response.then(
-      (articles) => {
-        commit('setAllArticle', articles.list);
-        return articles;
+      (data) => {
+        commit('setAllArticle', {
+          ...data,
+          current: _current,
+          pageSize: _pageSize
+        });
+        return data;
       },
       (e) => {
         return e;
