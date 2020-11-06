@@ -57,7 +57,6 @@ module.exports = {
    ** Nuxt.js modules
    */
   modules: [
-    '@nuxtjs/sentry',
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     ['@nuxtjs/pwa', { workbox: false }],
