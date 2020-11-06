@@ -3,7 +3,6 @@ export const XS_WIDTH = 768;
 export const ADMIN_ROLE = 0;
 
 export const COLORS = {
-  //   defaultColor: 'red',
   defaultColor: '#333333',
   successColor: '#67C23A',
   warningColor: '#E6A23C',

@@ -93,13 +93,16 @@ export default {
       .catch(() => {});
   },
   mounted() {
+    const labels = this.article.tags.map((tag) => tag.label);
     const gitalk = new Gitalk({
       title: this.article.title,
-      clientID: this.$globalConfig.gitalk.clientID,
-      clientSecret: this.$globalConfig.gitalk.secretId,
+      clientID: this.$globalConfig.gitalk.clientId,
+      clientSecret: this.$globalConfig.gitalk.clientSecret,
       repo: this.$globalConfig.gitalk.repo, // The repository of store comments,
       owner: 'djlxiaoshi',
       admin: ['djlxiaoshi'],
+      body: this.article.content,
+      labels,
       id: location.pathname, // Ensure uniqueness and length less than 50
       distractionFreeMode: false // Facebook-like distraction free mode
       // For more available options, check out the documentation below

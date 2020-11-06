@@ -35,8 +35,6 @@
               ></VueShowdown>
             </div>
           </div>
-
-          <div id="comments" style="margin-top: 20px"></div>
         </div>
       </el-col>
     </el-row>
@@ -47,7 +45,6 @@
 import { VueShowdown } from 'vue-showdown';
 import showdownHighlight from 'showdown-highlight';
 import dayjs from 'dayjs';
-import Gitalk from 'gitalk';
 import Tag from '@/components/common/Tag';
 
 export default {
@@ -85,7 +82,6 @@ export default {
   },
   computed: {},
   mounted() {
-    this.gitalkInit();
     this.getArticle();
   },
   methods: {
@@ -106,21 +102,6 @@ export default {
         },
         (e) => {}
       );
-    },
-    gitalkInit() {
-      const gitalk = new Gitalk({
-        title: this.article.title,
-        clientID: this.$globalConfig.gitalk.clientID,
-        clientSecret: this.$globalConfig.gitalk.secretId,
-        repo: this.$globalConfig.gitalk.repo, // The repository of store comments,
-        owner: 'djlxiaoshi',
-        admin: ['djlxiaoshi'],
-        id: location.pathname, // Ensure uniqueness and length less than 50
-        distractionFreeMode: false // Facebook-like distraction free mode
-        // For more available options, check out the documentation below
-      });
-
-      gitalk.render('comments');
     },
     formatTime(time) {
       return time ? dayjs(time).format('YYYY-MM-DD') : '';
