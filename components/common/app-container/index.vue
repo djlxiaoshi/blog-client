@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-08-02 18:41:20
- * @LastEditTime: 2020-11-07 00:35:09
+ * @LastEditTime: 2020-11-07 00:37:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /blog-client/components/common/app-container/index.vue
@@ -10,18 +10,18 @@
 <template>
   <div class="app-container">
     <slot></slot>
-    <AppEmpty v-if="showEmpty"></AppEmpty>
-    <AppLoading v-if="showLoading"></AppLoading>
+    <!-- <AppEmpty v-if="showEmpty"></AppEmpty>
+    <AppLoading v-if="showLoading"></AppLoading> -->
   </div>
 </template>
 
 <script>
-import AppEmpty from '~/components/common/Empty/index.vue';
-import AppLoading from '@/components/common/app-loading';
+// import AppEmpty from '~/components/common/Empty/index.vue';
+// import AppLoading from '@/components/common/app-loading';
 export default {
   components: {
-    AppEmpty,
-    AppLoading
+    // AppEmpty,
+    // AppLoading
   },
   props: {
     showEmpty: {
