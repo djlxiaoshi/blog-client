@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-08-02 18:41:20
- * @LastEditTime: 2020-08-02 19:22:17
+ * @LastEditTime: 2020-11-07 00:32:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /blog-client/components/common/app-container/index.vue
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import AppEmpty from '@/components/common/Empty';
+import AppEmpty from '@/components/common/Empty/index.vue';
 import AppLoading from '@/components/common/app-loading';
 export default {
   components: {
