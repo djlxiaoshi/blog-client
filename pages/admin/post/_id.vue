@@ -1,7 +1,7 @@
 <template>
   <div class="create-article-page">
     <div class="article-title">
-      <el-input v-model="title" placeholder="请输入文章标题"></el-input>
+      <el-input v-model="article.title" placeholder="请输入文章标题"></el-input>
     </div>
 
     <OperateBar :config="operateConfig" @onClick="operateAction"></OperateBar>
@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex';
 import OperateBar from './components/OperateBar';
 import Editor from '@/components/common/Editor/Markdown';
 
@@ -55,15 +54,14 @@ export default {
         { actionType: 'edit-preview', icon: 'icon-fenlan', tips: '编辑/预览' },
         { actionType: 'publish', icon: 'icon-fabu', tips: '发布' }
       ],
-      title: '',
-      initContent: '',
-      content: ''
+      article: {
+        title: '',
+        content: ''
+      },
+      initContent: ''
     };
   },
   computed: {
-    ...mapState({
-      article: (state) => state.article.currentArticle
-    }),
     articleId() {
       return this.$route.params.id;
     },
@@ -71,17 +69,10 @@ export default {
       return this.$route.params.id;
     }
   },
-  watch: {
-    article(value) {
-      this.title = value.title || '';
-      this.initContent = value.content || '';
-    }
-  },
+  watch: {},
   mounted() {
     if (this.articleId) {
       this.getArticle(this.articleId);
-    } else {
-      this.setCurrentArticle({});
     }
   },
   beforeRouteLeave(to, from, next) {
@@ -91,12 +82,25 @@ export default {
     next();
   },
   methods: {
-    ...mapActions({
-      getArticle: 'article/getArticleByUser'
-    }),
-    ...mapMutations({
-      setCurrentArticle: 'article/setCurrentArticle'
-    }),
+    getArticle() {
+      const { response } = this.$http({
+        url: `/article/getOneByUser`,
+        data: {
+          id: this.$route.params.id
+        },
+        method: 'get',
+        showSuccessMsg: false,
+        showErrorMsg: false
+      });
+
+      return response.then(
+        (article) => {
+          this.article = article;
+          this.initContent = article.content;
+        },
+        (e) => {}
+      );
+    },
     operateAction(actionType) {
       switch (actionType) {
         case 'edit': {
@@ -112,19 +116,19 @@ export default {
           break;
         }
         case 'save': {
-          this.handleParams(true);
+          this.handleParams(false);
           break;
         }
         case 'publish': {
-          this.handleParams(false);
+          this.handleParams(true);
         }
       }
     },
     getEditorValue(content) {
-      this.content = content;
+      this.article.content = content;
     },
     handleParams(isPublish) {
-      const title = this.title;
+      const title = this.article.title;
       if (!title.trim()) {
         this.$notify.warning('文章标题不能为空');
         return;
@@ -149,7 +153,7 @@ export default {
      * @returns {*|string}
      */
     getContent() {
-      return this.content;
+      return this.article.content;
     },
     /**
      * 获取文章缩略图
@@ -203,9 +207,7 @@ export default {
       response.then(
         (article) => {
           if (isPublish) {
-            this.$router.push('/admin/article');
-          } else {
-            this.$router.replace(`/post/${article._id}`);
+            this.$router.replace(`/admin/article/${article._id}`);
           }
         },
         () => {}
@@ -227,7 +229,7 @@ export default {
       response.then(
         () => {
           if (isPublish) {
-            this.$router.push('/admin/article');
+            this.$router.push(`/admin/article/${this.article._id}`);
           }
         },
         () => {}

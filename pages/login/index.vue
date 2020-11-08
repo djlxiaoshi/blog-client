@@ -52,9 +52,14 @@
 <script>
 import { mapMutations, mapState } from 'vuex';
 import { urlToJson } from '~/assets/js/utils/tools';
+import { sha256 } from 'js-sha256';
 
 export default {
+  layout: 'global',
   name: 'AppLogin',
+  meta: {
+    isLoginPage: true
+  },
   head: {
     title: '登录',
     titleTemplate: '%s - DJL箫氏的博客!',
@@ -97,7 +102,7 @@ export default {
         url: '/login',
         data: {
           username: this.form.username,
-          password: this.form.password
+          password: sha256(this.form.password)
         },
         method: 'post',
         showSuccessMsg: true,

@@ -46,12 +46,15 @@
 <script>
 import { VueShowdown } from 'vue-showdown';
 import showdownHighlight from 'showdown-highlight';
-import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import dayjs from 'dayjs';
 import Gitalk from 'gitalk';
 import Tag from '@/components/common/Tag';
 
 export default {
+  meta: {
+    isPortalPage: true
+  },
   head() {
     return {
       title: `${this.article.title || '文章详情'}`,
@@ -79,21 +82,13 @@ export default {
       options: {
         omitExtraWLInCodeBlocks: true,
         ghCodeBlocks: true
-      },
-      openTags: false,
-      selectTags: [],
-      articleTags: [],
-      published: false
+      }
     };
   },
   computed: {
     ...mapState({
-      article: (state) => state.article.currentArticle,
-      tags: (state) => state.tag.allTags
-    }),
-    author() {
-      return this.article.createUser;
-    }
+      article: (state) => state.article.currentArticle
+    })
   },
   asyncData({ store, route }) {
     return store
@@ -101,43 +96,29 @@ export default {
       .catch(() => {});
   },
   mounted() {
+    const labels = this.article.tags.map((tag) => tag.label);
     const gitalk = new Gitalk({
       title: this.article.title,
-      clientID: this.$globalConfig.gitalk.clientID,
-      clientSecret: this.$globalConfig.gitalk.secretId,
+      clientID: this.$globalConfig.gitalk.clientId,
+      clientSecret: this.$globalConfig.gitalk.clientSecret,
       repo: this.$globalConfig.gitalk.repo, // The repository of store comments,
       owner: 'djlxiaoshi',
       admin: ['djlxiaoshi'],
+      body: this.article.content,
+      labels,
       id: location.pathname, // Ensure uniqueness and length less than 50
       distractionFreeMode: false // Facebook-like distraction free mode
       // For more available options, check out the documentation below
     });
 
     gitalk.render('comments');
-
-    this.articleTags = Array.isArray(this.article.tags)
-      ? this.article.tags.map((tag) => tag._id)
-      : [];
   },
   methods: {
     ...mapActions({
-      getArticle: 'article/getArticle',
-      getAllTags: 'tag/getAllTags'
-    }),
-    ...mapMutations({
-      setCurrentArticle: 'article/setCurrentArticle'
+      getArticle: 'article/getArticle'
     }),
     formatTime(time) {
       return time ? dayjs(time).format('YYYY-MM-DD') : '';
-    },
-    isChecked(tag) {
-      const flag = !!this.article.tags.find(
-        (articleTag) => articleTag._id === tag._id
-      );
-      return flag;
-    },
-    handleTagsParams() {
-      this.saveArticleTags(this.articleTags);
     },
     goToTagDetails(tag) {
       if (tag) {

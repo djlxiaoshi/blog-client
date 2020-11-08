@@ -55,9 +55,13 @@
 </template>
 
 <script>
+import { sha256 } from 'js-sha256';
+
 export default {
+  layout: 'global',
   name: 'Register',
   meta: {
+    isRegistrationPage: true,
     isClosed: true
   },
   head: {
@@ -131,7 +135,7 @@ export default {
         url: '/user',
         data: {
           username: this.form.username,
-          password: this.form.password,
+          password: sha256(this.form.password),
           email: this.form.email
         },
         showErrorMsg: true,

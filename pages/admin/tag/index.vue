@@ -4,7 +4,7 @@
       >添加</el-button
     >
     <el-table
-      :data="tagList"
+      :data="tags"
       @expand-change="expandChange"
       :row-key="(row) => row._id"
       style="width: 100%"
@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'TagPage',
@@ -100,33 +100,33 @@ export default {
         { label: '创建者', field: 'createUser', slot: 'createUser' },
         { label: '操作', width: 200, slot: 'operate' }
       ],
-      tagList: []
+      tags: []
     };
   },
-  computed: {
-    ...mapState({
-      tags: (state) => state.tag.allTags
-    })
-  },
-  watch: {
-    tags(values) {
-      this.tagList = values;
-    }
-  },
-  asyncData({ store }) {
-    return store.dispatch('tag/getAllTags');
-  },
   mounted() {
-    this.tagList = JSON.parse(JSON.stringify(this.tags));
+    this.getAllTags();
   },
   methods: {
     ...mapActions({
-      getAllTags: 'tag/getAllTags',
       getArticleByTagId: 'article/getArticlesByTagId'
     }),
-    ...mapMutations({
-      setAllTags: 'tag/setAllTags'
-    }),
+    getAllTags() {
+      const { response } = this.$http({
+        url: `/getAllTagsByUser`,
+        method: 'get',
+        showSuccessMsg: false,
+        showErrorMsg: true
+      });
+
+      return response.then(
+        (tags) => {
+          this.tags = tags;
+        },
+        (e) => {
+          return e;
+        }
+      );
+    },
     goToTagDetails(tag) {
       this.$router.push(`/tag/${tag._id}`);
     },

@@ -1,5 +1,5 @@
 <template>
-  <div class="djlxs-blog-portal">
+  <div class="djlxs-blog-portal-view">
     <el-row>
       <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
         <SideBar></SideBar>
@@ -26,7 +26,7 @@ export default {
   },
   fetch() {
     // eslint-disable-next-line nuxt/no-this-in-fetch-data
-    return this.$store.dispatch('tag/getAllTags');
+    return Promise.all([this.$store.dispatch('tag/getAllTags')]);
   },
   methods: {
     refresh() {
@@ -37,7 +37,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.djlxs-blog-portal {
+.djlxs-blog-portal-view {
   .app-main-container {
     box-sizing: border-box;
     height: 100vh;

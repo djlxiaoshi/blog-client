@@ -32,7 +32,10 @@ import {
   Timeline,
   TimelineItem,
   Table,
-  TableColumn
+  TableColumn,
+  Pagination,
+  Radio,
+  RadioGroup
 } from 'element-ui';
 
 Vue.use(Button);
@@ -66,5 +69,8 @@ Vue.use(Timeline);
 Vue.use(TimelineItem);
 Vue.use(Table);
 Vue.use(TableColumn);
+Vue.use(Pagination);
+Vue.use(Radio);
+Vue.use(RadioGroup);
 
 // Vue.use(Element, { locale });

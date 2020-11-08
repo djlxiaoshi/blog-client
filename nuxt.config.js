@@ -1,5 +1,7 @@
+const { resolve } = require('path');
 module.exports = {
   mode: 'universal',
+  telemetry: false,
   /*
    ** Headers of the page
    */
@@ -56,11 +58,10 @@ module.exports = {
    ** Nuxt.js modules
    */
   modules: [
-    '@nuxtjs/sentry',
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     ['@nuxtjs/pwa', { workbox: false }],
-    'cookie-universal-nuxt'
+    ['cookie-universal-nuxt', { parseJSON: false }]
   ],
   /*
    ** Axios module configuration
@@ -84,11 +85,12 @@ module.exports = {
     }
   },
   router: {
-    middleware: ['auth']
-  },
-  sentry: {
-    dsn:
-      'https://2b7e433fe9e940c8ab342f1e0a0ed063@o139930.ingest.sentry.io/5301786', // Enter your project's DSN here
-    config: {} // Additional config
+    middleware: ['auth'],
+    extendRoutes(routes) {
+      routes.push({
+        path: '/',
+        component: resolve(__dirname, 'pages/article/index.vue')
+      });
+    }
   }
 };

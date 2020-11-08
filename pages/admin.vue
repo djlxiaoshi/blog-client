@@ -8,7 +8,7 @@
 export default {
   layout: 'admin',
   meta: {
-    needLogin: true
+    isAdminPage: true
   },
   components: {}
 };

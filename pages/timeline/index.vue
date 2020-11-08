@@ -3,7 +3,7 @@
     <div class="page-body">
       <el-timeline>
         <el-timeline-item
-          v-for="(item, key) in timelines"
+          v-for="(item, key) in list"
           :key="key"
           :timestamp="formatTime(item.createTime)"
           :color="$color.activeColor"
@@ -31,6 +31,17 @@
         </el-timeline-item>
       </el-timeline>
     </div>
+
+    <div class="paginator">
+      <el-pagination
+        :total="total"
+        :page-size="pageSize"
+        :current-page="current"
+        @current-change="loadMore"
+        layout="prev, next"
+      >
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -38,9 +49,11 @@
 import { mapState, mapActions } from 'vuex';
 import dayjs from 'dayjs';
 import Tag from '@/components/common/Tag';
-import { randomNum } from '@/assets/js/utils/tools';
 
 export default {
+  meta: {
+    isPortalPage: true
+  },
   name: 'Timeline',
   head: {
     title: '时光轴',
@@ -60,14 +73,12 @@ export default {
   components: {
     Tag
   },
-  data() {
-    return {
-      timeGroups: {}
-    };
-  },
   computed: {
     ...mapState({
-      timelines: (state) => state.timeline.list
+      list: (state) => state.timeline.list,
+      total: (state) => state.timeline.total,
+      current: (state) => state.timeline.current,
+      pageSize: (state) => state.timeline.pageSize
     })
   },
   asyncData({ store, route }) {
@@ -88,18 +99,11 @@ export default {
         this.$router.push(`/user/${author._id}`);
       }
     },
-    resolveData(data) {
-      return data.map((item) => {
-        item._group = dayjs(item.createTime).format('YYYY-MM-DD');
-        return item;
-      });
-    },
     viewTag(tag) {
       this.$router.push(`/tag/${tag._id}`);
     },
-    getRandomColor() {
-      const types = ['success', 'info', 'warning', 'danger'];
-      return types[randomNum(types.length - 1)];
+    loadMore(current) {
+      this.getTimelines({ current });
     }
   }
 };

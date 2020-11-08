@@ -19,7 +19,7 @@ const test = {
   IMAGE_ADDRESS: 'http://images.djl.pub', // 七牛云图床地址
   gitalk: {
     clientId: 'f8eb675bd5c920fbe6d6',
-    clientSecret: '72a933b990d509cd709ad5eadcbe2ff0731d1e03',
+    clientSecret: '11bb95f2dc5d9125309017cb0131a07c85763d15',
     repo: 'blog-test'
   }
 };
@@ -30,7 +30,7 @@ const production = {
   gitalk: {
     clientId: '0defc6b7dde11263449a',
     clientSecret: 'c91f6f8a6b463251f6185b85b22c9bc37d8b65ab',
-    repo: 'test'
+    repo: 'blog'
   }
 };
 
