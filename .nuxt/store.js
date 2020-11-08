@@ -17,6 +17,7 @@ let store = {};
 
   resolveStoreModules(require('../store/article.js'), 'article.js')
   resolveStoreModules(require('../store/menu.js'), 'menu.js')
+  resolveStoreModules(require('../store/system.js'), 'system.js')
   resolveStoreModules(require('../store/tag.js'), 'tag.js')
   resolveStoreModules(require('../store/test.js'), 'test.js')
   resolveStoreModules(require('../store/timeline.js'), 'timeline.js')

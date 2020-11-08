@@ -15,11 +15,10 @@ import '../assets/css/global.less'
 import '../node_modules/gitalk/dist/gitalk.css'
 
 import _77068119 from '../layouts/admin.vue'
-import _c256562c from '../layouts/default copy.vue'
 import _6f6c098b from '../layouts/default.vue'
-import _f800783c from '../layouts/portal.vue'
+import _74783f19 from '../layouts/global.vue'
 
-const layouts = { "_admin": sanitizeComponent(_77068119),"_default copy": sanitizeComponent(_c256562c),"_default": sanitizeComponent(_6f6c098b),"_portal": sanitizeComponent(_f800783c) }
+const layouts = { "_admin": sanitizeComponent(_77068119),"_default": sanitizeComponent(_6f6c098b),"_global": sanitizeComponent(_74783f19) }
 
 export default {
   render (h, props) {

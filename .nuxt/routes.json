@@ -29,6 +29,12 @@
         "chunkName": "pages/admin/crawl/index"
       },
       {
+        "name": "admin-info",
+        "path": "info",
+        "component": "/Users/xiaolongli/my-project/blog-client/pages/admin/info/index.vue",
+        "chunkName": "pages/admin/info/index"
+      },
+      {
         "name": "admin-tag",
         "path": "tag",
         "component": "/Users/xiaolongli/my-project/blog-client/pages/admin/tag/index.vue",
@@ -53,6 +59,12 @@
         "chunkName": "pages/admin/post/components/OperateBar/index"
       },
       {
+        "name": "admin-article-config-id",
+        "path": "article/config/:id",
+        "component": "/Users/xiaolongli/my-project/blog-client/pages/admin/article/config/_id/index.vue",
+        "chunkName": "pages/admin/article/config/_id/index"
+      },
+      {
         "name": "admin-article-id",
         "path": "article/:id",
         "component": "/Users/xiaolongli/my-project/blog-client/pages/admin/article/_id/index.vue",
@@ -63,6 +75,18 @@
         "path": "post/:id?",
         "component": "/Users/xiaolongli/my-project/blog-client/pages/admin/post/_id.vue",
         "chunkName": "pages/admin/post/_id"
+      },
+      {
+        "name": "admin-user-id",
+        "path": "user/:id",
+        "component": "/Users/xiaolongli/my-project/blog-client/pages/admin/user/_id/index.vue",
+        "chunkName": "pages/admin/user/_id/index"
+      },
+      {
+        "name": "admin-all",
+        "path": "*",
+        "component": "/Users/xiaolongli/my-project/blog-client/pages/admin/_.vue",
+        "chunkName": "pages/admin/_"
       }
     ]
   },
@@ -77,12 +101,6 @@
     "path": "/login",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/login/index.vue",
     "chunkName": "pages/login/index"
-  },
-  {
-    "name": "portal",
-    "path": "/portal",
-    "component": "/Users/xiaolongli/my-project/blog-client/pages/portal/index.vue",
-    "chunkName": "pages/portal/index"
   },
   {
     "name": "regist",
@@ -109,24 +127,6 @@
     "chunkName": "pages/timeline/index"
   },
   {
-    "name": "portal-about",
-    "path": "/portal/about",
-    "component": "/Users/xiaolongli/my-project/blog-client/pages/portal/about/index.vue",
-    "chunkName": "pages/portal/about/index"
-  },
-  {
-    "name": "portal-tag",
-    "path": "/portal/tag",
-    "component": "/Users/xiaolongli/my-project/blog-client/pages/portal/tag/index.vue",
-    "chunkName": "pages/portal/tag/index"
-  },
-  {
-    "name": "portal-timeline",
-    "path": "/portal/timeline",
-    "component": "/Users/xiaolongli/my-project/blog-client/pages/portal/timeline/index.vue",
-    "chunkName": "pages/portal/timeline/index"
-  },
-  {
     "name": "test-codemirror",
     "path": "/test/codemirror",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/test/codemirror/index.vue",
@@ -151,46 +151,10 @@
     "chunkName": "pages/article/components/ArticleList/index"
   },
   {
-    "name": "portal-components-ArticleList",
-    "path": "/portal/components/ArticleList",
-    "component": "/Users/xiaolongli/my-project/blog-client/pages/portal/components/ArticleList/index.vue",
-    "chunkName": "pages/portal/components/ArticleList/index"
-  },
-  {
-    "name": "portal-components-Header",
-    "path": "/portal/components/Header",
-    "component": "/Users/xiaolongli/my-project/blog-client/pages/portal/components/Header/index.vue",
-    "chunkName": "pages/portal/components/Header/index"
-  },
-  {
-    "name": "portal-components-SideBar",
-    "path": "/portal/components/SideBar",
-    "component": "/Users/xiaolongli/my-project/blog-client/pages/portal/components/SideBar/index.vue",
-    "chunkName": "pages/portal/components/SideBar/index"
-  },
-  {
     "name": "post-components-OperateBar",
     "path": "/post/components/OperateBar",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/post/components/OperateBar/index.vue",
     "chunkName": "pages/post/components/OperateBar/index"
-  },
-  {
-    "name": "portal-article-id",
-    "path": "/portal/article/:id",
-    "component": "/Users/xiaolongli/my-project/blog-client/pages/portal/article/_id/index.vue",
-    "chunkName": "pages/portal/article/_id/index"
-  },
-  {
-    "name": "portal-tag-id",
-    "path": "/portal/tag/:id",
-    "component": "/Users/xiaolongli/my-project/blog-client/pages/portal/tag/_id/index.vue",
-    "chunkName": "pages/portal/tag/_id/index"
-  },
-  {
-    "name": "portal-article-id-Comment",
-    "path": "/portal/article/:id?/Comment",
-    "component": "/Users/xiaolongli/my-project/blog-client/pages/portal/article/_id/Comment.vue",
-    "chunkName": "pages/portal/article/_id/Comment"
   },
   {
     "name": "article-id",
@@ -221,5 +185,9 @@
     "path": "/*",
     "component": "/Users/xiaolongli/my-project/blog-client/pages/_.vue",
     "chunkName": "pages/_"
+  },
+  {
+    "path": "/",
+    "component": "/Users/xiaolongli/my-project/blog-client/pages/article/index.vue"
   }
 ]

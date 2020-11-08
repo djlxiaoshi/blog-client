@@ -13,8 +13,6 @@ import { createStore } from './store.js'
 
 /* Plugins */
 
-import nuxt_plugin_sentryserver_4105a83c from 'nuxt_plugin_sentryserver_4105a83c' // Source: ./sentry.server.js (mode: 'server')
-import nuxt_plugin_sentryclient_49679298 from 'nuxt_plugin_sentryclient_49679298' // Source: ./sentry.client.js (mode: 'client')
 import nuxt_plugin_cookieuniversalnuxt_05399020 from 'nuxt_plugin_cookieuniversalnuxt_05399020' // Source: ./cookie-universal-nuxt.js (mode: 'all')
 import nuxt_plugin_meta_b618bc34 from 'nuxt_plugin_meta_b618bc34' // Source: ./pwa/meta.js (mode: 'all')
 import nuxt_plugin_icons_2f0639ee from 'nuxt_plugin_icons_2f0639ee' // Source: ./pwa/icons.js (mode: 'all')
@@ -212,14 +210,6 @@ async function createApp(ssrContext, config = {}) {
     }
   }
   // Plugin execution
-
-  if (process.server && typeof nuxt_plugin_sentryserver_4105a83c === 'function') {
-    await nuxt_plugin_sentryserver_4105a83c(app.context, inject)
-  }
-
-  if (process.client && typeof nuxt_plugin_sentryclient_49679298 === 'function') {
-    await nuxt_plugin_sentryclient_49679298(app.context, inject)
-  }
 
   if (typeof nuxt_plugin_cookieuniversalnuxt_05399020 === 'function') {
     await nuxt_plugin_cookieuniversalnuxt_05399020(app.context, inject)
