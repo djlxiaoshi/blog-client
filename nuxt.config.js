@@ -1,3 +1,4 @@
+const { resolve } = require('path');
 module.exports = {
   mode: 'universal',
   telemetry: false,
@@ -84,11 +85,12 @@ module.exports = {
     }
   },
   router: {
-    middleware: ['auth']
-  },
-  sentry: {
-    dsn:
-      'https://2b7e433fe9e940c8ab342f1e0a0ed063@o139930.ingest.sentry.io/5301786', // Enter your project's DSN here
-    config: {} // Additional config
+    middleware: ['auth'],
+    extendRoutes(routes) {
+      routes.push({
+        path: '/',
+        component: resolve(__dirname, 'pages/article/index.vue')
+      });
+    }
   }
 };

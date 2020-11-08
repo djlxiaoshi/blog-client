@@ -51,6 +51,9 @@ import dayjs from 'dayjs';
 import Tag from '@/components/common/Tag';
 
 export default {
+  meta: {
+    isPortalPage: true
+  },
   name: 'Timeline',
   head: {
     title: '时光轴',
@@ -73,7 +76,7 @@ export default {
   computed: {
     ...mapState({
       list: (state) => state.timeline.list,
-      // total: (state) => state.timeline.total,
+      total: (state) => state.timeline.total,
       current: (state) => state.timeline.current,
       pageSize: (state) => state.timeline.pageSize
     })

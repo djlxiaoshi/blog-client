@@ -57,6 +57,9 @@ import { sha256 } from 'js-sha256';
 export default {
   layout: 'global',
   name: 'AppLogin',
+  meta: {
+    isLoginPage: true
+  },
   head: {
     title: '登录',
     titleTemplate: '%s - DJL箫氏的博客!',

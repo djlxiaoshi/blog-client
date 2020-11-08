@@ -112,10 +112,10 @@ export default {
     }),
     getAllTags() {
       const { response } = this.$http({
-        url: `/tags`,
+        url: `/getAllTagsByUser`,
         method: 'get',
         showSuccessMsg: false,
-        showErrorMsg: false
+        showErrorMsg: true
       });
 
       return response.then(

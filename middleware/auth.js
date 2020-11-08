@@ -16,53 +16,59 @@
  * */
 import qs from 'qs';
 
-function isLoginPage(path) {
-  return path === '/login' || path === '/login/';
-}
-
 export default async function({ store, route, redirect, error }) {
   const { path, query } = route;
-  // 如果store中没有用户信息，先获取用户信息，不论该页面是不是需要登录，
-  // 都先提前获取，因为有些页面（例如首页）即使不需要登录，但是需要展示用户信息
-  if (!store.state.user.userInfo) {
-    try {
-      const user = await store.dispatch('user/getUserInfo');
-      store.commit('user/setUserInfo', user);
-    } catch (error) {}
-  }
+  const matchedMeta = route.meta[0];
+  console.log('route.meta', route.meta);
 
-  // 如果是登录页且用户已经登录则直接重定向到首页
-  if (isLoginPage(path) && store.state.user.userInfo) {
-    redirect('/');
-    return;
-  }
+  const {
+    isAdminPage,
+    isPortalPage,
+    isLoginPage,
+    isClosed,
+    permission
+  } = matchedMeta;
 
-  if (route.meta[0]) {
-    const { needLogin, isClosed, permission } = route.meta[0];
-    // todo admin 配置
-    // 如果这个页面处于关闭状态 例如注册页
-    if (isClosed) {
-      redirect('/404');
-      return;
-    }
-
-    // 页面需要登录
-    if (needLogin) {
-      if (!store.state.user.userInfo) {
+  // 如果是管理界面
+  if (isAdminPage) {
+    // 如果用户未登录
+    if (!store.state.user.userInfo) {
+      try {
+        const user = await store.dispatch('user/getUserInfo');
+        store.commit('user/setUserInfo', user);
+      } catch (error) {
         redirect(
           `/login?_redirectUrl=${encodeURIComponent(
             `${path}?${qs.stringify(query)}`
           )}`
         );
-      } else if (
-        permission &&
-        permission.length > 0 &&
-        !permission.includes(store.state.user.userInfo.role)
-      ) {
-        error({ statusCode: 403, message: '没有页面权限' });
       }
+    } else if (
+      permission &&
+      permission.length > 0 &&
+      !permission.includes(store.state.user.userInfo.role)
+    ) {
+      error({ statusCode: 403, message: '没有页面权限' });
     }
+  } else if (isPortalPage) {
+    // 获取门户系统配置
+    if (!store.state.system.portalConfig) {
+      try {
+        await store.dispatch('system/getPortalSystemConfig');
+      } catch (error) {}
+    }
+  } else if (isLoginPage) {
+    if (!store.state.user.userInfo) {
+      try {
+        const user = await store.dispatch('user/getUserInfo');
+        store.commit('user/setUserInfo', user);
+      } catch (error) {}
+    }
+    // 如果是登录页且用户已经登录则直接重定向到首页
+    if (store.state.user.userInfo) {
+      redirect('/');
+    }
+  } else if (isClosed) {
+    redirect('/404');
   }
-
-  store.commit('menu/setActiveMenu', path);
 }

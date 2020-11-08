@@ -27,19 +27,19 @@
         <li>
           <nuxt-link
             :style="{ color: $color.defaultColor }"
+            to="/article"
+            class="hvr-underline-from-center"
+            >历史文章</nuxt-link
+          >
+        </li>
+        <li>
+          <nuxt-link
+            :style="{ color: $color.defaultColor }"
             to="/timeline"
             class="hvr-underline-from-center"
             >时光轴</nuxt-link
           >
         </li>
-        <!-- <li>
-          <nuxt-link
-            :style="{ color: $color.defaultColor }"
-            to="/portal/tag"
-            class="hvr-underline-from-center"
-            >归档</nuxt-link
-          >
-        </li> -->
         <li>
           <nuxt-link
             :style="{ color: $color.defaultColor }"
@@ -113,7 +113,7 @@ export default {
   computed: {
     ...mapState({
       tags: (state) => state.tag.allTags,
-      user: (state) => state.user.userInfo
+      user: (state) => state.system?.portalConfig?.portalUser || {}
     })
   },
   methods: {

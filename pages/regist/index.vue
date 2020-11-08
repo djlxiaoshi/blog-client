@@ -61,6 +61,7 @@ export default {
   layout: 'global',
   name: 'Register',
   meta: {
+    isRegistrationPage: true,
     isClosed: true
   },
   head: {

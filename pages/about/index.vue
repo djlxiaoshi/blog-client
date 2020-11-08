@@ -88,6 +88,9 @@
 import { mapState } from 'vuex';
 
 export default {
+  meta: {
+    isPortalPage: true
+  },
   head: {
     title: '关于本站',
     titleTemplate: '%s - DJL箫氏的博客!',
@@ -109,7 +112,7 @@ export default {
   },
   computed: {
     ...mapState({
-      user: (state) => state.user.userInfo
+      user: (state) => state.system?.portalConfig?.portalUser
     })
   }
 };

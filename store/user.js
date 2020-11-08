@@ -35,8 +35,7 @@ export const actions = {
 
     return response.then(
       (user) => {
-        // commit('setUserInfo', user);
-        return user;
+        commit('setUserInfo', user);
       },
       (e) => {
         throw e;
@@ -70,6 +69,29 @@ export const actions = {
       (e) => {
         return e;
       }
+    );
+  },
+  getAllUsers({ commit }, { pageSize, current, filter } = {}) {
+    const { response } = this.$http({
+      url: `/allUsers/`,
+      data: {
+        pageSize: pageSize || 10,
+        currentPage: current || 1,
+        filter
+      },
+      showSuccessMsg: false,
+      showErrorMsg: false,
+      jumpLogin: true
+    });
+
+    return response.then(
+      (data) => {
+        return {
+          list: data.list,
+          total: data.total
+        };
+      },
+      (e) => {}
     );
   },
   logout({ commit }) {

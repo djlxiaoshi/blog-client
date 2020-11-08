@@ -16,10 +16,9 @@ export const mutations = {
 
 export const actions = {
   getTimelines({ commit }, { pageSize, current } = {}) {
-    console.log('current', current);
-    // const initState = state();
-    const _pageSize = pageSize || 1;
-    const _current = current || 1;
+    const initState = state();
+    const _pageSize = pageSize || initState.pageSize;
+    const _current = current || initState.current;
     const { response } = this.$http({
       url: '/timelines',
       data: {
@@ -38,7 +37,6 @@ export const actions = {
           current: _current,
           pageSize: _pageSize
         });
-        return data;
       },
       (e) => {
         return e;

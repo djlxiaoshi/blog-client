@@ -52,6 +52,9 @@ import Gitalk from 'gitalk';
 import Tag from '@/components/common/Tag';
 
 export default {
+  meta: {
+    isPortalPage: true
+  },
   head() {
     return {
       title: `${this.article.title || '文章详情'}`,
