@@ -2,7 +2,7 @@ export const state = () => ({
   list: [],
   current: 1,
   total: 0,
-  pageSize: 20
+  pageSize: 10
 });
 
 export const mutations = {

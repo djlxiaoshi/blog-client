@@ -4,7 +4,7 @@ export const state = () => ({
   allArticles: {
     list: [],
     current: 1,
-    pageSize: 2,
+    pageSize: 10,
     total: 0
   }, // 所有文章
   currentPage: 1,
@@ -55,7 +55,6 @@ export const actions = {
         return article;
       },
       (e) => {
-        console.log('error----', e);
         throw e;
       }
     );

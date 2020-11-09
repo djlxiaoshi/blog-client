@@ -23,7 +23,7 @@ export const actions = {
     });
 
     return response.then((data) => {
-      commit('setAdminConfig', data);
+      return data;
     });
   },
   getPortalSystemConfig({ commit }) {
