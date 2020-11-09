@@ -19,7 +19,6 @@ import qs from 'qs';
 export default async function({ store, route, redirect, error }) {
   const { path, query } = route;
   const matchedMeta = route.meta[0];
-  console.log('route.meta', route.meta);
 
   const {
     isAdminPage,

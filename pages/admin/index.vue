@@ -17,7 +17,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="登出">
-        <Button @click="logout">登出</Button>
+        <el-button @click="logout">登出</el-button>
       </el-form-item>
     </el-form>
   </div>
