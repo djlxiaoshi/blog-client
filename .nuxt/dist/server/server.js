@@ -47309,7 +47309,7 @@ module.exports = require("cookie-universal");
 /* 53 */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"title\":\"app-client\",\"meta\":[{\"hid\":\"charset\",\"charset\":\"utf-8\"},{\"hid\":\"viewport\",\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"},{\"hid\":\"mobile-web-app-capable\",\"name\":\"mobile-web-app-capable\",\"content\":\"yes\"},{\"hid\":\"apple-mobile-web-app-title\",\"name\":\"apple-mobile-web-app-title\",\"content\":\"app-client\"},{\"hid\":\"author\",\"name\":\"author\",\"content\":\"djlxs\"},{\"hid\":\"description\",\"name\":\"description\",\"content\":\"frontend of my blog\"},{\"hid\":\"og:type\",\"name\":\"og:type\",\"property\":\"og:type\",\"content\":\"website\"},{\"hid\":\"og:title\",\"name\":\"og:title\",\"property\":\"og:title\",\"content\":\"app-client\"},{\"hid\":\"og:site_name\",\"name\":\"og:site_name\",\"property\":\"og:site_name\",\"content\":\"app-client\"},{\"hid\":\"og:description\",\"name\":\"og:description\",\"property\":\"og:description\",\"content\":\"frontend of my blog\"}],\"link\":[{\"rel\":\"shortcut icon\",\"href\":\"/_nuxt/icons/icon_64x64.5f6a36.png\"},{\"rel\":\"apple-touch-icon\",\"href\":\"/_nuxt/icons/icon_512x512.5f6a36.png\",\"sizes\":\"512x512\"},{\"rel\":\"manifest\",\"href\":\"/_nuxt/manifest.fa650663.json\",\"hid\":\"manifest\"}],\"htmlAttrs\":{\"lang\":\"en\"}}");
+module.exports = JSON.parse("{\"title\":\"blog-client\",\"meta\":[{\"hid\":\"charset\",\"charset\":\"utf-8\"},{\"hid\":\"viewport\",\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"},{\"hid\":\"mobile-web-app-capable\",\"name\":\"mobile-web-app-capable\",\"content\":\"yes\"},{\"hid\":\"apple-mobile-web-app-title\",\"name\":\"apple-mobile-web-app-title\",\"content\":\"blog-client\"},{\"hid\":\"author\",\"name\":\"author\",\"content\":\"djlxs\"},{\"hid\":\"description\",\"name\":\"description\",\"content\":\"frontend of my blog\"},{\"hid\":\"og:type\",\"name\":\"og:type\",\"property\":\"og:type\",\"content\":\"website\"},{\"hid\":\"og:title\",\"name\":\"og:title\",\"property\":\"og:title\",\"content\":\"blog-client\"},{\"hid\":\"og:site_name\",\"name\":\"og:site_name\",\"property\":\"og:site_name\",\"content\":\"blog-client\"},{\"hid\":\"og:description\",\"name\":\"og:description\",\"property\":\"og:description\",\"content\":\"frontend of my blog\"}],\"link\":[{\"rel\":\"shortcut icon\",\"href\":\"/_nuxt/icons/icon_64x64.5f6a36.png\"},{\"rel\":\"apple-touch-icon\",\"href\":\"/_nuxt/icons/icon_512x512.5f6a36.png\",\"sizes\":\"512x512\"},{\"rel\":\"manifest\",\"href\":\"/_nuxt/manifest.26325c76.json\",\"hid\":\"manifest\"}],\"htmlAttrs\":{\"lang\":\"en\"}}");
 
 /***/ }),
 /* 54 */
@@ -47408,7 +47408,6 @@ __webpack_require__.r(__webpack_exports__);
     query
   } = route;
   const matchedMeta = route.meta[0];
-  console.log('route.meta', route.meta);
   const {
     isAdminPage,
     isPortalPage,
@@ -47863,7 +47862,7 @@ const actions = {
       showErrorMsg: false
     });
     return response.then(data => {
-      commit('setAdminConfig', data);
+      return data;
     });
   },
 
@@ -47992,7 +47991,7 @@ const state = () => ({
   list: [],
   current: 1,
   total: 0,
-  pageSize: 20
+  pageSize: 10
 });
 const mutations = {
   setTimelines(state, data) {
@@ -60915,7 +60914,7 @@ async function createApp(ssrContext, config = {}) {
 
   const app = {
     head: {
-      "title": "app-client",
+      "title": "blog-client",
       "meta": [{
         "charset": "utf-8"
       }, {
@@ -61509,7 +61508,7 @@ const state = () => ({
   allArticles: {
     list: [],
     current: 1,
-    pageSize: 2,
+    pageSize: 10,
     total: 0
   },
   // 所有文章
@@ -61561,7 +61560,6 @@ const actions = {
       commit('setCurrentArticle', article);
       return article;
     }, e => {
-      console.log('error----', e);
       throw e;
     });
   },

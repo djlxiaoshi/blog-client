@@ -8,12 +8,12 @@ exports.modules = {
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./pages/admin/index.vue?vue&type=template&id=297ebd1a&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"admin-system-page"},[_vm._ssrNode("<h1>系统管理</h1> "),_c('el-form',{attrs:{"model":_vm.systemConfig,"label-position":"left","label-width":"80px"}},[_c('el-form-item',{attrs:{"label":"用户信息"}},[_c('el-radio-group',{on:{"change":function($event){return _vm.changeSystemConfig($event, 'portalUser')}},model:{value:(_vm.systemConfig.portalUser),callback:function ($$v) {_vm.$set(_vm.systemConfig, "portalUser", $$v)},expression:"systemConfig.portalUser"}},_vm._l((_vm.userList),function(user){return _c('el-radio',{key:user._id,attrs:{"label":user._id}},[_vm._v(_vm._s(user.username))])}),1)],1),_vm._v(" "),_c('el-form-item',{attrs:{"label":"登出"}},[_c('Button',{on:{"click":_vm.logout}},[_vm._v("登出")])],1)],1)],2)}
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./pages/admin/index.vue?vue&type=template&id=736d4979&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"admin-system-page"},[_vm._ssrNode("<h1>系统管理</h1> "),_c('el-form',{attrs:{"model":_vm.systemConfig,"label-position":"left","label-width":"80px"}},[_c('el-form-item',{attrs:{"label":"用户信息"}},[_c('el-radio-group',{on:{"change":function($event){return _vm.changeSystemConfig($event, 'portalUser')}},model:{value:(_vm.systemConfig.portalUser),callback:function ($$v) {_vm.$set(_vm.systemConfig, "portalUser", $$v)},expression:"systemConfig.portalUser"}},_vm._l((_vm.userList),function(user){return _c('el-radio',{key:user._id,attrs:{"label":user._id}},[_vm._v(_vm._s(user.username))])}),1)],1),_vm._v(" "),_c('el-form-item',{attrs:{"label":"登出"}},[_c('el-button',{on:{"click":_vm.logout}},[_vm._v("登出")])],1)],1)],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./pages/admin/index.vue?vue&type=template&id=297ebd1a&
+// CONCATENATED MODULE: ./pages/admin/index.vue?vue&type=template&id=736d4979&
 
 // EXTERNAL MODULE: external "vuex"
 var external_vuex_ = __webpack_require__(7);

@@ -1,6 +1,6 @@
 {
-  "name": "app-client",
-  "short_name": "app-client",
+  "name": "blog-client",
+  "short_name": "blog-client",
   "description": "frontend of my blog",
   "icons": [
     {
